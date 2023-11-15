@@ -70,7 +70,7 @@ fun PantryPalApp() {
         }
     ){ internalPadding ->
         NavHost(navController = navController,
-            startDestination = NavScreens.Query.route)
+            startDestination = NavScreens.Home.route)
         {
 
             composable(route = NavScreens.Home.route){
@@ -104,7 +104,7 @@ fun PantryPalTopBar(goToSaved: ()->Unit){
 //            }
 //        }
         
-        IconButton(modifier = Modifier.size(50.dp), onClick = {}) {
+        IconButton(modifier = Modifier.size(50.dp), onClick = {goToSaved()}) {
             Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.home), contentDescription = null, tint = Color.White)
         }
         IconButton(modifier = Modifier.size(50.dp), onClick = {goToSaved()}) {

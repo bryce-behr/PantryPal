@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,7 +24,11 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,7 +44,7 @@ fun Query(modifier: Modifier = Modifier) {
 
     Column(modifier = modifier.padding(15.dp)){
 
-        Spacer(modifier = modifier.height(50.dp))
+        Spacer(modifier = modifier.height(75.dp))
 
         Box(modifier = modifier
             .fillMaxWidth()
@@ -54,58 +59,69 @@ fun Query(modifier: Modifier = Modifier) {
             )
         }
 
-        Spacer(modifier = modifier.height((deviceSize.screenHeight!! /15).dp))
+        Spacer(modifier = modifier.weight(.4f))
+        //Spacer(modifier = modifier.height((deviceSize.screenHeight!! /15).dp))
 
         Text(text = "Ingredient",
-            modifier = modifier.padding(15.dp),
+            modifier = modifier,//.padding(15.dp),
             fontSize = 20.sp)
 
-        Row (){
+        Row (modifier = Modifier.fillMaxWidth().weight(1f),
+            horizontalArrangement = Arrangement.SpaceEvenly){
             TextField(value = "", onValueChange = {},
-                modifier = modifier.padding(15.dp))
+                modifier = modifier.weight(1f).fillMaxHeight().padding(end = 16.dp))
 
             Button(onClick = { /*TODO*/ },
-                modifier = modifier.padding(15.dp)) {
-                Text(text = "Add Ingredient")
+                shape = RectangleShape,
+                modifier = modifier.weight(.333f).fillMaxHeight()/*.padding(start = 16.dp, end = 16.dp)*/) {
+                Text(text = "Add", fontSize = 20.sp, textAlign = TextAlign.Center)
             }
         }
 
-        Spacer(modifier = modifier.height((deviceSize.screenHeight!! /15).dp))
+        Spacer(modifier = modifier.weight(.4f))
+//        Spacer(modifier = modifier.height((deviceSize.screenHeight!! /15).dp))
 
         Text(text = "Meal",
             modifier = modifier.padding(15.dp),
             fontSize = 20.sp
         )
 
-        Row {
+        Row (modifier = Modifier.fillMaxWidth().weight(1f),
+            horizontalArrangement = Arrangement.SpaceEvenly){
             TextField(value = "", onValueChange = {},
-                modifier = modifier.padding(15.dp))
+                modifier = modifier.weight(1f).fillMaxHeight().padding(end = 16.dp))
 
             Button(onClick = { /*TODO*/ },
-                modifier = modifier.padding(15.dp)) {
-                Text(text = "Add meal type")
+                shape = RectangleShape,
+                modifier = modifier.weight(.333f).fillMaxHeight()) {
+                Text(text = "Add", fontSize = 20.sp)
             }
         }
 
-        Spacer(modifier = modifier.height((deviceSize.screenHeight!! /15).dp))
+        Spacer(modifier = modifier.weight(.4f))
 
         Text(text = "Category",
             modifier = modifier.padding(15.dp),
             fontSize = 20.sp)
 
-        Row {
+        Row (modifier = Modifier.fillMaxWidth().weight(1f),
+            horizontalArrangement = Arrangement.SpaceEvenly){
             TextField(value = "", onValueChange = {},
-                modifier = modifier.padding(15.dp))
+                modifier = modifier.weight(1f).fillMaxHeight().padding(end = 16.dp))
 
             Button(onClick = { /*TODO*/ },
-                modifier = modifier.padding(15.dp)) {
-                Text(text = "Add Category")
+                shape = RectangleShape,
+                modifier = modifier.weight(.333f).fillMaxHeight()) {
+                Text(text = "Add", fontSize = 20.sp)
             }
         }
 
-        Row(horizontalArrangement = Arrangement.End){
+        Spacer(modifier = modifier.weight(.8f))
+
+        Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth().weight(1f)){
             Button(onClick = { /*TODO*/ },
-                modifier = modifier.padding(15.dp)) {
+                shape = RectangleShape,
+                modifier = modifier.fillMaxHeight()) {
                 Text(text = "Generate")
             }
         }
