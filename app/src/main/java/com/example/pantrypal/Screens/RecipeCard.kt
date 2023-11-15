@@ -14,11 +14,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.pantrypal.R
-
-object deviceSize{
-    var screenWidth: Float? = null
-    var screenHeight: Float? = null
-}
+import com.example.pantrypal.deviceSize
 
 @Composable
 fun RecipeCard(image: Int, description: String, modifier: Modifier = Modifier) {

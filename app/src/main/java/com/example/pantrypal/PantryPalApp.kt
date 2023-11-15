@@ -17,6 +17,11 @@ sealed class NavScreens(val route: String){
     object Saved: NavScreens(route = "Saved")
 }
 
+object deviceSize{
+    var screenWidth: Float? = null
+    var screenHeight: Float? = null
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantryPalApp() {
@@ -30,7 +35,7 @@ fun PantryPalApp() {
         }
     ){ internalPadding ->
         NavHost(navController = navController,
-            startDestination = NavScreens.Home.route){
+            startDestination = NavScreens.Query.route){
 
             composable(route = NavScreens.Home.route){
                 HomeScreen()
