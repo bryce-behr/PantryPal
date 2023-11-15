@@ -34,10 +34,10 @@ fun RecipeCard(image: Int, description: String, modifier: Modifier = Modifier) {
         .requiredWidth(((deviceSize.screenWidth ?: 100f) - 16f).dp)
     ){
 
-        Image(painter = painterResource(id = R.drawable.Recipe_Test_Image),
+        Image(painter = painterResource(R.drawable.recipe_test_image),
             contentDescription = description,
             modifier = modifier.height(180.dp),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.FillBounds
         )
 
         Text(text = description,
