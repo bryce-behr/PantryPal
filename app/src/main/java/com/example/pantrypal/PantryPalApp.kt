@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pantrypal.Screens.HomeScreen
+import com.example.pantrypal.Screens.Query
 
 sealed class NavScreens(val route: String){
     object Home: NavScreens(route = "Home")
@@ -36,7 +37,7 @@ fun PantryPalApp() {
             }
 
             composable(route = NavScreens.Query.route){
-
+                Query()
             }
 
             composable(route = NavScreens.Saved.route){
