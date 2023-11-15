@@ -67,7 +67,7 @@ fun PantryPalApp() {
         }
     ){ internalPadding ->
         NavHost(navController = navController,
-            startDestination = NavScreens.Home.route)
+            startDestination = NavScreens.Query.route)
         {
 
             composable(route = NavScreens.Home.route){
