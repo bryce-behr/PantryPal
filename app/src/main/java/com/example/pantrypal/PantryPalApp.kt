@@ -28,6 +28,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pantrypal.Screens.HomeScreen
 import com.example.pantrypal.Screens.Query
+import com.example.pantrypal.Screens.SavedScreen
 
 sealed class NavScreens(val route: String){
     object Home: NavScreens(route = "Home")
@@ -52,14 +53,16 @@ fun PantryPalApp() {
 
     Scaffold(
         topBar = {
-            PantryPalTopBar()
+            PantryPalTopBar(goToSaved = {navController.navigate(NavScreens.Saved.route)})
         },
         floatingActionButton = {
-            if(currentRoute == NavScreens.Home.route) {
+            if(currentRoute == NavScreens.Home.route || currentRoute == NavScreens.Saved.route) {
                 IconButton(onClick = { navController.navigate(NavScreens.Query.route) }, modifier = Modifier.size(100.dp)) {
                     Icon(painter = painterResource(id = R.drawable.add),
                         contentDescription = null,
-                        modifier = Modifier.fillMaxSize().background(Color.White),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.White),
                         tint = Color.hsv(158f, 1f, .2f, 1f)
                     )
                 }
@@ -79,14 +82,14 @@ fun PantryPalApp() {
             }
 
             composable(route = NavScreens.Saved.route){
-
+                SavedScreen()
             }
         }
     }
 }
 
 @Composable
-fun PantryPalTopBar(){
+fun PantryPalTopBar(goToSaved: ()->Unit){
     Row(modifier = Modifier
         .fillMaxWidth()
         .height(75.dp)
@@ -102,9 +105,9 @@ fun PantryPalTopBar(){
 //        }
         
         IconButton(modifier = Modifier.size(50.dp), onClick = {}) {
-            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.search), contentDescription = null, tint = Color.White)
+            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.home), contentDescription = null, tint = Color.White)
         }
-        IconButton(modifier = Modifier.size(50.dp), onClick = {}) {
+        IconButton(modifier = Modifier.size(50.dp), onClick = {goToSaved()}) {
             Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.bookmark), contentDescription = null, tint = Color.White)
         }
         IconButton(modifier = Modifier.size(50.dp), onClick = {}) {
