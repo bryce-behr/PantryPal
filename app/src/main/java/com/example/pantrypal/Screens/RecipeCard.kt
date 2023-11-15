@@ -1,6 +1,7 @@
 package com.example.pantrypal.Screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,8 @@ import com.example.pantrypal.deviceSize
 
 @Composable
 fun RecipeCard(image: Int, description: String, modifier: Modifier = Modifier) {
+
+    val recipe: String = ""
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
