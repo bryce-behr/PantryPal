@@ -27,7 +27,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     Column (modifier = modifier
         .fillMaxSize()
         .verticalScroll(ScrollState(0), true)){
-        Spacer(modifier = Modifier.height(75.dp).fillMaxWidth().background(Color.Green))
+        Spacer(modifier = Modifier.height(75.dp).fillMaxWidth())
         for (i in 1..10) {
             RecipeCard(image = 0, description = "test")
         }

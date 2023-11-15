@@ -1,7 +1,9 @@
 package com.example.pantrypal
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,7 +16,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,16 +47,22 @@ fun PantryPalApp() {
     val navController = rememberNavController()
     val currentScreenHandler by navController.currentBackStackEntryAsState()
 
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = backStackEntry?.destination?.route
+
     Scaffold(
         topBar = {
             PantryPalTopBar()
         },
         floatingActionButton = {
-            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.size(100.dp)) {
-                Icon(painter = painterResource(id = R.drawable.add),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
-                )
+            if(currentRoute == NavScreens.Home.route) {
+                IconButton(onClick = { navController.navigate(NavScreens.Query.route) }, modifier = Modifier.size(100.dp)) {
+                    Icon(painter = painterResource(id = R.drawable.add),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize().background(Color.White),
+                        tint = Color.hsv(158f, 1f, .2f, 1f)
+                    )
+                }
             }
         }
     ){ internalPadding ->
@@ -78,23 +88,27 @@ fun PantryPalApp() {
 @Composable
 fun PantryPalTopBar(){
     Row(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween) {
+        .fillMaxWidth()
+        .height(75.dp)
+        //.padding(16.dp)
+        .background(Color.hsv(158f, 1f, .2f, 1f)),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically) {
 //        if(canGoBack) {
 //            IconButton(onClick = {goBack()}) {
 //                Icon(painter = painterResource(id = R.drawable.baseline_arrow_back_ios_24),
 //                    contentDescription = null)
 //            }
 //        }
+        
         IconButton(modifier = Modifier.size(50.dp), onClick = {}) {
-            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.search), contentDescription = null)
+            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.search), contentDescription = null, tint = Color.White)
         }
         IconButton(modifier = Modifier.size(50.dp), onClick = {}) {
-            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.bookmark), contentDescription = null)
+            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.bookmark), contentDescription = null, tint = Color.White)
         }
         IconButton(modifier = Modifier.size(50.dp), onClick = {}) {
-            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.settings), contentDescription = null)
+            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.settings), contentDescription = null, tint = Color.White)
         }
 //        if(canGoNext) {
 //            IconButton(onClick = {goNext() }) {
