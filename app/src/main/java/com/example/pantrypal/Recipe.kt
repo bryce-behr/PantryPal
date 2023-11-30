@@ -1,4 +1,4 @@
-package com.example.pantrypal.recipes
+package com.example.pantrypal
 
 data class Recipe (
     val name: String,
