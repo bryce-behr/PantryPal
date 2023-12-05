@@ -10,7 +10,7 @@ data class Recipe(
     var recipe_id: Int = 1,
     val recipeAndImageid: Int = 0,
     val title: String = "",
-    val ingredients: List<Ingredient> = emptyList(),
+    val ingredients: String,
     val instructions: String = "",
     val image: String = ""
 )

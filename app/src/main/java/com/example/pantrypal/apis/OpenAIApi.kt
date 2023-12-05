@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 interface OpenAIApiService {
     @Headers(
         "Content-Type: application/json",
-        "Authorization: Bearer YOUR_OPENAI_API_KEY"
+        "Authorization: Bearer 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"
     )
     @POST("v1/chat/completions")
     suspend fun getChatCompletion(@Body request: ChatRequest): ChatResponse

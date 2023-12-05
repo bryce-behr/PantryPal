@@ -19,7 +19,16 @@ interface PantryPalDAO{
     suspend fun deleteRecipe(recipe: Recipe)
 
     @Query("SELECT * FROM recipe")
-    fun getAllProducts(): Flow<List<Recipe>>
+    fun getAllRecipes(): Flow<List<Recipe>>
+
+    @Query("SELECT * FROM recipe WHERE recipe_id = :id")
+    fun getRecipesWithID(id: Int): Flow<List<Recipe>>
+
+    @Query("SELECT * FROM recipe WHERE recipeAndImageid = :apiID")
+    fun getRecipesWithApiID(apiID: Int): Flow<List<Recipe>>
+
+    @Query("SELECT * FROM recipe WHERE title = :name")
+    fun getRecipesWithName(name: String): Flow<List<Recipe>>
 
 
 }
