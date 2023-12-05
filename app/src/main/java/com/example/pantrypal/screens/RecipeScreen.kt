@@ -1,4 +1,4 @@
-package com.example.pantrypal.Screens
+package com.example.pantrypal.screens
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

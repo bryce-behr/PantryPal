@@ -2,25 +2,25 @@ package com.example.pantrypal.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.example.pantrypal.App
-import com.example.pantrypal.apis.StableDiffusionApi
+import com.example.pantrypal.database.PantryPalDAO
 
-class StableDiffusionVM(
-    private val stableDiffusionApi: StableDiffusionApi
+class DatabaseVM(
+    private val pantryPalDAO: PantryPalDAO
 ): ViewModel(){
 
     /**
      * Implements singleton
      */
     companion object{
-        private var INSTANCE: StableDiffusionVM? = null
-        fun getInstance(): StableDiffusionVM{
+        private var INSTANCE: DatabaseVM? = null
+
+        fun getInstance(): DatabaseVM{
             val vm = INSTANCE?: synchronized(this){
-                StableDiffusionVM(App.getApp().container.stableDiffusionApi).also{
+                DatabaseVM(App.getApp().container.pantryPalDAO).also{
                     INSTANCE = it
                 }
             }
             return vm
         }
     }
-
 }

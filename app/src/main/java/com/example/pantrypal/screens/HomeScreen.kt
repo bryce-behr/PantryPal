@@ -1,4 +1,4 @@
-package com.example.pantrypal.Screens
+package com.example.pantrypal.screens
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.example.pantrypal.R
 
 @Composable
-fun SavedScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier) {
 
     val recipeList = arrayListOf<Int>()
     for (i in 1..10){
@@ -59,5 +59,6 @@ fun SavedScreen(modifier: Modifier = Modifier) {
 //            RecipeCard(image = 0, description = "test")
 //        }
 //    }
-
+    
 }
+
