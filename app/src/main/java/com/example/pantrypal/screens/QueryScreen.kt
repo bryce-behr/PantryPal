@@ -35,6 +35,8 @@ fun Query(modifier: Modifier = Modifier) {
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
     deviceSize.screenHeight = configuration.screenHeightDp.dp.value
 
+
+
     Column(modifier = modifier.padding(15.dp)){
 
         Spacer(modifier = modifier.height(75.dp))

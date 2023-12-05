@@ -52,7 +52,7 @@ fun SavedScreen(modifier: Modifier = Modifier) {
         )
 
         for (i in 1..10) {
-            RecipeCard(image = 0, description ="Indulge in Chicken Alfredo perfection:\n juicy seasoned chicken, al dente fettuccine, and rich Alfredo sauce—a symphony of decadent flavors!")
+            RecipeCard(image = "0", description ="Indulge in Chicken Alfredo perfection:\n juicy seasoned chicken, al dente fettuccine, and rich Alfredo sauce—a symphony of decadent flavors!")
         }
     }
 

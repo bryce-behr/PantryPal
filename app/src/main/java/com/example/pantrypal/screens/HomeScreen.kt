@@ -3,22 +3,39 @@ package com.example.pantrypal.screens
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.pantrypal.R
+import com.example.pantrypal.viewmodels.OpenAIApiState
+import com.example.pantrypal.viewmodels.OpenAIApiVM
+import com.example.pantrypal.viewmodels.StableDiffusionState
+import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,15 +69,11 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         )
 
         for (i in 1..10) {
-            RecipeCard(image = 0, description ="Indulge in Chicken Alfredo perfection:\n juicy seasoned chicken, al dente fettuccine, and rich Alfredo sauce—a symphony of decadent flavors!")
+            RecipeCard(image = "0", description = "test")
         }
     }
 
-//    LazyColumn(modifier = modifier.fillMaxSize()){
-//        for (recipe in recipeList) {
-//            RecipeCard(image = 0, description = "test")
-//        }
-//    }
+
     
 }
 

@@ -33,7 +33,7 @@ class StableDiffusionVM(
     fun getRecipeImage(){
         viewModelScope.launch{
             try{
-                val prompt = "" +
+                val prompt = "Please generate a prompt for a text to image ai that will lead the ai to generate an image resembling the follwoing description:" +
                         "\n" + drawingText
 
                 val response = OpenAIApi.getResponse(prompt)
