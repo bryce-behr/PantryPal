@@ -21,6 +21,10 @@ class OpenAIApiVM(
     private val openAIApi: OpenAIApi
 ): ViewModel(){
 
+    init {
+        println("test")
+    }
+
     var openAIApiState: OpenAIApiState by mutableStateOf(OpenAIApiState.Loading)
         private set
 
@@ -37,7 +41,7 @@ class OpenAIApiVM(
                 val prompt = "" +
                         "\n" + recipePrompt
 
-                val response = OpenAIApi.getResponse(prompt)
+                val response = openAIApi.getResponse(prompt)
 
                 openAIApiState = OpenAIApiState.Success(chatGPTResponse = response)
             } catch (e: Exception){

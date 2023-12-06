@@ -37,7 +37,7 @@ data class Information(
 data class RecipeAndImageRecipe(
     val id: Int,
     val Title: String,
-    val Ingredients: List<Ingredient>,
+    val Ingredients: Ingredient,
     val Instructions: String,
     val Image: String
 )
@@ -47,5 +47,6 @@ data class RecipeAndImageRecipe(
  */
 @Serializable
 data class Ingredient(
-    val variable: String
+    @SerialName("1")
+    val one: String
 )

@@ -36,15 +36,34 @@ fun RecipeCard(image: String, description: String, modifier: Modifier = Modifier
         .requiredWidth(((deviceSize.screenWidth ?: 100f) - 16f).dp)
     ){
 
-        Image(painter = painterResource(R.drawable.recipe_test_image),
-            contentDescription = description,
-            modifier = modifier.height(180.dp),
-            contentScale = ContentScale.FillBounds
-        )
+        if (image == "0") {
+            Image(
+                painter = painterResource(R.drawable.recipe_test_image),
+                contentDescription = description,
+                modifier = modifier.height(180.dp),
+                contentScale = ContentScale.FillBounds
+            )
 
+            Text(
+                text = description,
+                maxLines = 1, modifier = modifier.padding(16.dp)
+            )
+        } else {
+            AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
+                // .data(book.volumeInfo.imageLinks?.thumbnail)
+                .data(image)
+                .crossfade(true)
+                .build(),
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier.height(180.dp)
+            )
 
-        Text(text = description,
-            maxLines = 1, modifier = modifier.padding(16.dp))
+            Text(
+                text = description,
+                maxLines = 1, modifier = modifier.padding(16.dp)
+            )
+        }
     }
 }
 

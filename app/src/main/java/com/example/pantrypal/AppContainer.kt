@@ -15,7 +15,7 @@ interface AppContainer{
     val recipeAndImageApi: RecipeAndImageApi
 }
 
-class DefaultContainer(val context: Context): AppContainer{
+class DefaultContainer(context: Context): AppContainer{
     private val db by lazy{
         Room.databaseBuilder(
             context,
