@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pantrypal.App
+//import com.example.pantrypal.App
 import com.example.pantrypal.apis.OpenAIApi
 import kotlinx.coroutines.launch
 
@@ -17,9 +17,7 @@ sealed interface OpenAIApiState{
 
 }
 
-class OpenAIApiVM(
-    private val openAIApi: OpenAIApi
-): ViewModel(){
+class OpenAIApiVM(): ViewModel(){
 
     init {
         println("test")
@@ -38,34 +36,18 @@ class OpenAIApiVM(
     fun getRecipe(){
         viewModelScope.launch{
             try{
+                println("try openAI getRep")
                 val prompt = "" +
                         "\n" + recipePrompt
 
-                val response = openAIApi.getResponse(prompt)
+                // val response = openAIApi.getResponse(prompt)
+                val response = OpenAIApi.getResponse(prompt)
 
                 openAIApiState = OpenAIApiState.Success(chatGPTResponse = response)
             } catch (e: Exception){
-                println("OpenAIVM error: ${e.printStackTrace()}")
+                println("!!! OpenAIVM error: ${e.printStackTrace()}")
                 openAIApiState = OpenAIApiState.Error
             }
         }
     }
-
-    /**
-     * Implements singleton
-     */
-    companion object{
-        private var INSTANCE: OpenAIApiVM? = null
-
-        fun getInstance(): OpenAIApiVM {
-            val vm = INSTANCE ?: synchronized(this){
-                OpenAIApiVM(App.getApp().container.openAIApi).also {
-                    INSTANCE = it
-                }
-            }
-            return vm
-        }
-
-    }
-
 }

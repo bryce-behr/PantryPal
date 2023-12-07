@@ -74,6 +74,7 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
     // Retrofit with Kotlin serialization Converter
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")

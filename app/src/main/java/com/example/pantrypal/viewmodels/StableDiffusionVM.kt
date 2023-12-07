@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pantrypal.App
+//import com.example.pantrypal.App
 import com.example.pantrypal.apis.OpenAIApi
 import com.example.pantrypal.apis.StableDiffusionApi
 import kotlinx.coroutines.launch
@@ -16,10 +16,7 @@ sealed interface StableDiffusionState{
     object Error: StableDiffusionState
 }
 
-class StableDiffusionVM(
-    private val stableDiffusionApi: StableDiffusionApi,
-    private val openAIApi: OpenAIApi
-): ViewModel(){
+class StableDiffusionVM(): ViewModel(){
 
     init {
         println("test")
@@ -41,30 +38,15 @@ class StableDiffusionVM(
                 val prompt = "Please generate a prompt for a text to image ai that will lead the ai to generate an image resembling the follwoing description: " +
                         "\n" + drawingText
 
-                val response = openAIApi.getResponse(prompt)
+                val response = OpenAIApi.getResponse(prompt)
 
-                val imgUrl = stableDiffusionApi.getImageUrl(response)
+                val imgUrl = StableDiffusionApi.getImageUrl(response)
 
                 stableDiffusionState = StableDiffusionState.Success(imageUrl = imgUrl)
             } catch (e: Exception){
                 println("StableDiffusioVM error: ${e.printStackTrace()}")
                 stableDiffusionState = StableDiffusionState.Error
             }
-        }
-    }
-
-    /**
-     * Implements singleton
-     */
-    companion object{
-        private var INSTANCE: StableDiffusionVM? = null
-        fun getInstance(): StableDiffusionVM{
-            val vm = INSTANCE?: synchronized(this){
-                StableDiffusionVM(App.getApp().container.stableDiffusionApi, App.getApp().container.openAIApi).also{
-                    INSTANCE = it
-                }
-            }
-            return vm
         }
     }
 

@@ -20,11 +20,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.pantrypal.R
 import com.example.pantrypal.deviceSize
+import com.example.pantrypal.viewmodels.OpenAIApiVM
+import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @Composable
 fun RecipeCard(image: String, description: String, modifier: Modifier = Modifier) {
-
-    val recipe: String = ""
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
@@ -35,35 +35,17 @@ fun RecipeCard(image: String, description: String, modifier: Modifier = Modifier
         .padding(8.dp)
         .requiredWidth(((deviceSize.screenWidth ?: 100f) - 16f).dp)
     ){
+        Image(
+            painter = painterResource(R.drawable.recipe_test_image),
+            contentDescription = description,
+            modifier = modifier.height(180.dp),
+            contentScale = ContentScale.FillBounds
+        )
 
-        if (image == "0") {
-            Image(
-                painter = painterResource(R.drawable.recipe_test_image),
-                contentDescription = description,
-                modifier = modifier.height(180.dp),
-                contentScale = ContentScale.FillBounds
-            )
-
-            Text(
-                text = description,
-                maxLines = 1, modifier = modifier.padding(16.dp)
-            )
-        } else {
-            AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
-                // .data(book.volumeInfo.imageLinks?.thumbnail)
-                .data(image)
-                .crossfade(true)
-                .build(),
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier.height(180.dp)
-            )
-
-            Text(
-                text = description,
-                maxLines = 1, modifier = modifier.padding(16.dp)
-            )
-        }
+        Text(
+            text = description,
+            maxLines = 1, modifier = modifier.padding(16.dp)
+        )
     }
 }
 
