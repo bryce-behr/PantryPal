@@ -43,9 +43,7 @@ object RecipeAndImageApi{
 
     suspend fun getResponse(prompt: String): RecipeAndImageResponse{
         try {
-            println("before Call")
             return retrofitService.getResponse(q = prompt)
-            println("After call")
         } catch (e: Exception){
             e.printStackTrace()
             println("Error: " + e.message)

@@ -44,7 +44,7 @@ fun TestScreen(){
     var recipe = ""
     var image = ""
 
-    recipeAndImageVM.updateRecipeText("Chicken Tacos")
+    recipeAndImageVM.updateRecipeText("steak")
     //stableDiffusionVM.updateDrawText("Photo-realistic photo of chicken quesadillas")
 
 
@@ -71,16 +71,6 @@ fun TestScreen(){
                         modifier = Modifier
                             .aspectRatio(.8f)
                             .fillMaxWidth())
-//                    AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
-//                        // .data(book.volumeInfo.imageLinks?.thumbnail)
-//                        .data("https://20fix.com/xfood/img/chicken-soup-with-caramelized-ginger.jpg")
-//                        .crossfade(true)
-//                        .build(),
-//                        contentDescription = null,
-//                        contentScale = ContentScale.FillBounds,
-//                        modifier = Modifier
-//                            .aspectRatio(.8f)
-//                            .fillMaxWidth())
                 }
                 is RecipeAndImageState.Loading -> {
                     Text("Preparing Image ", fontSize = 30.sp)
@@ -92,7 +82,8 @@ fun TestScreen(){
 
             when(recipeAndImageState){
                 is RecipeAndImageState.Success -> {
-                    Text(text = recipeAndImageState.recipe.recipes[0].Title)
+                    val ing = recipeAndImageState.recipe.recipes[0].Ingredients
+                    Text(text = recipeAndImageState.recipe.recipes[0].Title + "\n" + ing)
                 }
                 is RecipeAndImageState.Loading -> {
                     Text("preparing title image ", fontSize = 30.sp)
