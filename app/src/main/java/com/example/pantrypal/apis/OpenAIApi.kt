@@ -48,8 +48,8 @@ object OpenAIApi{
                 messages = listOf(
                     Message(
                         role = "user",
-                        content = "Hello, how are you?"
-                    )//prompt)
+                        content = prompt
+                    )
                 )
             )
             println("before ")
