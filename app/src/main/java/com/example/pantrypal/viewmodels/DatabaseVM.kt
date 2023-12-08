@@ -2,6 +2,7 @@ package com.example.pantrypal.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pantrypal.App
 //import com.example.pantrypal.App
 import com.example.pantrypal.database.PantryPalDAO
 import com.example.pantrypal.database.Recipe
@@ -50,19 +51,19 @@ class DatabaseVM(
         }
     }
 
-//    /**
-//     * Implements singleton
-//     */
-//    companion object{
-//        private var INSTANCE: DatabaseVM? = null
-//
-//        fun getInstance(): DatabaseVM{
-//            val vm = INSTANCE?: synchronized(this){
-//                DatabaseVM(App.getApp().container.pantryPalDAO).also{
-//                    INSTANCE = it
-//                }
-//            }
-//            return vm
-//        }
-//    }
+    /**
+     * Implements singleton
+     */
+    companion object{
+        private var INSTANCE: DatabaseVM? = null
+
+        fun getInstance(): DatabaseVM{
+            val vm = INSTANCE?: synchronized(this){
+                DatabaseVM(App.getApp().container.pantryPalDAO).also{
+                    INSTANCE = it
+                }
+            }
+            return vm
+        }
+    }
 }
