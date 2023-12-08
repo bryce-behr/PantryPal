@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pantrypal.App
 //import com.example.pantrypal.App
 import com.example.pantrypal.apis.OpenAIApi
 import kotlinx.coroutines.launch
@@ -17,7 +18,9 @@ sealed interface OpenAIApiState{
 
 }
 
-class OpenAIApiVM(): ViewModel(){
+class OpenAIApiVM(
+    private val openAIApi: OpenAIApi
+): ViewModel(){
 
     init {
         println("test")
@@ -50,4 +53,18 @@ class OpenAIApiVM(): ViewModel(){
             }
         }
     }
+
+    companion object{
+        private var INSTANCE: OpenAIApiVM? = null
+
+        fun getInstance(): OpenAIApiVM {
+            val vm = INSTANCE ?: synchronized(this) {
+                OpenAIApiVM(App.getApp().container.openAIApi).also {
+                    INSTANCE = it
+                }
+            }
+            return vm
+        }
+    }
+
 }

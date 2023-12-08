@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pantrypal.App
 //import com.example.pantrypal.App
 import com.example.pantrypal.apis.OpenAIApi
 import com.example.pantrypal.apis.StableDiffusionApi
@@ -16,7 +17,9 @@ sealed interface StableDiffusionState{
     object Error: StableDiffusionState
 }
 
-class StableDiffusionVM(): ViewModel(){
+class StableDiffusionVM(
+    private val stableDiffusionApi: StableDiffusionApi
+): ViewModel(){
 
     init {
         println("test")
@@ -47,6 +50,19 @@ class StableDiffusionVM(): ViewModel(){
                 println("StableDiffusioVM error: ${e.printStackTrace()}")
                 stableDiffusionState = StableDiffusionState.Error
             }
+        }
+    }
+
+    companion object{
+        private var INSTANCE: StableDiffusionVM? = null
+
+        fun getInstance(): StableDiffusionVM {
+            val vm = INSTANCE ?: synchronized(this) {
+                StableDiffusionVM(App.getApp().container.stableDiffusionApi).also {
+                    INSTANCE = it
+                }
+            }
+            return vm
         }
     }
 

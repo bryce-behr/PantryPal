@@ -2,7 +2,6 @@ package com.example.pantrypal.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.pantrypal.models.Ingredient
 
 @Entity(tableName = "recipe")
 data class Recipe(

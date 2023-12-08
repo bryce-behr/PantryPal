@@ -2,7 +2,6 @@ package com.example.pantrypal.apis
 
 import com.example.pantrypal.models.RecipeAndImageRecipe
 import com.example.pantrypal.models.RecipeAndImageResponse
-import com.example.pantrypal.models.RecipeRequest
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

@@ -3,11 +3,11 @@ package com.example.pantrypal.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
-data class RecipeRequest(
-    @SerialName(value = "q")
-    val recipeApiRequest: String
-)
+//@Serializable
+//data class RecipeRequest(
+//    @SerialName(value = "q")
+//    val recipeApiRequest: String
+//)
 
 
 @Serializable

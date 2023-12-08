@@ -34,7 +34,7 @@ fun TestScreen(){
 //    val openAIApiState = openAIApiVM.openAIApiState
 //    val stableDiffusionVM: StableDiffusionVM = viewModel()
 //    val stableDiffusionState = stableDiffusionVM.stableDiffusionState
-    val recipeAndImageVM: RecipeAndImageVM = viewModel()
+    val recipeAndImageVM: RecipeAndImageVM = RecipeAndImageVM.getInstance()
     val recipeAndImageState = recipeAndImageVM.recipeAndImageState
 
     var startGenerate : Boolean by rememberSaveable {

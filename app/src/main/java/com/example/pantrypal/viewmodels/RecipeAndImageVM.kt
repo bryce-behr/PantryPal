@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pantrypal.App
 import com.example.pantrypal.apis.RecipeAndImageApi
 import com.example.pantrypal.models.RecipeAndImageResponse
 import kotlinx.coroutines.launch
@@ -15,7 +16,9 @@ sealed interface RecipeAndImageState{
     object Error: RecipeAndImageState
 }
 
-class RecipeAndImageVM(): ViewModel(){
+class RecipeAndImageVM(
+    private val recipeAndImageApi: RecipeAndImageApi
+): ViewModel(){
 
     init{
         println("test")
@@ -41,6 +44,19 @@ class RecipeAndImageVM(): ViewModel(){
                 println("RecipeAndImage error: ${e.printStackTrace()}")
                 recipeAndImageState = RecipeAndImageState.Error
             }
+        }
+    }
+
+    companion object{
+        private var INSTANCE: RecipeAndImageVM? = null
+
+        fun getInstance(): RecipeAndImageVM {
+            val vm = INSTANCE ?: synchronized(this) {
+                RecipeAndImageVM(App.getApp().container.recipeAndimageApi).also {
+                    INSTANCE = it
+                }
+            }
+            return vm
         }
     }
 
