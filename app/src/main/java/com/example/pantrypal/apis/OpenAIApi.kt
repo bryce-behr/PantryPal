@@ -12,13 +12,12 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
-//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
 
 interface OpenAIApiService {
 
     @Headers(
         "Content-Type: application/json",
-        "Authorization: Bearer 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"
+        "Authorization: Bearer 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"
     )
     @POST("v1/chat/completions")
     suspend fun getChatCompletions(@Body request: ChatRequest) : ChatResponse
