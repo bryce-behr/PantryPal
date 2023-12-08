@@ -29,7 +29,6 @@ import com.example.pantrypal.screens.HomeScreen
 import com.example.pantrypal.screens.Query
 import com.example.pantrypal.screens.SavedScreen
 import com.example.pantrypal.screens.SettingsScreen
-import com.example.pantrypal.viewmodels.DatabaseVM
 import com.example.pantrypal.viewmodels.QueryVM
 
 sealed class NavScreens(val route: String, @StringRes val resourceId: Int){
@@ -113,7 +112,7 @@ fun PantryPalApp(){
             }
 
             composable(route = NavScreens.Query.route){
-                Query(VM = queryVM)
+                Query(vm = queryVM)
             }
 
             composable(route = NavScreens.Saved.route){

@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 
 class QueryVM() : ViewModel() {
     var ingredients = mutableListOf("")
+    var meal = "Dinner"
 
     init {
         removeIngredient("")
+        meal = "Dinner"
     }
 
     fun addIngredient(ingredient: String) {
