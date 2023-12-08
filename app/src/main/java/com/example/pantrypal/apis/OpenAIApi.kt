@@ -41,26 +41,19 @@ object OpenAIApi{
         retrofit.create(OpenAIApiService::class.java)
     }
 
-    suspend fun getResponse(prompt: String) : String {
-        try{
-            val chatRequest = ChatRequest(
-                model = "gpt-3.5-turbo",
-                messages = listOf(
-                    Message(
-                        role = "user",
-                        content = "Hello, how are you?"
-                    )//prompt)
-                )
-            )
-            println("before ")
-            println("Request Body: $chatRequest")
-            val chatResponse = retrofitService.getChatCompletions(chatRequest)
-            println("after")
-            return chatResponse.choices[0].message.content
-        } catch (e: Exception){
-            e.printStackTrace()
-            return ("Error: " + e.message)
-        }
+    suspend fun getResponse(prompt: String): String{
+        return "this "
+//        val chatRequest = ChatRequest(
+//            model = "gpt-3-5-turbo",
+//            messages = listOf(
+//                Message(
+//                    role = "user",
+//                    content = prompt
+//                )
+//            )
+//        )
+//        val chatResponse = retrofitService.getChatCompletion(chatRequest)
+//        return chatResponse.choices[0].message.content
     }
 
 }
