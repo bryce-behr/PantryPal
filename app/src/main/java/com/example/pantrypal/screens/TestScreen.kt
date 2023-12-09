@@ -61,32 +61,32 @@ fun TestScreen(){
         }
 
         if(startGenerate){
-            when(recipeAndImageState){
-                is RecipeAndImageState.Success -> {
-                    AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
-                        // .data(book.volumeInfo.imageLinks?.thumbnail)
-                        .data("https:" + recipeAndImageState.recipe.recipes[0].Image)
-                        .crossfade(true)
-                        .build(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .aspectRatio(.8f)
-                            .fillMaxWidth())
-                }
-                is RecipeAndImageState.Loading -> {
-                    Text("Preparing Image ", fontSize = 30.sp)
-                }
-                is RecipeAndImageState.Error -> {
-                    Text("Service Error", fontSize = 30.sp)
-                }
-            }
+//            when(recipeAndImageState){
+//                is RecipeAndImageState.Success -> {
+//                    AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
+//                        // .data(book.volumeInfo.imageLinks?.thumbnail)
+//                        .data("https:" + recipeAndImageState.recipe.recipes[0].Image)
+//                        .crossfade(true)
+//                        .build(),
+//                        contentDescription = null,
+//                        contentScale = ContentScale.Fit,
+//                        modifier = Modifier
+//                            .aspectRatio(.8f)
+//                            .fillMaxWidth())
+//                }
+//                is RecipeAndImageState.Loading -> {
+//                    Text("Preparing Image ", fontSize = 30.sp)
+//                }
+//                is RecipeAndImageState.Error -> {
+//                    Text("Service Error", fontSize = 30.sp)
+//                }
+//            }
 
             when(recipeAndImageState){
                 is RecipeAndImageState.Success -> {
-                    val ing = recipeAndImageState.recipe.recipes[0].Ingredients
-                    Text(text = recipeAndImageState.recipe.recipes[0].Title + "\n" + ing)
-                    databaseVM.insertRecipe(recipeAndImageState.recipe.recipes[0].toRecipe())
+                    Text(text = recipeAndImageState.recipe.recipes[0].Title)
+                    Text(text = recipeAndImageState.recipe.recipes[0].toRecipe().toDisplayString() )
+
                 }
                 is RecipeAndImageState.Loading -> {
                     Text("preparing title image ", fontSize = 30.sp)
