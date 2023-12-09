@@ -23,8 +23,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //PantryPalApp()
-                    TestScreen()
+                    PantryPalApp()
+                    //TestScreen()
                 }
             }
         }
