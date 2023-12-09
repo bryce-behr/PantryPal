@@ -146,7 +146,7 @@ fun PantryPalApp(){
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize(),
-                        tint = Color.hsv(158f, 1f, .2f, 1f)
+                        tint = Color.White
                     )
                 }
             }
