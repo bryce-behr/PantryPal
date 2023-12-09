@@ -1,6 +1,7 @@
 package com.example.pantrypal.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,15 +17,19 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.pantrypal.NavScreens
 import com.example.pantrypal.R
+import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.deviceSize
 import com.example.pantrypal.viewmodels.OpenAIApiVM
+import com.example.pantrypal.viewmodels.RecipeScreenVM
 import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @Composable
-fun RecipeCard(image: String, description: String, modifier: Modifier = Modifier) {
+fun RecipeCard(recipe: Recipe/*image: String, description: String*/, modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navController: NavController) {
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
@@ -34,16 +39,20 @@ fun RecipeCard(image: String, description: String, modifier: Modifier = Modifier
         .fillMaxSize()
         .padding(8.dp)
         .requiredWidth(((deviceSize.screenWidth ?: 100f) - 16f).dp)
+        .clickable(onClick = {
+            recipeVM.ChangeRecipeTo(recipe)
+            navController.navigate(NavScreens.Recipe.route)
+        })
     ){
         Image(
-            painter = painterResource(R.drawable.recipe_test_image),
-            contentDescription = description,
+            painter = painterResource(R.drawable.recipe_test_image/*TODO: replace this with image from DB*/),
+            contentDescription = recipe.title,
             modifier = modifier.height(180.dp),
             contentScale = ContentScale.FillBounds
         )
 
         Text(
-            text = description,
+            text = recipe.title,
             maxLines = 1, modifier = modifier.padding(16.dp)
         )
     }

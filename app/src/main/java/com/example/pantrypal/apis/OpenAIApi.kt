@@ -40,7 +40,6 @@ object OpenAIApi{
     val retrofitService : OpenAIApiService by lazy{
         retrofit.create(OpenAIApiService::class.java)
     }
-
     suspend fun getResponse(prompt: String) : String {
         try{
             val chatRequest = ChatRequest(

@@ -21,9 +21,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.pantrypal.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SavedScreen(modifier: Modifier = Modifier) {
+fun SettingsScreen(modifier: Modifier = Modifier) {
 
     val recipeList = arrayListOf<Int>()
     for (i in 1..10){
@@ -39,23 +38,6 @@ fun SavedScreen(modifier: Modifier = Modifier) {
             .fillMaxWidth()
         )
 
-        Text("This is the bookmarks page")
-
-//        TextField(value = "search", onValueChange = {
-//            //billAmount = it // it is the new string input by the user
-//        },
-//            modifier = modifier
-//                .fillMaxWidth()
-//                .padding(16.dp),
-//            //label = { Text("Bill Amount") },
-//            singleLine = true,
-//            leadingIcon = { Icon(painter = painterResource(id = R.drawable.search), contentDescription = null) },
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-//                imeAction = ImeAction.Done)
-//        )
-//
-//        for (i in 1..10) {
-//            RecipeCard(image = "0", description ="Indulge in Chicken Alfredo perfection:\n juicy seasoned chicken, al dente fettuccine, and rich Alfredo sauce—a symphony of decadent flavors!")
-//        }
+        Text("This is the settings page")
     }
 }

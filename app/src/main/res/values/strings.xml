@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Pantry Pal</string>
+    <string name="home">HomeScreen</string>
+    <string name="saved">SavedScreen</string>
+    <string name="settings">SettingsScreen</string>
+    <string name="query">QueryScreen</string>
+    <string name="recipe">RecipeScreen</string>
 </resources>

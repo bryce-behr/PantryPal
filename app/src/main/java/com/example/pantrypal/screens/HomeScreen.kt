@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -18,6 +19,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -29,18 +31,22 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 //import com.example.pantrypal.App
 import com.example.pantrypal.R
+import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.viewmodels.OpenAIApiState
 import com.example.pantrypal.viewmodels.OpenAIApiVM
+import com.example.pantrypal.viewmodels.RecipeScreenVM
 import com.example.pantrypal.viewmodels.StableDiffusionState
 import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navController: NavController) {
+    var searchText by remember { mutableStateOf("") }
     
     val recipeList = arrayListOf<Int>()
     for (i in 1..10){
@@ -56,7 +62,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             .fillMaxWidth()
         )
 
-        TextField(value = "search", onValueChange = {
+        TextField(value = searchText, onValueChange = {
+            searchText = it
             //billAmount = it // it is the new string input by the user
         },
             modifier = modifier
@@ -66,11 +73,13 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             singleLine = true,
             leadingIcon = { Icon(painter = painterResource(id = R.drawable.search), contentDescription = null) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done)
+                imeAction = ImeAction.Search),
+            placeholder = { Text("search") },
+            keyboardActions = KeyboardActions(onSearch = { this.defaultKeyboardAction(ImeAction.Done) } )
         )
 
         for (i in 1..10) {
-            RecipeCard(image = "0", description = "test")
+            RecipeCard(Recipe(0, 0, "test meal", "test ingredients", "test instructions", ""), recipeVM = recipeVM, navController = navController/*image = "0", description = "test"*/)
         }
     }
 }
