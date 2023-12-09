@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -34,9 +35,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-//import com.example.pantrypal.App
 import com.example.pantrypal.R
 import com.example.pantrypal.database.Recipe
+import com.example.pantrypal.viewmodels.HomeScreenState
+import com.example.pantrypal.viewmodels.HomeScreenVM
 import com.example.pantrypal.viewmodels.OpenAIApiState
 import com.example.pantrypal.viewmodels.OpenAIApiVM
 import com.example.pantrypal.viewmodels.RecipeScreenVM
@@ -45,8 +47,12 @@ import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navController: NavController) {
-    var searchText by remember { mutableStateOf("") }
+fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
+
+    val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
+
+    val vm: HomeScreenVM = HomeScreenVM.getInstance()
+    val vmState: HomeScreenState = vm.homeScreenState
     
     val recipeList = arrayListOf<Int>()
     for (i in 1..10){
@@ -55,16 +61,15 @@ fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navContr
 
     Column (modifier = modifier
         .fillMaxSize()
-        .verticalScroll(ScrollState(0), true)
+        .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier
             .height(75.dp)
             .fillMaxWidth()
         )
 
-        TextField(value = searchText, onValueChange = {
-            searchText = it
-            //billAmount = it // it is the new string input by the user
+        TextField(value = vmState.searchPhrase, onValueChange = {
+            vm.updateSearchPhrase(it)
         },
             modifier = modifier
                 .fillMaxWidth()
@@ -75,11 +80,30 @@ fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navContr
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Search),
             placeholder = { Text("search") },
-            keyboardActions = KeyboardActions(onSearch = { this.defaultKeyboardAction(ImeAction.Done) } )
+            keyboardActions = KeyboardActions(onSearch = {
+
+                vm.updateSearchFlag(true)
+                vm.searchForRecipes()
+
+                this.defaultKeyboardAction(ImeAction.Done)
+            } )
         )
 
-        for (i in 1..10) {
-            RecipeCard(Recipe(0, 0, "test meal", "test ingredients", "test instructions", ""), recipeVM = recipeVM, navController = navController/*image = "0", description = "test"*/)
+        if (!vmState.searchFlag) {
+//        vmState.largeList.forEach { x ->
+//            RecipeCard(x, recipeVM = recipeVM, navController = navController)
+//        }
+
+            for (i in 1..10) {
+                RecipeCard(
+                    Recipe(0, 0, "test meal", "test ingredients", "test instructions", ""),
+                    navController = navController/*image = "0", description = "test"*/
+                )
+            }
+        } else {
+            vmState.searchRecipes.forEach { x ->
+                RecipeCard(x, navController = navController)
+            }
         }
     }
 }

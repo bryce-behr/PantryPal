@@ -72,7 +72,10 @@ import com.example.pantrypal.viewmodels.RecipeScreenVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Query(modifier: Modifier = Modifier, vm: QueryVM, navController: NavController, recipeVM: RecipeScreenVM) {
+fun Query(modifier: Modifier = Modifier, navController: NavController) {
+
+    val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
+    val vm: QueryVM = QueryVM.getInstance()
 
     var update by rememberSaveable { mutableStateOf(true) }
     var meal by rememberSaveable { mutableStateOf(vm.meal) }
@@ -87,7 +90,7 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM, navController: NavControll
 //    }
 
     if(vm.showGenerated) {
-        GenerateRecipePopUp(recipe = /*TODO: make this the actual recipe response*/Recipe(0,0,"Test Title","","",""), vm = vm, navController = navController, recipeVM = recipeVM)
+        GenerateRecipePopUp(recipe = /*TODO: make this the actual recipe response*/Recipe(0,0,"Test Title","","",""), navController = navController)
     }
 
     Column(modifier = modifier.padding(horizontal = 45.dp, vertical = 20.dp)){
@@ -114,7 +117,7 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM, navController: NavControll
                     update = !update
                     Ingredient(modifier = modifier
                         .fillMaxWidth()
-                        .padding(5.dp), name = vm.ingredients[i], vm = vm)
+                        .padding(5.dp), name = vm.ingredients[i])
                 }
                 Spacer(modifier = modifier.height(10.dp))
             }
@@ -130,7 +133,7 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM, navController: NavControll
 
         Row(modifier = Modifier
             .fillMaxWidth()
-            .weight(2f)){ meal = (ExposedDropdownMenuBox(vm = vm)) }
+            .weight(2f)){ meal = (ExposedDropdownMenuBox()) }
 
         Spacer(modifier = modifier.weight(.5f))
 
@@ -195,7 +198,10 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM, navController: NavControll
 }
 
 @Composable
-fun Ingredient(modifier: Modifier = Modifier, name: String, vm: QueryVM) {
+fun Ingredient(modifier: Modifier = Modifier, name: String) {
+
+    val vm: QueryVM = QueryVM.getInstance()
+
     Row(modifier = modifier
         .fillMaxWidth()
         .height(25.dp)
@@ -219,7 +225,10 @@ fun Ingredient(modifier: Modifier = Modifier, name: String, vm: QueryVM) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExposedDropdownMenuBox(modifier: Modifier = Modifier, vm: QueryVM) : String {
+fun ExposedDropdownMenuBox(modifier: Modifier = Modifier) : String {
+
+    val vm: QueryVM = QueryVM.getInstance()
+
     val context = LocalContext.current
     val meals = arrayOf("Breakfast", "Lunch", "Dinner")
     var expanded by remember { mutableStateOf(false) }
@@ -270,11 +279,13 @@ fun ExposedDropdownMenuBox(modifier: Modifier = Modifier, vm: QueryVM) : String 
 @Composable
 private fun GenerateRecipePopUp(
     recipe: Recipe,
-    vm: QueryVM,
-    recipeVM: RecipeScreenVM,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
+
+    val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
+    val vm: QueryVM = QueryVM.getInstance()
+
     AlertDialog(
         containerColor = Color.hsv(158f, 1f, .2f, 1f),
         titleContentColor = Color.White,

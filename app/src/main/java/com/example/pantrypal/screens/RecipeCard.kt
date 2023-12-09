@@ -29,7 +29,9 @@ import com.example.pantrypal.viewmodels.RecipeScreenVM
 import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @Composable
-fun RecipeCard(recipe: Recipe/*image: String, description: String*/, modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navController: NavController) {
+fun RecipeCard(recipe: Recipe/*image: String, description: String*/, modifier: Modifier = Modifier, navController: NavController) {
+
+    val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
@@ -44,12 +46,23 @@ fun RecipeCard(recipe: Recipe/*image: String, description: String*/, modifier: M
             navController.navigate(NavScreens.Recipe.route)
         })
     ){
-        Image(
-            painter = painterResource(R.drawable.recipe_test_image/*TODO: replace this with image from DB*/),
+
+        AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
+            // .data(book.volumeInfo.imageLinks?.thumbnail)
+            .data(recipe.image)
+            .crossfade(true)
+            .build(),
             contentDescription = recipe.title,
-            modifier = modifier.height(180.dp),
-            contentScale = ContentScale.FillBounds
-        )
+            modifier = Modifier
+                .height(180.dp),
+            contentScale = ContentScale.FillBounds)
+
+//        Image(
+//            painter = painterResource(R.drawable.recipe_test_image/*TODO: replace this with image from DB*/),
+//            contentDescription = recipe.title,
+//            modifier = modifier.height(180.dp),
+//            contentScale = ContentScale.FillBounds
+//        )
 
         Text(
             text = recipe.title,

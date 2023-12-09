@@ -13,4 +13,17 @@ class RecipeScreenVM() : ViewModel() {
     fun ChangeRecipeTo(recipe: Recipe) {
         this.recipe = recipe.copy()
     }
+
+    companion object{
+        private var INSTANCE: RecipeScreenVM? = null
+
+        fun getInstance(): RecipeScreenVM{
+            val vm = INSTANCE ?: synchronized(this){
+                RecipeScreenVM().also{
+                    INSTANCE = it
+                }
+            }
+            return vm
+        }
+    }
 }

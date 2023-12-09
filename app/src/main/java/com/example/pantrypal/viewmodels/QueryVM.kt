@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.pantrypal.App
 import com.example.pantrypal.database.Recipe
 
 class QueryVM() : ViewModel() {
@@ -33,5 +34,18 @@ class QueryVM() : ViewModel() {
 
     fun getIngredients() : String{
         return ingredients.toString()
+    }
+
+    companion object{
+        private var INSTANCE: QueryVM? = null
+
+        fun getInstance(): QueryVM{
+            val vm = INSTANCE ?: synchronized(this){
+                QueryVM().also{
+                    INSTANCE = it
+                }
+            }
+            return vm
+        }
     }
 }
