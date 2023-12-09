@@ -67,27 +67,35 @@ import com.example.pantrypal.NavScreens
 import com.example.pantrypal.R
 import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.deviceSize
+import com.example.pantrypal.viewmodels.OpenAIApiState
+import com.example.pantrypal.viewmodels.OpenAIApiVM
 import com.example.pantrypal.viewmodels.QueryVM
 import com.example.pantrypal.viewmodels.RecipeScreenVM
+import com.example.pantrypal.viewmodels.StableDiffusionState
+import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Query(modifier: Modifier = Modifier, navController: NavController) {
 
+    val openAIApiVM: OpenAIApiVM = OpenAIApiVM.getInstance()
+    val openAIApiState: OpenAIApiState = openAIApiVM.openAIApiState
+    val stableDiffusionVM: StableDiffusionVM = StableDiffusionVM.getInstance()
+    val stableDiffusionState: StableDiffusionState = stableDiffusionVM.stableDiffusionState
     val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
     val vm: QueryVM = QueryVM.getInstance()
 
     var update by rememberSaveable { mutableStateOf(true) }
     var meal by rememberSaveable { mutableStateOf(vm.meal) }
 
+    var chatGPTResponse by rememberSaveable { mutableStateOf("")}
+    var stableDiffusionResponse by rememberSaveable { mutableStateOf("")}
+
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
     deviceSize.screenHeight = configuration.screenHeightDp.dp.value
 
-//    if(update) {
-//        Text("")
-//    }
 
     if(vm.showGenerated) {
         GenerateRecipePopUp(recipe = /*TODO: make this the actual recipe response*/Recipe(0,0,"Test Title","","",""), navController = navController)
@@ -186,12 +194,101 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
             .fillMaxWidth()
             .weight(2f)){
             Button(onClick = {
-                 vm.changeAlertValue()
+                var prompt = ""
+                vm.ingredients.forEach { x->
+                    prompt = prompt + x + ";"
+                }
+                prompt = prompt.dropLast(1)
+                prompt = prompt + " - Make it suited for " + vm.meal
+                openAIApiVM.updateRecipePrompt(prompt)
+                openAIApiVM.getRecipe()
+                vm.changeAlertValue()
                 //GenerateRecipePopUp(recipe = Recipe(0,0,"","","",""))
             },
                 shape = RoundedCornerShape(25),
                 modifier = modifier.fillMaxSize()) {
                 Text(text = "Generate", fontSize = 20.sp, textAlign = TextAlign.Center)
+            }
+        }
+
+        if (vm.showGenerated){
+            when (openAIApiState){
+                is OpenAIApiState.Success -> {
+                    chatGPTResponse = openAIApiState.chatGPTResponse
+                    stableDiffusionVM.updateDrawText(chatGPTResponse)
+                    stableDiffusionVM.getRecipeImage()
+                    when (stableDiffusionState){
+                        is StableDiffusionState.Success ->{
+                            var responseList: List<String> = chatGPTResponse.split(";")
+
+                            if (responseList.size == 3) {
+                                var titleStr = responseList[0].split("\"")[1]
+                                var ingredientsStr = "{" + responseList[1].replace(":", "=") + "}"
+                                var instructionsStr = responseList[2].split("\"")[1]
+
+                                val out = Recipe(
+                                    title = titleStr,
+                                    ingredients = ingredientsStr,
+                                    instructions = instructionsStr,
+                                    image = stableDiffusionState.imageUrl
+                                )
+                                recipeVM.ChangeRecipeTo(out)
+                            }
+                        }
+                        is StableDiffusionState.Loading ->{
+                            var responseList: List<String> = chatGPTResponse.split(";")
+
+                            if (responseList.size == 3) {
+                                var titleStr = responseList[0].split("\"")[1]
+                                var ingredientsStr = "{" + responseList[1].replace(":", "=") + "}"
+                                var instructionsStr = responseList[2].split("\"")[1]
+
+                                val out = Recipe(
+                                    title = titleStr,
+                                    ingredients = ingredientsStr,
+                                    instructions = instructionsStr,
+                                    image = ""
+                                )
+                                recipeVM.ChangeRecipeTo(out)
+                            }
+                        }
+                        is StableDiffusionState.Error ->{
+                            var responseList: List<String> = chatGPTResponse.split(";")
+
+                            if (responseList.size == 3) {
+                                var titleStr = responseList[0].split("\"")[1]
+                                var ingredientsStr = "{" + responseList[1].replace(":", "=") + "}"
+                                var instructionsStr = responseList[2].split("\"")[1]
+
+                                val out = Recipe(
+                                    title = titleStr,
+                                    ingredients = ingredientsStr,
+                                    instructions = instructionsStr,
+                                    image = ""
+                                )
+                                recipeVM.ChangeRecipeTo(out)
+                            }
+                        }
+                    }
+                }
+                is OpenAIApiState.Loading -> {
+                    val out = Recipe(
+                        title = "",
+                        ingredients = "",
+                        instructions = "",
+                        image = ""
+                    )
+                    recipeVM.ChangeRecipeTo(out)
+                }
+                is OpenAIApiState.Error -> {
+                    val out = Recipe(
+                        title = "",
+                        ingredients = "",
+                        instructions = "",
+                        image = ""
+                    )
+                    recipeVM.ChangeRecipeTo(out)
+                }
             }
         }
     }

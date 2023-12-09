@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import com.example.pantrypal.App
 import com.example.pantrypal.database.Recipe
 
-class QueryVM() : ViewModel() {
+class QueryVM(
+
+) : ViewModel() {
     var ingredients = mutableListOf("")
     var meal = "Dinner"
 

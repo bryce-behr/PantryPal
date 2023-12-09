@@ -17,23 +17,7 @@ class DatabaseVM(
     val recipes = pantryPalDAO.getAllRecipes()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    init{
-
-    }
-
-    fun insertRecipe(recipe: Recipe){
-        viewModelScope.launch {
-            pantryPalDAO.upsertRecipe(recipe)
-        }
-    }
-
-    fun deleteRecipe(recipe: Recipe){
-        viewModelScope.launch {
-            pantryPalDAO.deleteRecipe(recipe)
-        }
-    }
-
-        fun getRecipesWithID(id: Int){
+    fun getRecipesWithID(id: Int) {
         viewModelScope.launch {
             pantryPalDAO.getRecipesWithID(id)
         }
@@ -48,6 +32,18 @@ class DatabaseVM(
     fun getRecipesWithName(name: String){
         viewModelScope.launch {
             pantryPalDAO.getRecipesWithName(name)
+        }
+    }
+
+    fun insertRecipe(recipe: Recipe){
+        viewModelScope.launch {
+            pantryPalDAO.upsertRecipe(recipe)
+        }
+    }
+
+    fun deleteRecipe(recipe: Recipe){
+        viewModelScope.launch {
+            pantryPalDAO.deleteRecipe(recipe)
         }
     }
 

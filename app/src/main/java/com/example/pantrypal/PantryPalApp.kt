@@ -188,7 +188,7 @@ fun PantryPalApp(){
             }
 
             composable(route = NavScreens.Saved.route){
-                SavedScreen()
+                SavedScreen(navController = navController)
             }
 
             composable(route = NavScreens.Settings.route) {
@@ -196,7 +196,7 @@ fun PantryPalApp(){
             }
             
             composable(route = NavScreens.Recipe.route) {
-                RecipeScreen(recipeVM = recipeVM)
+                RecipeScreen()
             }
         }
     }

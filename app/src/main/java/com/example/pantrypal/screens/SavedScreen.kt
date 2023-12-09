@@ -14,21 +14,28 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.pantrypal.R
+import com.example.pantrypal.viewmodels.DatabaseVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SavedScreen(modifier: Modifier = Modifier) {
+fun SavedScreen(navController: NavController, modifier: Modifier = Modifier) {
 
-    val recipeList = arrayListOf<Int>()
-    for (i in 1..10){
-        recipeList.add(0)
-    }
+    val vm: DatabaseVM = DatabaseVM.getInstance()
+    val recipeList by vm.recipes.collectAsState()//vm.products.collectAsState()
+
+//    val recipeList = arrayListOf<Int>()
+//    for (i in 1..10){
+//        recipeList.add(0)
+//    }
 
     Column (modifier = modifier
         .fillMaxSize()
@@ -57,5 +64,8 @@ fun SavedScreen(modifier: Modifier = Modifier) {
 //        for (i in 1..10) {
 //            RecipeCard(image = "0", description ="Indulge in Chicken Alfredo perfection:\n juicy seasoned chicken, al dente fettuccine, and rich Alfredo sauce—a symphony of decadent flavors!")
 //        }
+        recipeList.forEach { x ->
+            RecipeCard(x, navController = navController)
+        }
     }
 }

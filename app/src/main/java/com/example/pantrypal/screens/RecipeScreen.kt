@@ -27,7 +27,10 @@ import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.viewmodels.RecipeScreenVM
 
 @Composable
-fun RecipeScreen(recipeVM: RecipeScreenVM, modifier: Modifier = Modifier) {
+fun RecipeScreen(modifier: Modifier = Modifier) {
+
+    val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
+
     Column(modifier = modifier
         .fillMaxSize()) {
         Spacer(modifier = Modifier

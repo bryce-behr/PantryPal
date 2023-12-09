@@ -49,15 +49,8 @@ import com.example.pantrypal.viewmodels.StableDiffusionVM
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
 
-    val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
-
     val vm: HomeScreenVM = HomeScreenVM.getInstance()
     val vmState: HomeScreenState = vm.homeScreenState
-    
-    val recipeList = arrayListOf<Int>()
-    for (i in 1..10){
-        recipeList.add(0)
-    }
 
     Column (modifier = modifier
         .fillMaxSize()
