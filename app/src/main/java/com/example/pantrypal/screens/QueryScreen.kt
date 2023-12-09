@@ -1,5 +1,6 @@
 package com.example.pantrypal.screens
 
+import android.graphics.fonts.FontStyle
 import android.widget.Toast
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -16,6 +17,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -42,9 +47,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pantrypal.R
@@ -56,6 +63,7 @@ import com.example.pantrypal.viewmodels.QueryVM
 fun Query(modifier: Modifier = Modifier, vm: QueryVM) {
 
     var update by rememberSaveable { mutableStateOf(true) }
+    var meal by rememberSaveable { mutableStateOf(vm.meal) }
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
@@ -71,24 +79,37 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM) {
 
         Box(modifier = modifier
             .fillMaxWidth()
-            .height((deviceSize.screenHeight!! / 4).dp)
+            .height((deviceSize.screenHeight!! / 2.5).dp)
             .border(10.dp, Color.Black)
         ){
             Column(modifier = modifier
                 .fillMaxSize()
-                .verticalScroll(ScrollState(0), true)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 10.dp)
             ){
                 Spacer(modifier = modifier.height(10.dp))
+                Text("Meal:", modifier = modifier.padding(5.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
+                Text("\t${vm.meal}", modifier = modifier.padding(5.dp), fontSize = 20.sp)
+                Text("Ingredients:", modifier = modifier.padding(5.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
                 for(i in 0 until vm.ingredients.size) {
                     update = !update
                     Ingredient(modifier = modifier
                         .fillMaxWidth()
                         .padding(5.dp), name = vm.ingredients[i], vm = vm)
                 }
+                Spacer(modifier = modifier.height(10.dp))
             }
         }
 
-        Spacer(modifier = modifier.weight(.4f))
+        Spacer(modifier = modifier.height(30.dp))
+
+        Text("Meal:", modifier = modifier.padding(15.dp))
+
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .weight(2f)){ meal = (ExposedDropdownMenuBox(vm = vm)) }
+
+        Spacer(modifier = modifier.weight(1f))
 
         Text(text = "Ingredients:",
             modifier = modifier.padding(15.dp),
@@ -96,12 +117,13 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM) {
 
         Row(modifier = Modifier
             .fillMaxWidth()
-            .weight(.25f),
+            .weight(2f),
             horizontalArrangement = Arrangement.SpaceEvenly){
             var ingText by rememberSaveable { mutableStateOf("") }
             TextField(value = ingText, onValueChange = { ingText = it },
+                //shape = RoundedCornerShape(corner = CornerSize(25)),
                 modifier = modifier
-                    .weight(1f)
+                    .weight(2f)
                     .fillMaxHeight()
                     .padding(end = 16.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
@@ -122,26 +144,22 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM) {
                     update = !update
                 }
             },
-                shape = RectangleShape,
-                modifier = modifier
-                    .weight(.333f)
-                    .fillMaxHeight()/*.padding(start = 16.dp, end = 16.dp)*/) {
+            shape = RoundedCornerShape(corner = CornerSize(25)),
+            modifier = modifier
+                .weight(1f)
+                .fillMaxHeight()) {
                 Text(text = "Add", fontSize = 20.sp, textAlign = TextAlign.Center)
             }
         }
 
-        Spacer(modifier = modifier.weight(.4f))
-
-        ExposedDropdownMenuBox(modifier = modifier.fillMaxWidth().height(50.dp), vm = vm)
-
         Spacer(modifier = modifier.weight(2f))
 
-        Row(horizontalArrangement = Arrangement.End, modifier = Modifier
+        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier
             .fillMaxWidth()
-            .weight(1f)){
+            .weight(2f)){
             Button(onClick = { /*TODO*/ },
-                shape = RectangleShape,
-                modifier = modifier.fillMaxHeight()) {
+                shape = RoundedCornerShape(25),
+                modifier = modifier.fillMaxSize()) {
                 Text(text = "Generate")
             }
         }
@@ -152,25 +170,29 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM) {
 fun Ingredient(modifier: Modifier = Modifier, name: String, vm: QueryVM) {
     Row(modifier = modifier
         .fillMaxWidth()
-        .height(25.dp)) {
-        Text("- $name", fontSize = 20.sp)
-        IconButton(onClick = {
-            vm.ingredients.remove(name)
-            println(vm.ingredients.toString())
-        }) {
-            Icon(
-                modifier = Modifier.fillMaxHeight(),
-                painter = painterResource(id = R.drawable.remove),
-                contentDescription = null,
-                tint = Color.Red
-            )
-        }
+        .height(25.dp)
+        .background(Color.LightGray)
+        , horizontalArrangement = Arrangement.SpaceBetween) {
+       // Column (modifier = modifier.background(Color.Red)){
+            Text("\t\t\t\t- $name", fontSize = 20.sp)
+            IconButton(modifier = Modifier.padding(end = 50.dp)/*.background(Color.Blue)*/, onClick = {
+                vm.ingredients.remove(name)
+                println(vm.ingredients.toString())
+            }) {
+                Icon(
+                    modifier = Modifier.fillMaxHeight()/*.background(Color.Red)*/,
+                    painter = painterResource(id = R.drawable.remove),
+                    contentDescription = null,
+                    tint = Color.Red
+                )
+            }
+        //  }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExposedDropdownMenuBox(modifier: Modifier = Modifier, vm: QueryVM) {
+fun ExposedDropdownMenuBox(modifier: Modifier = Modifier, vm: QueryVM) : String {
     val context = LocalContext.current
     val meals = arrayOf("Breakfast", "Lunch", "Dinner", "Desert")
     var expanded by remember { mutableStateOf(false) }
@@ -186,11 +208,14 @@ fun ExposedDropdownMenuBox(modifier: Modifier = Modifier, vm: QueryVM) {
             }
         ) {
             TextField(
+                //shape = RoundedCornerShape(corner = CornerSize(25)),
                 value = selectedText,
                 onValueChange = {},
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.menuAnchor()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .menuAnchor()
             )
 
             ExposedDropdownMenu(
@@ -211,5 +236,7 @@ fun ExposedDropdownMenuBox(modifier: Modifier = Modifier, vm: QueryVM) {
             }
         }
     }
+
+    return selectedText
 }
 
