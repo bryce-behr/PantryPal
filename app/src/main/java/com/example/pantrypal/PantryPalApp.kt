@@ -3,6 +3,7 @@ package com.example.pantrypal
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -115,16 +120,19 @@ fun PantryPalApp(){
         },
         floatingActionButton = {
             if(currentRoute?.route == NavScreens.Home.route || currentRoute?.route == NavScreens.Saved.route) {
-                IconButton(onClick = {
+                Button(onClick = {
                     navController.navigate(NavScreens.Query.route)
                     queryVM.ingredients.clear()
                 },
+                    contentPadding = PaddingValues(0.dp),
+                shape = RoundedCornerShape(100),
+                colors = ButtonDefaults.outlinedButtonColors(Color.hsv(158f, 0f, 1f, .8f)/*, Color.White, Color.White, Color.White*/),
                 modifier = Modifier.size(100.dp)) {
                     Icon(painter = painterResource(id = R.drawable.add),
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color.White),
+                            /*.background(Color.White)*/,
                         tint = Color.hsv(158f, 1f, .2f, 1f)
                     )
                 }
