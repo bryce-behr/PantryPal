@@ -153,7 +153,7 @@ fun PantryPalApp(){
             }
 
             composable(route = NavScreens.Query.route){
-                Query(vm = queryVM)
+                Query(vm = queryVM, navController = navController, recipeVM = recipeVM)
             }
 
             composable(route = NavScreens.Saved.route){

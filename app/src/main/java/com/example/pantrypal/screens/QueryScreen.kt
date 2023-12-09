@@ -1,7 +1,9 @@
 package com.example.pantrypal.screens
 
+import android.app.Activity
 import android.graphics.fonts.FontStyle
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,6 +35,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,6 +51,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -54,16 +59,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.example.pantrypal.NavScreens
 import com.example.pantrypal.R
+import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.deviceSize
 import com.example.pantrypal.viewmodels.QueryVM
+import com.example.pantrypal.viewmodels.RecipeScreenVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Query(modifier: Modifier = Modifier, vm: QueryVM) {
+fun Query(modifier: Modifier = Modifier, vm: QueryVM, navController: NavController, recipeVM: RecipeScreenVM) {
 
     var update by rememberSaveable { mutableStateOf(true) }
     var meal by rememberSaveable { mutableStateOf(vm.meal) }
+
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
@@ -72,6 +83,10 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM) {
 //    if(update) {
 //        Text("")
 //    }
+
+    if(vm.showGenerated) {
+        GenerateRecipePopUp(recipe = /*TODO: make this the actual recipe response*/Recipe(0,0,"Test Title","","",""), vm = vm, navController = navController, recipeVM = recipeVM)
+    }
 
     Column(modifier = modifier.padding(15.dp)){
 
@@ -157,7 +172,10 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM) {
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier
             .fillMaxWidth()
             .weight(2f)){
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = {
+                 vm.changeAlertValue()
+                //GenerateRecipePopUp(recipe = Recipe(0,0,"","","",""))
+            },
                 shape = RoundedCornerShape(25),
                 modifier = modifier.fillMaxSize()) {
                 Text(text = "Generate")
@@ -238,5 +256,43 @@ fun ExposedDropdownMenuBox(modifier: Modifier = Modifier, vm: QueryVM) : String 
     }
 
     return selectedText
+}
+
+@Composable
+private fun GenerateRecipePopUp(
+    recipe: Recipe,
+    vm: QueryVM,
+    recipeVM: RecipeScreenVM,
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(
+        onDismissRequest = {
+            // Dismiss the dialog when the user clicks outside the dialog or on the back
+            // button. If you want to disable that functionality, simply use an empty
+            // onCloseRequest.
+        },
+        icon = { Image(painter = /*TODO: make this correct image*/painterResource(id = R.drawable.recipe_test_image), contentDescription = null) },
+        title = { Text(text = recipe.title) },
+        modifier = modifier,
+        dismissButton = {
+            Button(
+                onClick = {
+                    vm.changeAlertValue()
+                }
+            ) {
+                Text(text = "Cancel")
+            }
+        },
+        confirmButton = {
+            Button(onClick = {
+                recipeVM.ChangeRecipeTo(recipe)
+                navController.navigate(NavScreens.Recipe.route)
+                vm.changeAlertValue()
+            }) {
+                Text(text = "View")
+            }
+        }
+    )
 }
 
