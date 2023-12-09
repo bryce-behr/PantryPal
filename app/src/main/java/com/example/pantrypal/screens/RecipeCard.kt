@@ -1,6 +1,7 @@
 package com.example.pantrypal.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,7 +25,7 @@ import com.example.pantrypal.viewmodels.OpenAIApiVM
 import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @Composable
-fun RecipeCard(image: String, description: String, modifier: Modifier = Modifier) {
+fun RecipeCard(image: String, description: String, modifier: Modifier = Modifier, onClick: ()->Unit) {
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
@@ -34,6 +35,9 @@ fun RecipeCard(image: String, description: String, modifier: Modifier = Modifier
         .fillMaxSize()
         .padding(8.dp)
         .requiredWidth(((deviceSize.screenWidth ?: 100f) - 16f).dp)
+        .clickable(onClick = {
+
+        })
     ){
         Image(
             painter = painterResource(R.drawable.recipe_test_image),

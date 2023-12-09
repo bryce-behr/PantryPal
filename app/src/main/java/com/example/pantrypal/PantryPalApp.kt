@@ -27,6 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pantrypal.screens.HomeScreen
 import com.example.pantrypal.screens.Query
+import com.example.pantrypal.screens.RecipeScreen
 import com.example.pantrypal.screens.SavedScreen
 import com.example.pantrypal.screens.SettingsScreen
 import com.example.pantrypal.viewmodels.QueryVM
@@ -36,6 +37,7 @@ sealed class NavScreens(val route: String, @StringRes val resourceId: Int){
     object Query: NavScreens(route = "Query", R.string.query)
     object Saved: NavScreens(route = "Saved", R.string.saved)
     object Settings: NavScreens(route = "Settings", R.string.settings)
+    object Recipe: NavScreens(route = "Recipe", R.string.recipe)
 }
 
 object deviceSize{
@@ -121,6 +123,10 @@ fun PantryPalApp(){
 
             composable(route = NavScreens.Settings.route) {
                 SettingsScreen()
+            }
+            
+            composable(route = NavScreens.Recipe.route) {
+                //RecipeScreen
             }
         }
     }

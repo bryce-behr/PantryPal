@@ -76,7 +76,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         )
 
         for (i in 1..10) {
-            RecipeCard(image = "0", description = "test")
+            RecipeCard(image = "0", description = "test", onClick = {
+
+            })
         }
     }
 }

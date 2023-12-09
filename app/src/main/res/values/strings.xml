@@ -4,4 +4,5 @@
     <string name="saved">SavedScreen</string>
     <string name="settings">SettingsScreen</string>
     <string name="query">QueryScreen</string>
+    <string name="recipe">RecipeScreen</string>
 </resources>
