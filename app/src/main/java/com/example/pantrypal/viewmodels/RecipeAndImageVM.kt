@@ -35,9 +35,7 @@ class RecipeAndImageVM(
     fun getRecipeAndImage(){
         viewModelScope.launch{
             try {
-                val hm = "" + recipeText
-
-                val out = RecipeAndImageApi.getResponse(hm)
+                val out = recipeAndImageApi.getResponse(recipeText)
 
                 recipeAndImageState = RecipeAndImageState.Success(recipe = out)
             } catch (e: Exception) {

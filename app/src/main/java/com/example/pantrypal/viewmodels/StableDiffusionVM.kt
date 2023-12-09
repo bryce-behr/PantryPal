@@ -28,22 +28,23 @@ class StableDiffusionVM(
     var stableDiffusionState: StableDiffusionState by mutableStateOf(StableDiffusionState.Loading)
         private set
 
-    var drawingText: String by mutableStateOf("")
+    var recipeText: String by mutableStateOf("")
         private set
 
     fun updateDrawText(newText: String){
-        drawingText = newText
+        recipeText = newText
     }
 
     fun getRecipeImage(){
         viewModelScope.launch{
             try{
-                val prompt = "Please generate a prompt for a text to image ai that will lead the ai to generate an image resembling the follwoing description: " +
-                        "\n" + drawingText
+                val prompt = "Can you please provide a prompt for a text to image ai that will result in it generating a photo-realistic picture  for a cook book for the following recipe:" +
+                        "\n" + recipeText + "\n" +
+                        "Please only respond with the prompt for the text to image ai and take extra care to ensure that the image will resemble exactly what the recipe will create. Please respond only with the prompt for the text to image ai."
 
                 val response = OpenAIApi.getResponse(prompt)
 
-                val imgUrl = StableDiffusionApi.getImageUrl(response)
+                val imgUrl = stableDiffusionApi.getImageUrl(response)
 
                 stableDiffusionState = StableDiffusionState.Success(imageUrl = imgUrl)
             } catch (e: Exception){

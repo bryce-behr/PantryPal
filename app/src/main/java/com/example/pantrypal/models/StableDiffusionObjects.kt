@@ -1,5 +1,6 @@
 package com.example.pantrypal.models
 
+import com.example.pantrypal.database.Recipe
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -31,7 +32,13 @@ data class ImageGenerationResponse(
     val id: Int,
     val output: List<String>,
     val meta: Meta
-)
+){
+    fun toRecipe(chatResponse: ChatResponse): Recipe {
+        val out = chatResponse.toRecipe(this)
+
+        return out
+    }
+}
 
 @Serializable
 data class Meta(

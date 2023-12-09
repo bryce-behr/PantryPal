@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.pantrypal.viewmodels.DatabaseVM
 import com.example.pantrypal.viewmodels.OpenAIApiState
 import com.example.pantrypal.viewmodels.OpenAIApiVM
 import com.example.pantrypal.viewmodels.RecipeAndImageState
@@ -36,6 +37,7 @@ fun TestScreen(){
 //    val stableDiffusionState = stableDiffusionVM.stableDiffusionState
     val recipeAndImageVM: RecipeAndImageVM = RecipeAndImageVM.getInstance()
     val recipeAndImageState = recipeAndImageVM.recipeAndImageState
+    val databaseVM: DatabaseVM = DatabaseVM.getInstance()
 
     var startGenerate : Boolean by rememberSaveable {
         mutableStateOf(false)
@@ -44,7 +46,7 @@ fun TestScreen(){
     var recipe = ""
     var image = ""
 
-    recipeAndImageVM.updateRecipeText("steak")
+    recipeAndImageVM.updateRecipeText("chicken")
     //stableDiffusionVM.updateDrawText("Photo-realistic photo of chicken quesadillas")
 
 
@@ -84,6 +86,7 @@ fun TestScreen(){
                 is RecipeAndImageState.Success -> {
                     val ing = recipeAndImageState.recipe.recipes[0].Ingredients
                     Text(text = recipeAndImageState.recipe.recipes[0].Title + "\n" + ing)
+                    databaseVM.insertRecipe(recipeAndImageState.recipe.recipes[0].toRecipe())
                 }
                 is RecipeAndImageState.Loading -> {
                     Text("preparing title image ", fontSize = 30.sp)

@@ -5,11 +5,17 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "recipe")
 data class Recipe(
-    @PrimaryKey
-    var recipe_id: Int = 1,
-    val recipeAndImageid: Int = 0,
-    val title: String = "",
+    @PrimaryKey(autoGenerate = true)
+    var recipe_id: Int = 0,
+    val recipeAndImageID: Int = 0,
+    val title: String,
     val ingredients: String,
-    val instructions: String = "",
-    val image: String = ""
-)
+    val instructions: String,
+    val image: String
+){
+    fun toDisplayString(): String{
+        return ("Title: " + this.title +"" +
+                "\nIngredients:\n" + this.ingredients + "" +
+                "\nInstructions: " + this.instructions)
+    }
+}

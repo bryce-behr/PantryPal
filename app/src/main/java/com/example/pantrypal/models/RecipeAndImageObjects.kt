@@ -1,5 +1,6 @@
 package com.example.pantrypal.models
 
+import com.example.pantrypal.database.Recipe
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -40,4 +41,15 @@ data class RecipeAndImageRecipe(
     val Ingredients: Map<String, String>,
     val Instructions: String,
     val Image: String
-)
+){
+    fun toRecipe(): Recipe{
+        val out = Recipe(
+            recipeAndImageID = this.id,
+            title = this.Title,
+            ingredients = this.Ingredients.toString(),
+            instructions = this.Instructions,
+            image = "https:" + this.Image
+        )
+        return out
+    }
+}

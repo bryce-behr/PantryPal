@@ -33,7 +33,7 @@ class DatabaseVM(
         }
     }
 
-    fun getRecipesWithID(id: Int){
+        fun getRecipesWithID(id: Int){
         viewModelScope.launch {
             pantryPalDAO.getRecipesWithID(id)
         }
