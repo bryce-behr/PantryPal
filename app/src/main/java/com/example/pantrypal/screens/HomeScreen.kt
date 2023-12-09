@@ -47,8 +47,9 @@ import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navController: NavController) {
-    var searchText by remember { mutableStateOf("") }
+fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
+
+    val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
 
     val vm: HomeScreenVM = HomeScreenVM.getInstance()
     val vmState: HomeScreenState = vm.homeScreenState
@@ -96,13 +97,12 @@ fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navContr
             for (i in 1..10) {
                 RecipeCard(
                     Recipe(0, 0, "test meal", "test ingredients", "test instructions", ""),
-                    recipeVM = recipeVM,
                     navController = navController/*image = "0", description = "test"*/
                 )
             }
         } else {
             vmState.searchRecipes.forEach { x ->
-                RecipeCard(x, recipeVM = recipeVM, navController = navController)
+                RecipeCard(x, navController = navController)
             }
         }
     }

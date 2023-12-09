@@ -38,6 +38,7 @@ import com.example.pantrypal.screens.Query
 import com.example.pantrypal.screens.RecipeScreen
 import com.example.pantrypal.screens.SavedScreen
 import com.example.pantrypal.screens.SettingsScreen
+import com.example.pantrypal.viewmodels.DatabaseVM
 import com.example.pantrypal.viewmodels.HomeScreenState
 import com.example.pantrypal.viewmodels.HomeScreenVM
 import com.example.pantrypal.viewmodels.QueryVM
@@ -60,8 +61,9 @@ object deviceSize{
 @Composable
 fun PantryPalApp(){
 
-    val queryVM: QueryVM = viewModel()
-    val recipeVM: RecipeScreenVM = viewModel()
+    val dbVM: DatabaseVM = DatabaseVM.getInstance()
+    val queryVM: QueryVM = QueryVM.getInstance()
+    val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
     val homeScreenVM: HomeScreenVM = HomeScreenVM.getInstance()
     val homeScreenState: HomeScreenState = homeScreenVM.homeScreenState
 
@@ -152,7 +154,7 @@ fun PantryPalApp(){
             }
             else if(currentRoute?.route == NavScreens.Recipe.route) {
                 IconButton(onClick = {
-                    /*TODO: save recipeVM.recipe to DB*/
+                    dbVM.insertRecipe(recipeVM.recipe)
                 },
                     modifier = Modifier.size(100.dp)) {
                     Icon(painter = painterResource(id = R.drawable.bookmark),
@@ -170,11 +172,11 @@ fun PantryPalApp(){
         {
 
             composable(route = NavScreens.Home.route){
-                HomeScreen(recipeVM = recipeVM, navController = navController)
+                HomeScreen(navController = navController)
             }
 
             composable(route = NavScreens.Query.route){
-                Query(vm = queryVM, navController = navController, recipeVM = recipeVM)
+                Query(navController = navController)
             }
 
             composable(route = NavScreens.Saved.route){

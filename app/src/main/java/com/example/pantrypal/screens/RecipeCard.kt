@@ -29,7 +29,9 @@ import com.example.pantrypal.viewmodels.RecipeScreenVM
 import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @Composable
-fun RecipeCard(recipe: Recipe/*image: String, description: String*/, modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navController: NavController) {
+fun RecipeCard(recipe: Recipe/*image: String, description: String*/, modifier: Modifier = Modifier, navController: NavController) {
+
+    val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
