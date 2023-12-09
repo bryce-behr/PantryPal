@@ -59,6 +59,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.pantrypal.NavScreens
@@ -88,19 +90,21 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM, navController: NavControll
         GenerateRecipePopUp(recipe = /*TODO: make this the actual recipe response*/Recipe(0,0,"Test Title","","",""), vm = vm, navController = navController, recipeVM = recipeVM)
     }
 
-    Column(modifier = modifier.padding(15.dp)){
+    Column(modifier = modifier.padding(horizontal = 45.dp, vertical = 20.dp)){
 
         Spacer(modifier = modifier.height(75.dp))
 
         Box(modifier = modifier
             .fillMaxWidth()
             .height((deviceSize.screenHeight!! / 2.5).dp)
-            .border(10.dp, Color.Black)
+            .border(15.dp, Color.hsv(158f, 1f, .2f, 1f), shape = RoundedCornerShape(15))
+//            .background(Color.LightGray)
         ){
             Column(modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 10.dp)
+                .padding(horizontal = 10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ){
                 Spacer(modifier = modifier.height(10.dp))
                 Text("Meal:", modifier = modifier.padding(5.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
@@ -116,19 +120,25 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM, navController: NavControll
             }
         }
 
-        Spacer(modifier = modifier.height(30.dp))
+        Spacer(modifier = modifier.weight(.5f))
 
-        Text("Meal:", modifier = modifier.padding(15.dp))
+        Text("Meal:",
+            modifier = modifier.padding(15.dp),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            textDecoration = TextDecoration.Underline)
 
         Row(modifier = Modifier
             .fillMaxWidth()
             .weight(2f)){ meal = (ExposedDropdownMenuBox(vm = vm)) }
 
-        Spacer(modifier = modifier.weight(1f))
+        Spacer(modifier = modifier.weight(.5f))
 
         Text(text = "Ingredients:",
             modifier = modifier.padding(15.dp),
-            fontSize = 20.sp)
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            textDecoration = TextDecoration.Underline)
 
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -167,7 +177,7 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM, navController: NavControll
             }
         }
 
-        Spacer(modifier = modifier.weight(2f))
+        Spacer(modifier = modifier.weight(1f))
 
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier
             .fillMaxWidth()
@@ -178,7 +188,7 @@ fun Query(modifier: Modifier = Modifier, vm: QueryVM, navController: NavControll
             },
                 shape = RoundedCornerShape(25),
                 modifier = modifier.fillMaxSize()) {
-                Text(text = "Generate")
+                Text(text = "Generate", fontSize = 20.sp, textAlign = TextAlign.Center)
             }
         }
     }
@@ -189,7 +199,6 @@ fun Ingredient(modifier: Modifier = Modifier, name: String, vm: QueryVM) {
     Row(modifier = modifier
         .fillMaxWidth()
         .height(25.dp)
-        .background(Color.LightGray)
         , horizontalArrangement = Arrangement.SpaceBetween) {
        // Column (modifier = modifier.background(Color.Red)){
             Text("\t\t\t\t- $name", fontSize = 20.sp)
@@ -212,7 +221,7 @@ fun Ingredient(modifier: Modifier = Modifier, name: String, vm: QueryVM) {
 @Composable
 fun ExposedDropdownMenuBox(modifier: Modifier = Modifier, vm: QueryVM) : String {
     val context = LocalContext.current
-    val meals = arrayOf("Breakfast", "Lunch", "Dinner", "Desert")
+    val meals = arrayOf("Breakfast", "Lunch", "Dinner")
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(meals[2]) }
 
@@ -247,7 +256,7 @@ fun ExposedDropdownMenuBox(modifier: Modifier = Modifier, vm: QueryVM) : String 
                             selectedText = item
                             vm.meal = selectedText
                             expanded = false
-                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                         }
                     )
                 }
@@ -267,6 +276,8 @@ private fun GenerateRecipePopUp(
     modifier: Modifier = Modifier
 ) {
     AlertDialog(
+        containerColor = Color.hsv(158f, 1f, .2f, 1f),
+        titleContentColor = Color.White,
         onDismissRequest = {
             // Dismiss the dialog when the user clicks outside the dialog or on the back
             // button. If you want to disable that functionality, simply use an empty
@@ -279,7 +290,9 @@ private fun GenerateRecipePopUp(
             Button(
                 onClick = {
                     vm.changeAlertValue()
-                }
+                },
+                modifier = modifier
+                    .padding(end = 50.dp)
             ) {
                 Text(text = "Cancel")
             }
@@ -289,7 +302,9 @@ private fun GenerateRecipePopUp(
                 recipeVM.ChangeRecipeTo(recipe)
                 navController.navigate(NavScreens.Recipe.route)
                 vm.changeAlertValue()
-            }) {
+                },
+                modifier = modifier
+                    .padding(end = 30.dp)) {
                 Text(text = "View")
             }
         }
