@@ -14,11 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.pantrypal.R
 import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.viewmodels.RecipeScreenVM
@@ -31,7 +34,16 @@ fun RecipeScreen(recipeVM: RecipeScreenVM, modifier: Modifier = Modifier) {
             .height(75.dp)
             .fillMaxWidth()
         )
-        Image(painter = painterResource(id = R.drawable.recipe_test_image/*TODO: get the actual image*/), contentDescription = null, contentScale = ContentScale.FillWidth, modifier = modifier.fillMaxWidth())
+        AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
+            // .data(book.volumeInfo.imageLinks?.thumbnail)
+            .data(recipeVM.recipe.image)
+            .crossfade(true)
+            .build(),
+            contentDescription = recipeVM.recipe.title,
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentScale = ContentScale.FillWidth)
+//        Image(painter = painterResource(id = R.drawable.recipe_test_image/*TODO: get the actual image*/), contentDescription = null, contentScale = ContentScale.FillWidth, modifier = modifier.fillMaxWidth())
         Text("Ingredients:", modifier = modifier, fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
         Text(text = recipeVM.recipe.ingredients)
 
