@@ -20,8 +20,6 @@ interface StableDiffusionApiService{
     suspend fun getImage(@Body request: ImageGenerationRequest): ImageGenerationResponse
 }
 
-// https://stablediffusionapi.com/docs/stable-diffusion-api/text2img
-
 object StableDiffusionApi{
     private val httpClient = OkHttpClient.Builder()
         .callTimeout(100, TimeUnit.SECONDS)

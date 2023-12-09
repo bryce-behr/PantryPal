@@ -29,6 +29,4 @@ interface PantryPalDAO{
 
     @Query("SELECT * FROM recipe WHERE title = :name")
     fun getRecipesWithName(name: String): Flow<List<Recipe>>
-
-
 }

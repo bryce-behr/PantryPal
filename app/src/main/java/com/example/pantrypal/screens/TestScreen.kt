@@ -20,17 +20,24 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.pantrypal.viewmodels.DatabaseVM
 import com.example.pantrypal.viewmodels.OpenAIApiState
 import com.example.pantrypal.viewmodels.OpenAIApiVM
+import com.example.pantrypal.viewmodels.RecipeAndImageState
+import com.example.pantrypal.viewmodels.RecipeAndImageVM
+import com.example.pantrypal.viewmodels.StableDiffusionState
 import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @Composable
 fun TestScreen(){
 
-    val openAIApiVM: OpenAIApiVM = viewModel()
-    val openAIApiState = openAIApiVM.openAIApiState
+//    val openAIApiVM: OpenAIApiVM = viewModel()
+//    val openAIApiState = openAIApiVM.openAIApiState
 //    val stableDiffusionVM: StableDiffusionVM = viewModel()
 //    val stableDiffusionState = stableDiffusionVM.stableDiffusionState
+    val recipeAndImageVM: RecipeAndImageVM = RecipeAndImageVM.getInstance()
+    val recipeAndImageState = recipeAndImageVM.recipeAndImageState
+    val databaseVM: DatabaseVM = DatabaseVM.getInstance()
 
     var startGenerate : Boolean by rememberSaveable {
         mutableStateOf(false)
@@ -39,29 +46,52 @@ fun TestScreen(){
     var recipe = ""
     var image = ""
 
-    openAIApiVM.updateRecipePrompt("A good title for quesadillas in a cook book")
-//    stableDiffusionVM.updateDrawText("")
+    recipeAndImageVM.updateRecipeText("chicken")
+    //stableDiffusionVM.updateDrawText("Photo-realistic photo of chicken quesadillas")
 
 
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly){
         
         Button(onClick = {
-            openAIApiVM.getRecipe()
+            recipeAndImageVM.getRecipeAndImage()
             startGenerate = true;
         }) {
             Text(text = "Click me")
         }
 
         if(startGenerate){
-            when(openAIApiState){
-                is OpenAIApiState.Success -> {
-                    Text(text = openAIApiState.chatGPTResponse, fontSize = 30.sp)
+//            when(recipeAndImageState){
+//                is RecipeAndImageState.Success -> {
+//                    AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
+//                        // .data(book.volumeInfo.imageLinks?.thumbnail)
+//                        .data("https:" + recipeAndImageState.recipe.recipes[0].Image)
+//                        .crossfade(true)
+//                        .build(),
+//                        contentDescription = null,
+//                        contentScale = ContentScale.Fit,
+//                        modifier = Modifier
+//                            .aspectRatio(.8f)
+//                            .fillMaxWidth())
+//                }
+//                is RecipeAndImageState.Loading -> {
+//                    Text("Preparing Image ", fontSize = 30.sp)
+//                }
+//                is RecipeAndImageState.Error -> {
+//                    Text("Service Error", fontSize = 30.sp)
+//                }
+//            }
+
+            when(recipeAndImageState){
+                is RecipeAndImageState.Success -> {
+                    Text(text = recipeAndImageState.recipe.recipes[0].Title)
+                    Text(text = recipeAndImageState.recipe.recipes[0].toRecipe().toDisplayString() )
+
                 }
-                is OpenAIApiState.Loading -> {
-                    Text("Preparing Image ", fontSize = 30.sp)
+                is RecipeAndImageState.Loading -> {
+                    Text("preparing title image ", fontSize = 30.sp)
                 }
-                is OpenAIApiState.Error -> {
+                is RecipeAndImageState.Error -> {
                     Text("Service Error", fontSize = 30.sp)
                 }
             }
