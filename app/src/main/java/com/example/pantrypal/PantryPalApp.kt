@@ -4,21 +4,29 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -31,6 +39,7 @@ import com.example.pantrypal.screens.RecipeScreen
 import com.example.pantrypal.screens.SavedScreen
 import com.example.pantrypal.screens.SettingsScreen
 import com.example.pantrypal.viewmodels.QueryVM
+import com.example.pantrypal.viewmodels.RecipeScreenVM
 
 sealed class NavScreens(val route: String, @StringRes val resourceId: Int){
     object Home: NavScreens(route = "Home", R.string.home)
@@ -50,6 +59,7 @@ object deviceSize{
 fun PantryPalApp(){
 
     val queryVM: QueryVM = viewModel()
+    val recipeVM: RecipeScreenVM = viewModel()
 
     val navController = rememberNavController()
     val currentScreenHandler by navController.currentBackStackEntryAsState()
@@ -59,39 +69,55 @@ fun PantryPalApp(){
 
     Scaffold(
         topBar = {
-            PantryPalTopBar(goToSaved = {
-                navController.navigate(NavScreens.Saved.route) {
-                    if(currentRoute?.route == NavScreens.Query.route) navController.popBackStack()
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+            if(currentRoute?.route != NavScreens.Recipe.route){
+                PantryPalTopBar(goToSaved = {
+                    navController.navigate(NavScreens.Saved.route) {
+                        if (currentRoute?.route == NavScreens.Query.route) navController.popBackStack()
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            }, goToHome = {
-                navController.navigate(NavScreens.Home.route) {
-                    if(currentRoute?.route == NavScreens.Query.route) navController.popBackStack()
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+                }, goToHome = {
+                    navController.navigate(NavScreens.Home.route) {
+                        if (currentRoute?.route == NavScreens.Query.route) navController.popBackStack()
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                    launchSingleTop = true
-                    restoreState = true
-                }
-            }, goToSettings = {
-                navController.navigate(NavScreens.Settings.route) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+                }, goToSettings = {
+                    navController.navigate(NavScreens.Settings.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                    launchSingleTop = true
-                    restoreState = true
+                })
+            } else {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(75.dp)
+                    .background(Color.hsv(158f, 1f, .2f, 1f)),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically) {
+
+                    IconButton(modifier = Modifier.size(50.dp).padding(start = 15.dp), onClick = { navController.popBackStack() }) {
+                        Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.back), contentDescription = null, tint = Color.White)
+                    }
+
+                    Text(recipeVM.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
                 }
-            })
+            }
         },
         floatingActionButton = {
             if(currentRoute?.route == NavScreens.Home.route || currentRoute?.route == NavScreens.Saved.route) {
                 IconButton(onClick = {
                     navController.navigate(NavScreens.Query.route)
-                        queryVM.ingredients.clear()
+                    queryVM.ingredients.clear()
                 },
                 modifier = Modifier.size(100.dp)) {
                     Icon(painter = painterResource(id = R.drawable.add),
@@ -103,6 +129,19 @@ fun PantryPalApp(){
                     )
                 }
             }
+            else if(currentRoute?.route == NavScreens.Recipe.route) {
+                IconButton(onClick = {
+                    /*TODO: save recipeVM.recipe to DB*/
+                },
+                    modifier = Modifier.size(100.dp)) {
+                    Icon(painter = painterResource(id = R.drawable.bookmark),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        tint = Color.hsv(158f, 1f, .2f, 1f)
+                    )
+                }
+            }
         }
     ){ internalPadding ->
         NavHost(navController = navController,
@@ -110,7 +149,7 @@ fun PantryPalApp(){
         {
 
             composable(route = NavScreens.Home.route){
-                HomeScreen()
+                HomeScreen(recipeVM = recipeVM, navController = navController)
             }
 
             composable(route = NavScreens.Query.route){
@@ -126,7 +165,7 @@ fun PantryPalApp(){
             }
             
             composable(route = NavScreens.Recipe.route) {
-                //RecipeScreen
+                RecipeScreen(recipeVM = recipeVM)
             }
         }
     }

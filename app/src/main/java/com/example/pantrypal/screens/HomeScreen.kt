@@ -31,18 +31,21 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 //import com.example.pantrypal.App
 import com.example.pantrypal.R
+import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.viewmodels.OpenAIApiState
 import com.example.pantrypal.viewmodels.OpenAIApiVM
+import com.example.pantrypal.viewmodels.RecipeScreenVM
 import com.example.pantrypal.viewmodels.StableDiffusionState
 import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navController: NavController) {
     var searchText by remember { mutableStateOf("") }
     
     val recipeList = arrayListOf<Int>()
@@ -76,9 +79,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         )
 
         for (i in 1..10) {
-            RecipeCard(image = "0", description = "test", onClick = {
-
-            })
+            RecipeCard(Recipe(0, 0, "test meal", "test ingredients", "test instructions", ""), recipeVM = recipeVM, navController = navController/*image = "0", description = "test"*/)
         }
     }
 }
