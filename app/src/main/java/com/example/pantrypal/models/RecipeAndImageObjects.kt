@@ -1,13 +1,14 @@
 package com.example.pantrypal.models
 
+import com.example.pantrypal.database.Recipe
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
-data class RecipeRequest(
-    @SerialName(value = "q")
-    val recipeApiRequest: String
-)
+//@Serializable
+//data class RecipeRequest(
+//    @SerialName(value = "q")
+//    val recipeApiRequest: String
+//)
 
 
 @Serializable
@@ -37,16 +38,18 @@ data class Information(
 data class RecipeAndImageRecipe(
     val id: Int,
     val Title: String,
-    val Ingredients: Ingredient,
+    val Ingredients: Map<String, String>,
     val Instructions: String,
     val Image: String
-)
-
-/**
- * This one might not work
- */
-@Serializable
-data class Ingredient(
-    @SerialName("1")
-    val one: String
-)
+){
+    fun toRecipe(): Recipe{
+        val out = Recipe(
+            recipeAndImageID = this.id,
+            title = this.Title,
+            ingredients = this.Ingredients.toString(),
+            instructions = this.Instructions,
+            image = "https:" + this.Image
+        )
+        return out
+    }
+}
