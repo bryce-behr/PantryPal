@@ -67,8 +67,8 @@ fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navContr
             .fillMaxWidth()
         )
 
-        TextField(value = searchText, onValueChange = {
-            searchText = it
+        TextField(value = vmState.searchPhrase, onValueChange = {
+            vm.updateSearchPhrase(it)
         },
             modifier = modifier
                 .fillMaxWidth()
@@ -79,16 +79,32 @@ fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navContr
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Search),
             placeholder = { Text("search") },
-            keyboardActions = KeyboardActions(onSearch = { this.defaultKeyboardAction(ImeAction.Done) } )
+            keyboardActions = KeyboardActions(onSearch = {
+
+                vm.updateSearchFlag(true)
+                vm.searchForRecipes()
+
+                this.defaultKeyboardAction(ImeAction.Done)
+            } )
         )
 
-        vmState.largeList.forEach { x ->
-            RecipeCard(x, recipeVM = recipeVM, navController = navController)
-        }
-
-//        for (i in 1..10) {
-//            RecipeCard(Recipe(0, 0, "test meal", "test ingredients", "test instructions", ""), recipeVM = recipeVM, navController = navController/*image = "0", description = "test"*/)
+        if (!vmState.searchFlag) {
+//        vmState.largeList.forEach { x ->
+//            RecipeCard(x, recipeVM = recipeVM, navController = navController)
 //        }
+
+            for (i in 1..10) {
+                RecipeCard(
+                    Recipe(0, 0, "test meal", "test ingredients", "test instructions", ""),
+                    recipeVM = recipeVM,
+                    navController = navController/*image = "0", description = "test"*/
+                )
+            }
+        } else {
+            vmState.searchRecipes.forEach { x ->
+                RecipeCard(x, recipeVM = recipeVM, navController = navController)
+            }
+        }
     }
 }
 

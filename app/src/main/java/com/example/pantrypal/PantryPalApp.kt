@@ -38,6 +38,8 @@ import com.example.pantrypal.screens.Query
 import com.example.pantrypal.screens.RecipeScreen
 import com.example.pantrypal.screens.SavedScreen
 import com.example.pantrypal.screens.SettingsScreen
+import com.example.pantrypal.viewmodels.HomeScreenState
+import com.example.pantrypal.viewmodels.HomeScreenVM
 import com.example.pantrypal.viewmodels.QueryVM
 import com.example.pantrypal.viewmodels.RecipeScreenVM
 
@@ -60,6 +62,8 @@ fun PantryPalApp(){
 
     val queryVM: QueryVM = viewModel()
     val recipeVM: RecipeScreenVM = viewModel()
+    val homeScreenVM: HomeScreenVM = HomeScreenVM.getInstance()
+    val homeScreenState: HomeScreenState = homeScreenVM.homeScreenState
 
     val navController = rememberNavController()
     val currentScreenHandler by navController.currentBackStackEntryAsState()
@@ -69,7 +73,7 @@ fun PantryPalApp(){
 
     Scaffold(
         topBar = {
-            if(currentRoute?.route != NavScreens.Recipe.route){
+            if(currentRoute?.route != NavScreens.Recipe.route) {
                 PantryPalTopBar(goToSaved = {
                     navController.navigate(NavScreens.Saved.route) {
                         if (currentRoute?.route == NavScreens.Query.route) navController.popBackStack()
@@ -97,6 +101,23 @@ fun PantryPalApp(){
                         restoreState = true
                     }
                 })
+
+                if ((currentRoute?.route == NavScreens.Home.route)&&(homeScreenState.searchFlag)){
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(75.dp)
+                        .background(Color.hsv(158f, 1f, .2f, 1f)),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically) {
+
+                        IconButton(modifier = Modifier.size(50.dp).padding(start = 15.dp), onClick = {
+                            homeScreenVM.updateSearchFlag(false)
+                            homeScreenVM.updateSearchPhrase("")
+                        }) {
+                            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.back), contentDescription = null, tint = Color.White)
+                        }
+                    }
+                }
             } else {
                 Row(modifier = Modifier
                     .fillMaxWidth()

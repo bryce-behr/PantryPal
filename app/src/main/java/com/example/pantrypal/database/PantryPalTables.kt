@@ -11,8 +11,7 @@ data class Recipe(
     val title: String,
     val ingredients: String,
     val instructions: String,
-    val image: String,
-    val meal: String = ""
+    val image: String
 ){
     fun toDisplayString(): String{
         return ("Title: " + this.title +"" +

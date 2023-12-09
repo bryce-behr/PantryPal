@@ -34,16 +34,16 @@ fun RecipeScreen(recipeVM: RecipeScreenVM, modifier: Modifier = Modifier) {
             .height(75.dp)
             .fillMaxWidth()
         )
-        AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
-            // .data(book.volumeInfo.imageLinks?.thumbnail)
-            .data(recipeVM.recipe.image)
-            .crossfade(true)
-            .build(),
-            contentDescription = recipeVM.recipe.title,
-            modifier = Modifier
-                .fillMaxWidth(),
-            contentScale = ContentScale.FillWidth)
-//        Image(painter = painterResource(id = R.drawable.recipe_test_image/*TODO: get the actual image*/), contentDescription = null, contentScale = ContentScale.FillWidth, modifier = modifier.fillMaxWidth())
+//        AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
+//            // .data(book.volumeInfo.imageLinks?.thumbnail)
+//            .data(recipeVM.recipe.image)
+//            .crossfade(true)
+//            .build(),
+//            contentDescription = recipeVM.recipe.title,
+//            modifier = Modifier
+//                .fillMaxWidth(),
+//            contentScale = ContentScale.FillWidth)
+        Image(painter = painterResource(id = R.drawable.recipe_test_image/*TODO: get the actual image*/), contentDescription = null, contentScale = ContentScale.FillWidth, modifier = modifier.fillMaxWidth())
         Text("Ingredients:", modifier = modifier, fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
         Text(text = recipeVM.recipe.ingredients)
 
