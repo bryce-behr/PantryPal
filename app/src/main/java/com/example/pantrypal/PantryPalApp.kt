@@ -123,8 +123,8 @@ fun PantryPalApp(){
                     Icon(painter = painterResource(id = R.drawable.add),
                         contentDescription = null,
                         modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.White),
+                            .fillMaxSize(),
+//                            .background(Color.White),
                         tint = Color.hsv(158f, 1f, .2f, 1f)
                     )
                 }

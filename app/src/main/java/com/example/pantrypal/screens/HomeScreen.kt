@@ -34,9 +34,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-//import com.example.pantrypal.App
 import com.example.pantrypal.R
 import com.example.pantrypal.database.Recipe
+import com.example.pantrypal.viewmodels.HomeScreenState
+import com.example.pantrypal.viewmodels.HomeScreenVM
 import com.example.pantrypal.viewmodels.OpenAIApiState
 import com.example.pantrypal.viewmodels.OpenAIApiVM
 import com.example.pantrypal.viewmodels.RecipeScreenVM
@@ -47,6 +48,9 @@ import com.example.pantrypal.viewmodels.StableDiffusionVM
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navController: NavController) {
     var searchText by remember { mutableStateOf("") }
+
+    val vm: HomeScreenVM = HomeScreenVM.getInstance()
+    val vmState: HomeScreenState = vm.homeScreenState
     
     val recipeList = arrayListOf<Int>()
     for (i in 1..10){
@@ -64,7 +68,6 @@ fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navContr
 
         TextField(value = searchText, onValueChange = {
             searchText = it
-            //billAmount = it // it is the new string input by the user
         },
             modifier = modifier
                 .fillMaxWidth()
@@ -78,9 +81,13 @@ fun HomeScreen(modifier: Modifier = Modifier, recipeVM: RecipeScreenVM, navContr
             keyboardActions = KeyboardActions(onSearch = { this.defaultKeyboardAction(ImeAction.Done) } )
         )
 
-        for (i in 1..10) {
-            RecipeCard(Recipe(0, 0, "test meal", "test ingredients", "test instructions", ""), recipeVM = recipeVM, navController = navController/*image = "0", description = "test"*/)
+        vmState.largeList.forEach { x ->
+            RecipeCard(x, recipeVM = recipeVM, navController = navController)
         }
+
+//        for (i in 1..10) {
+//            RecipeCard(Recipe(0, 0, "test meal", "test ingredients", "test instructions", ""), recipeVM = recipeVM, navController = navController/*image = "0", description = "test"*/)
+//        }
     }
 }
 

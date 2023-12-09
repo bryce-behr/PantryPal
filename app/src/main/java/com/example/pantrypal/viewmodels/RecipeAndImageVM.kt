@@ -50,7 +50,7 @@ class RecipeAndImageVM(
 
         fun getInstance(): RecipeAndImageVM {
             val vm = INSTANCE ?: synchronized(this) {
-                RecipeAndImageVM(App.getApp().container.recipeAndimageApi).also {
+                RecipeAndImageVM(App.getApp().container.recipeAndImageApi).also {
                     INSTANCE = it
                 }
             }

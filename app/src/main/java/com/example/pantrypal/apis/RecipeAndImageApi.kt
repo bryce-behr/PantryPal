@@ -1,5 +1,6 @@
 package com.example.pantrypal.apis
 
+import com.example.pantrypal.models.Information
 import com.example.pantrypal.models.RecipeAndImageRecipe
 import com.example.pantrypal.models.RecipeAndImageResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -46,7 +47,20 @@ object RecipeAndImageApi{
         } catch (e: Exception){
             e.printStackTrace()
             println("Error: " + e.message)
-            throw Exception("HELP")
+            return RecipeAndImageResponse(
+                success = 0,
+                recipes = emptyList(),
+                numRecipes = 0,
+                information = Information(
+                    limitstart = 0,
+                    limit = 0,
+                    total = 0,
+                    pagesStart = 0,
+                    pagesStop = 0,
+                    pagesCurrent = 0,
+                    pagesTotal = 0,
+                )
+            )
         }
 
     }

@@ -10,9 +10,13 @@ import com.example.pantrypal.database.PantryPalDatabase
 
 interface AppContainer{
     val pantryPalDAO: PantryPalDAO
+
     val openAIApi: OpenAIApi
+
     val stableDiffusionApi: StableDiffusionApi
-    val recipeAndimageApi: RecipeAndImageApi
+
+    val recipeAndImageApiHomeScreen: RecipeAndImageApi
+    val recipeAndImageApi: RecipeAndImageApi
 }
 
 class DefaultAppContainer(val context: Context): AppContainer{
@@ -38,7 +42,11 @@ class DefaultAppContainer(val context: Context): AppContainer{
         StableDiffusionApi
     }
 
-    override val recipeAndimageApi: RecipeAndImageApi by lazy{
+
+    override val recipeAndImageApiHomeScreen: RecipeAndImageApi by lazy{
+        RecipeAndImageApi
+    }
+    override val recipeAndImageApi: RecipeAndImageApi by lazy{
         RecipeAndImageApi
     }
 }
