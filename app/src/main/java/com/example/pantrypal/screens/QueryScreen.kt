@@ -108,10 +108,17 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
                 Text("Meal:", modifier = modifier.padding(5.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
                 Text("\t${vm.meal}", modifier = modifier.padding(5.dp), fontSize = 20.sp)
                 Text("Ingredients:", modifier = modifier.padding(5.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
-                for(i in 0 until vm.ingredients.size) {
+
+//                for(i in 0 until vm.ingredients.size) {
+//                    update = !update
+//                    Ingredient(modifier = modifier
+//                        .fillMaxWidth()
+//                        .padding(5.dp), name = vm.ingredients[i])
+//                }
+                vm.ingredients.forEach { x->
                     Ingredient(modifier = modifier
                         .fillMaxWidth()
-                        .padding(5.dp), name = vm.ingredients[i])
+                        .padding(5.dp), name = x)
                 }
                 Spacer(modifier = modifier.height(10.dp))
             }
