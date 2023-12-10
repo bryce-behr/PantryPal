@@ -37,20 +37,27 @@ object StableDiffusionApi{
     }
 
     suspend fun getImageUrl(prompt: String): String{
-        val stRequest = ImageGenerationRequest(
-            key = "w9NnydvLaCZlKZBQRQoKyPIx5ca6FBzuTAQQwhbLzifrmu0JHRM5IHURehO7",
-            prompt = prompt,
-            samples = "1",
-            width = "512",
-            height = "512",
-            num_inference_steps = "20",
-            guidance_scale = 7.5,
-            safety_checker = "yes"
-        )
+        try {
+            val stRequest = ImageGenerationRequest(
+                key = "w9NnydvLaCZlKZBQRQoKyPIx5ca6FBzuTAQQwhbLzifrmu0JHRM5IHURehO7",
+                prompt = prompt,
+                samples = "1",
+                width = "512",
+                height = "512",
+                num_inference_steps = "20",
+                guidance_scale = 7.5,
+                safety_checker = "yes"
+            )
 
+            println("before sd call")
+            val stResponse = retrofitService.getImage(stRequest)
+            println("after sd call")
 
-        val stReponse = retrofitService.getImage(stRequest)
-
-        return stReponse.output[0]
+            return stResponse.output[0]
+        } catch (e: Exception){
+            e.printStackTrace()
+            println(e.message)
+            return ("error")
+        }
     }
 }
