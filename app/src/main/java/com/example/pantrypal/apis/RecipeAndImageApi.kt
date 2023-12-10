@@ -47,7 +47,6 @@ object RecipeAndImageApi{
             return retrofitService.getResponse(q = prompt)
         } catch (e: Exception){
             e.printStackTrace()
-            println("Error: " + e.message)
             return RecipeAndImageResponse(
                 success = 0,
                 recipes = emptyList(),

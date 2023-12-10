@@ -23,7 +23,6 @@ class OpenAIApiVM(
 ): ViewModel(){
 
     init {
-        println("test")
     }
 
     var openAIApiState: OpenAIApiState by mutableStateOf(OpenAIApiState.Loading)
@@ -61,7 +60,6 @@ class OpenAIApiVM(
                 val response = openAIApi.getResponse(prompt)
                 openAIApiState = OpenAIApiState.Success(chatGPTResponse = response)
             } catch (e: Exception){
-                println("!!! OpenAIVM error: ${e.printStackTrace()}")
                 openAIApiState = OpenAIApiState.Error
             }
         }

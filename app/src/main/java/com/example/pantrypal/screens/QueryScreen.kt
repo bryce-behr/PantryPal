@@ -1,11 +1,6 @@
 package com.example.pantrypal.screens
 
-import android.app.Activity
-import android.graphics.fonts.FontStyle
-import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,9 +12,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,7 +28,6 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,12 +38,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -59,10 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.pantrypal.NavScreens
 import com.example.pantrypal.R
 import com.example.pantrypal.database.Recipe
@@ -86,7 +72,7 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
     val vm: QueryVM = QueryVM.getInstance()
 
     var update by rememberSaveable { mutableStateOf(true) }
-    var meal by rememberSaveable { mutableStateOf(vm.meal) }
+    var meal by rememberSaveable { mutableStateOf("dinner") }
 
     var chatGPTResponse by rememberSaveable { mutableStateOf("")}
     var stableDiffusionResponse by rememberSaveable { mutableStateOf("")}
@@ -96,9 +82,10 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
     deviceSize.screenHeight = configuration.screenHeightDp.dp.value
 
-
+    println("query screen is recomposing")
     if(vm.showGenerated) {
-        GenerateRecipePopUp(recipe = /*TODO: make this the actual recipe response*/Recipe(0,0,"Test Title","","",""), navController = navController)
+        println("${recipeVM.recipe.title} + ${recipeVM.recipe.image}")
+        RecipePopUp(navController = navController)
     }
 
     Column(modifier = modifier.padding(horizontal = 45.dp, vertical = 20.dp)){
@@ -163,13 +150,13 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
                     .fillMaxHeight()
                     .padding(end = 16.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onAny = {
-                    this.defaultKeyboardAction(ImeAction.Done)
+                keyboardActions = KeyboardActions(onDone = {
                     if(ingText != "") {
                         vm.ingredients.add(ingText)
                         ingText = ""
                         update = !update
                     }
+                    this.defaultKeyboardAction(ImeAction.Done)
                 })
             )
 
@@ -203,7 +190,6 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
                 openAIApiVM.updateRecipePrompt(prompt)
                 openAIApiVM.getRecipe()
                 vm.changeAlertValue()
-                //GenerateRecipePopUp(recipe = Recipe(0,0,"","","",""))
             },
                 shape = RoundedCornerShape(25),
                 modifier = modifier.fillMaxSize()) {
@@ -211,7 +197,7 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
             }
         }
 
-        if (vm.showGenerated){
+        /*if (vm.showGenerated){
             when (openAIApiState){
                 is OpenAIApiState.Success -> {
                     chatGPTResponse = openAIApiState.chatGPTResponse
@@ -290,7 +276,7 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
                     recipeVM.ChangeRecipeTo(out)
                 }
             }
-        }
+        }*/
     }
 }
 
@@ -307,7 +293,6 @@ fun Ingredient(modifier: Modifier = Modifier, name: String) {
             Text("\t\t\t\t- $name", fontSize = 20.sp)
             IconButton(modifier = Modifier.padding(end = 50.dp)/*.background(Color.Blue)*/, onClick = {
                 vm.ingredients.remove(name)
-                println(vm.ingredients.toString())
             }) {
                 Icon(
                     modifier = Modifier.fillMaxHeight()/*.background(Color.Red)*/,
@@ -374,8 +359,8 @@ fun ExposedDropdownMenuBox(modifier: Modifier = Modifier) : String {
 }
 
 @Composable
-private fun GenerateRecipePopUp(
-    recipe: Recipe,
+private fun RecipePopUp(
+    //recipe: Recipe,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
@@ -392,7 +377,7 @@ private fun GenerateRecipePopUp(
             // onCloseRequest.
         },
         icon = { Image(painter = /*TODO: make this correct image*/painterResource(id = R.drawable.recipe_test_image), contentDescription = null) },
-        title = { Text(text = recipe.title) },
+        title = { Text(text = recipeVM.recipe.title) },
         modifier = modifier,
         dismissButton = {
             Button(
@@ -407,7 +392,7 @@ private fun GenerateRecipePopUp(
         },
         confirmButton = {
             Button(onClick = {
-                recipeVM.ChangeRecipeTo(recipe)
+                //recipeVM.ChangeRecipeTo(recipe)
                 navController.navigate(NavScreens.Recipe.route)
                 vm.changeAlertValue()
                 },

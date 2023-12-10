@@ -51,10 +51,7 @@ object OpenAIApi{
                     )
                 )
             )
-            println("before ")
-            println("Request Body: $chatRequest")
             val chatResponse = retrofitService.getChatCompletions(chatRequest)
-            println("after")
             return chatResponse.choices[0].message.content
         } catch (e: Exception){
             e.printStackTrace()

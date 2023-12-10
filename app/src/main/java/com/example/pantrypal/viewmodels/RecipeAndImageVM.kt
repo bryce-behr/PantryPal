@@ -21,7 +21,6 @@ class RecipeAndImageVM(
 ): ViewModel(){
 
     init{
-        println("test")
     }
 
     var recipeAndImageState: RecipeAndImageState by mutableStateOf(RecipeAndImageState.Loading)
@@ -39,7 +38,6 @@ class RecipeAndImageVM(
 
                 recipeAndImageState = RecipeAndImageState.Success(recipe = out)
             } catch (e: Exception) {
-                println("RecipeAndImage error: ${e.printStackTrace()}")
                 recipeAndImageState = RecipeAndImageState.Error
             }
         }

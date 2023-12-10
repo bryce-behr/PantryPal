@@ -22,7 +22,6 @@ class StableDiffusionVM(
 ): ViewModel(){
 
     init {
-        println("test")
     }
 
     var stableDiffusionState: StableDiffusionState by mutableStateOf(StableDiffusionState.Loading)
@@ -48,7 +47,6 @@ class StableDiffusionVM(
 
                 stableDiffusionState = StableDiffusionState.Success(imageUrl = imgUrl)
             } catch (e: Exception){
-                println("StableDiffusioVM error: ${e.printStackTrace()}")
                 stableDiffusionState = StableDiffusionState.Error
             }
         }

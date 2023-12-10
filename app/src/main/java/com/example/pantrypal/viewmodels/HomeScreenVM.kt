@@ -34,12 +34,9 @@ class HomeScreenVM(
     var homeScreenState: HomeScreenState by mutableStateOf(HomeScreenState())
 
     init{
-//        println("Before")
 //        viewModelScope.launch {
-//            println("1")
 //            val breakfasts: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular breakfast dishes as a " +
 //                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
-//            println("2")
 //            var allBreakfasts: MutableList<Recipe> = mutableListOf()
 //            breakfasts.forEach { x->
 //                val response = recipeAndImageHomeScreenApi.getResponse(x)
@@ -55,7 +52,6 @@ class HomeScreenVM(
 //                    }
 //                }
 //            }
-//            println("6")
 //            val lunches: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular lunch dishes as a " +
 //                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
 //            var allLunches: MutableList<Recipe> = mutableListOf()
@@ -74,11 +70,8 @@ class HomeScreenVM(
 //                    }
 //                }
 //            }
-//            println("7")
-//            println("3")
 //            val dinners: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular dinner dishes as a " +
 //                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
-//            println("4")
 //            var allDinners: MutableList<Recipe> = mutableListOf()
 //            dinners.forEach { x->
 //                val response = recipeAndImageHomeScreenApi.getResponse(x)
@@ -94,10 +87,8 @@ class HomeScreenVM(
 //                    }
 //                }
 //            }
-//            println("8")
 //            val desserts: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular dessert dishes as a " +
 //                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
-//            println("5")
 //            var allDesserts: MutableList<Recipe> = mutableListOf()
 //            desserts.forEach { x->
 //                val response = recipeAndImageHomeScreenApi.getResponse(x)
@@ -116,7 +107,6 @@ class HomeScreenVM(
 //            tempList.removeAt(0)
 //            tempList.shuffle()
 //
-//            println("10")
 //
 //            homeScreenState = homeScreenState.copy(
 //                largeList = tempList

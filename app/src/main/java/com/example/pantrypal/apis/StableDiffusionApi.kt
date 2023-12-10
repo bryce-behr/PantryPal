@@ -48,13 +48,8 @@ object StableDiffusionApi{
             safety_checker = "yes"
         )
 
-        println("request is: ${stRequest}")
 
         val stReponse = retrofitService.getImage(stRequest)
-
-        println("stResponse is ${stReponse}")
-
-        println("url is : ${stReponse.output[0]}")
 
         return stReponse.output[0]
     }
