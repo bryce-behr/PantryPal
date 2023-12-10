@@ -22,6 +22,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,7 +50,8 @@ import com.example.pantrypal.viewmodels.DatabaseVM
 import com.example.pantrypal.viewmodels.HomeScreenState
 import com.example.pantrypal.viewmodels.HomeScreenVM
 import com.example.pantrypal.viewmodels.QueryVM
-import com.example.pantrypal.viewmodels.RecipeScreenVM
+import com.example.pantrypal.viewmodels.RecipeState
+import com.example.pantrypal.viewmodels.RecipeVM
 
 sealed class NavScreens(val route: String, @StringRes val resourceId: Int){
     object Home: NavScreens(route = "Home", R.string.home)
@@ -68,7 +72,8 @@ fun PantryPalApp(){
 
     val dbVM: DatabaseVM = DatabaseVM.getInstance()
     val queryVM: QueryVM = QueryVM.getInstance()
-    val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
+    val recipeVM: RecipeVM = RecipeVM.getInstance()
+    val recipeState: RecipeState = recipeVM.recipeState
     val homeScreenVM: HomeScreenVM = HomeScreenVM.getInstance()
     val homeScreenState: HomeScreenState = homeScreenVM.homeScreenState
 
@@ -133,11 +138,30 @@ fun PantryPalApp(){
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically) {
 
-                    IconButton(modifier = Modifier.size(50.dp).padding(start = 15.dp), onClick = { navController.popBackStack() }) {
+                    IconButton(modifier = Modifier.size(50.dp).padding(start = 15.dp), onClick = {
+                        navController.popBackStack()
+                        recipeVM.clearRecipeQuery()
+                    }) {
                         Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.back), contentDescription = null, tint = Color.White)
                     }
 
-                    Text(recipeVM.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
+                    when (recipeState){
+                        is RecipeState.Success -> {
+                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
+                        }
+                        is RecipeState.LoadingSuccess -> {
+                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
+                        }
+                        is RecipeState.HalfSuccess -> {
+                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
+                        }
+                        is RecipeState.Loading -> {
+                            Text("Recipe Loading...", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
+                        }
+                        is RecipeState.Error -> {
+                            Text("Error loading recipe", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
+                        }
+                    }
                 }
             }
         },
@@ -161,16 +185,50 @@ fun PantryPalApp(){
                 }
             }
             else if(currentRoute?.route == NavScreens.Recipe.route) {
-                IconButton(onClick = {
-                    dbVM.insertRecipe(recipeVM.recipe)
-                },
-                    modifier = Modifier.size(100.dp)) {
-                    Icon(painter = painterResource(id = R.drawable.bookmark),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        tint = Color.White
-                    )
+                var saveEnabled by rememberSaveable { mutableStateOf(false) }
+                when (recipeState){
+                    is RecipeState.Success -> {
+                        IconButton(onClick = {
+                            dbVM.insertRecipe(recipeState.recipe)
+                        },
+                            modifier = Modifier.size(100.dp)) {
+                            Icon(painter = painterResource(id = R.drawable.bookmark),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                tint = Color.White
+                            )
+                        }
+                    }
+                    is RecipeState.LoadingSuccess -> {
+                        IconButton(onClick = {
+                            dbVM.insertRecipe(recipeState.recipe)
+                        },
+                            modifier = Modifier.size(100.dp),
+                            enabled = false) {
+                            Icon(painter = painterResource(id = R.drawable.bookmark),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                tint = Color.White
+                            )
+                        }
+                    }
+                    is RecipeState.HalfSuccess -> {
+                        IconButton(onClick = {
+                            dbVM.insertRecipe(recipeState.recipe)
+                        },
+                            modifier = Modifier.size(100.dp)) {
+                            Icon(painter = painterResource(id = R.drawable.bookmark),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                tint = Color.White
+                            )
+                        }
+                    }
+                    is RecipeState.Loading -> {}
+                    is RecipeState.Error -> {}
                 }
             }
         }

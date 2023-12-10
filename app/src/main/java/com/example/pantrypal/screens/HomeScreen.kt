@@ -39,11 +39,6 @@ import com.example.pantrypal.R
 import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.viewmodels.HomeScreenState
 import com.example.pantrypal.viewmodels.HomeScreenVM
-import com.example.pantrypal.viewmodels.OpenAIApiState
-import com.example.pantrypal.viewmodels.OpenAIApiVM
-import com.example.pantrypal.viewmodels.RecipeScreenVM
-import com.example.pantrypal.viewmodels.StableDiffusionState
-import com.example.pantrypal.viewmodels.StableDiffusionVM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,9 +78,9 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
         )
 
         if (!vmState.searchFlag) {
-//        vmState.largeList.forEach { x ->
-//            RecipeCard(x, recipeVM = recipeVM, navController = navController)
-//        }
+        vmState.largeList.forEach { x ->
+            RecipeCard(x, navController = navController)
+        }
 
             for (i in 1..10) {
                 RecipeCard(

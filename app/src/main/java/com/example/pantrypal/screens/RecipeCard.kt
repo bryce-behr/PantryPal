@@ -2,6 +2,11 @@ package com.example.pantrypal.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +16,7 @@ import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -24,14 +30,13 @@ import com.example.pantrypal.NavScreens
 import com.example.pantrypal.R
 import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.deviceSize
-import com.example.pantrypal.viewmodels.OpenAIApiVM
-import com.example.pantrypal.viewmodels.RecipeScreenVM
-import com.example.pantrypal.viewmodels.StableDiffusionVM
+import com.example.pantrypal.viewmodels.RecipeState
+import com.example.pantrypal.viewmodels.RecipeVM
 
 @Composable
 fun RecipeCard(recipe: Recipe/*image: String, description: String*/, modifier: Modifier = Modifier, navController: NavController) {
 
-    val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
+    val recipeVM: RecipeVM = RecipeVM.getInstance()
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
@@ -42,27 +47,20 @@ fun RecipeCard(recipe: Recipe/*image: String, description: String*/, modifier: M
         .padding(8.dp)
         .requiredWidth(((deviceSize.screenWidth ?: 100f) - 16f).dp)
         .clickable(onClick = {
-            recipeVM.ChangeRecipeTo(recipe)
+            recipeVM.loadRecipe(recipe)
             navController.navigate(NavScreens.Recipe.route)
         })
     ){
-
-        AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
-            // .data(book.volumeInfo.imageLinks?.thumbnail)
-            .data(recipe.image)
-            .crossfade(true)
-            .build(),
+        AsyncImage(
+            model = ImageRequest.Builder(context = LocalContext.current)
+                .data(recipe.image)
+                .crossfade(true)
+                .build(),
             contentDescription = recipe.title,
             modifier = Modifier
                 .height(180.dp),
-            contentScale = ContentScale.FillBounds)
-
-//        Image(
-//            painter = painterResource(R.drawable.recipe_test_image/*TODO: replace this with image from DB*/),
-//            contentDescription = recipe.title,
-//            modifier = modifier.height(180.dp),
-//            contentScale = ContentScale.FillBounds
-//        )
+            contentScale = ContentScale.Crop
+        )
 
         Text(
             text = recipe.title,
