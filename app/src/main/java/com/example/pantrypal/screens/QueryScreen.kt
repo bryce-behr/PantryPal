@@ -109,7 +109,6 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
                 Text("\t${vm.meal}", modifier = modifier.padding(5.dp), fontSize = 20.sp)
                 Text("Ingredients:", modifier = modifier.padding(5.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
                 for(i in 0 until vm.ingredients.size) {
-                    update = !update
                     Ingredient(modifier = modifier
                         .fillMaxWidth()
                         .padding(5.dp), name = vm.ingredients[i])
