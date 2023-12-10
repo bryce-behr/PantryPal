@@ -31,10 +31,10 @@ import com.example.pantrypal.viewmodels.StableDiffusionVM
 @Composable
 fun TestScreen(){
 
-//    val openAIApiVM: OpenAIApiVM = viewModel()
-//    val openAIApiState = openAIApiVM.openAIApiState
-//    val stableDiffusionVM: StableDiffusionVM = viewModel()
-//    val stableDiffusionState = stableDiffusionVM.stableDiffusionState
+    val openAIApiVM: OpenAIApiVM = OpenAIApiVM.getInstance()
+    val openAIApiState = openAIApiVM.openAIApiState
+    val stableDiffusionVM: StableDiffusionVM = StableDiffusionVM.getInstance()
+    val stableDiffusionState = stableDiffusionVM.stableDiffusionState
     val recipeAndImageVM: RecipeAndImageVM = RecipeAndImageVM.getInstance()
     val recipeAndImageState = recipeAndImageVM.recipeAndImageState
     val databaseVM: DatabaseVM = DatabaseVM.getInstance()
@@ -46,55 +46,56 @@ fun TestScreen(){
     var recipe = ""
     var image = ""
 
-    recipeAndImageVM.updateRecipeText("chicken")
-    //stableDiffusionVM.updateDrawText("Photo-realistic photo of chicken quesadillas")
+    openAIApiVM.updateRecipePrompt("chicken, sour cream, cheese, rice - suitable for dinner")
+    stableDiffusionVM.updateDrawText("chicken quesadillas")
 
 
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly){
-        
+
         Button(onClick = {
-            recipeAndImageVM.getRecipeAndImage()
+            stableDiffusionVM.getRecipeImage()
+
             startGenerate = true;
         }) {
             Text(text = "Click me")
         }
 
         if(startGenerate){
+            when(stableDiffusionState){
+                is StableDiffusionState.Success -> {
+                    AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
+                        // .data(book.volumeInfo.imageLinks?.thumbnail)
+                        .data(stableDiffusionState.imageUrl)
+                        .crossfade(true)
+                        .build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .aspectRatio(.8f)
+                            .fillMaxWidth())
+                }
+                is StableDiffusionState.Loading -> {
+                    Text("Preparing Image ", fontSize = 30.sp)
+                }
+                is StableDiffusionState.Error -> {
+                    Text("Service Error", fontSize = 30.sp)
+                }
+            }
+
 //            when(recipeAndImageState){
 //                is RecipeAndImageState.Success -> {
-//                    AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
-//                        // .data(book.volumeInfo.imageLinks?.thumbnail)
-//                        .data("https:" + recipeAndImageState.recipe.recipes[0].Image)
-//                        .crossfade(true)
-//                        .build(),
-//                        contentDescription = null,
-//                        contentScale = ContentScale.Fit,
-//                        modifier = Modifier
-//                            .aspectRatio(.8f)
-//                            .fillMaxWidth())
+//                    Text(text = recipeAndImageState.recipe.recipes[0].Title)
+//                    Text(text = recipeAndImageState.recipe.recipes[0].toRecipe().toDisplayString() )
+//
 //                }
 //                is RecipeAndImageState.Loading -> {
-//                    Text("Preparing Image ", fontSize = 30.sp)
+//                    Text("preparing title image ", fontSize = 30.sp)
 //                }
 //                is RecipeAndImageState.Error -> {
 //                    Text("Service Error", fontSize = 30.sp)
 //                }
 //            }
-
-            when(recipeAndImageState){
-                is RecipeAndImageState.Success -> {
-                    Text(text = recipeAndImageState.recipe.recipes[0].Title)
-                    Text(text = recipeAndImageState.recipe.recipes[0].toRecipe().toDisplayString() )
-
-                }
-                is RecipeAndImageState.Loading -> {
-                    Text("preparing title image ", fontSize = 30.sp)
-                }
-                is RecipeAndImageState.Error -> {
-                    Text("Service Error", fontSize = 30.sp)
-                }
-            }
         }
         
     }

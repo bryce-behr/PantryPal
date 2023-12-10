@@ -2,6 +2,7 @@ package com.example.pantrypal.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -46,9 +48,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.pantrypal.NavScreens
 import com.example.pantrypal.R
 import com.example.pantrypal.database.Recipe
@@ -82,12 +87,6 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
     deviceSize.screenHeight = configuration.screenHeightDp.dp.value
 
-    println("query screen is recomposing")
-    if(vm.showGenerated) {
-        println("${recipeVM.recipe.title} + ${recipeVM.recipe.image}")
-        RecipePopUp(navController = navController)
-    }
-
     Column(modifier = modifier.padding(horizontal = 45.dp, vertical = 20.dp)){
 
         Spacer(modifier = modifier.height(75.dp))
@@ -108,13 +107,6 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
                 Text("Meal:", modifier = modifier.padding(5.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
                 Text("\t${vm.meal}", modifier = modifier.padding(5.dp), fontSize = 20.sp)
                 Text("Ingredients:", modifier = modifier.padding(5.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
-
-//                for(i in 0 until vm.ingredients.size) {
-//                    update = !update
-//                    Ingredient(modifier = modifier
-//                        .fillMaxWidth()
-//                        .padding(5.dp), name = vm.ingredients[i])
-//                }
                 vm.ingredients.forEach { x->
                     Ingredient(modifier = modifier
                         .fillMaxWidth()
@@ -193,6 +185,7 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
                 }
                 prompt = prompt.dropLast(1)
                 prompt = prompt + " - Make it suited for " + vm.meal
+                println("Prompt: " + prompt)
                 openAIApiVM.updateRecipePrompt(prompt)
                 openAIApiVM.getRecipe()
                 vm.changeAlertValue()
@@ -202,87 +195,59 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
                 Text(text = "Generate", fontSize = 20.sp, textAlign = TextAlign.Center)
             }
         }
+//        if(vm.showGenerated) {
+////        println("${recipeVM.recipe.title} + ${recipeVM.recipe.image}")
+//            RecipePopUp(navController = navController)
+//        }
 
-        /*if (vm.showGenerated){
-            when (openAIApiState){
+        if (vm.showGenerated){
+            when(openAIApiState){
                 is OpenAIApiState.Success -> {
                     chatGPTResponse = openAIApiState.chatGPTResponse
-                    stableDiffusionVM.updateDrawText(chatGPTResponse)
-                    stableDiffusionVM.getRecipeImage()
-                    when (stableDiffusionState){
-                        is StableDiffusionState.Success ->{
-                            var responseList: List<String> = chatGPTResponse.split(";")
+                    if ((chatGPTResponse.uppercase().contains("TITLE:"))&&(chatGPTResponse.uppercase().contains("INGREDIENTS:"))&&(chatGPTResponse.uppercase().contains("INSTRUCTIONS:"))) {
 
-                            if (responseList.size == 3) {
-                                var titleStr = responseList[0].split("\"")[1]
-                                var ingredientsStr = "{" + responseList[1].replace(":", "=") + "}"
-                                var instructionsStr = responseList[2].split("\"")[1]
+                        var tempResponse = chatGPTResponse
+                        tempResponse.replace("Title:", "")
+                        var temp = tempResponse.split("Ingredients:")
+                        var titleStr = (temp[0].replace("\"", "")).trim()
+                        temp = temp[1].split("Instructions:")
+                        var ingredientsStr = temp[0].trim()
+                        var instructionsStr = temp[1].replace("\"", "").trim()
 
-                                val out = Recipe(
+                        stableDiffusionVM.updateDrawText(chatGPTResponse)
+                        stableDiffusionVM.getRecipeImage()
+                        when (stableDiffusionState) {
+                            is StableDiffusionState.Success -> {
+                                stableDiffusionResponse = stableDiffusionState.imageUrl
+                                 recipeVM.ChangeRecipeTo(Recipe(
                                     title = titleStr,
                                     ingredients = ingredientsStr,
-                                    instructions = instructionsStr,
-                                    image = stableDiffusionState.imageUrl
-                                )
-                                recipeVM.ChangeRecipeTo(out)
+                                     instructions = instructionsStr,
+                                     image = stableDiffusionResponse
+                                ))
+                                RecipePopUp(navController = navController)
+                            }
+
+                            is StableDiffusionState.Loading -> {
+                                Text("Loading Recipe Image")
+                            }
+
+                            is StableDiffusionState.Error -> {
+                                Text("Error Loading Recipe Image")
                             }
                         }
-                        is StableDiffusionState.Loading ->{
-                            var responseList: List<String> = chatGPTResponse.split(";")
-
-                            if (responseList.size == 3) {
-                                var titleStr = responseList[0].split("\"")[1]
-                                var ingredientsStr = "{" + responseList[1].replace(":", "=") + "}"
-                                var instructionsStr = responseList[2].split("\"")[1]
-
-                                val out = Recipe(
-                                    title = titleStr,
-                                    ingredients = ingredientsStr,
-                                    instructions = instructionsStr,
-                                    image = ""
-                                )
-                                recipeVM.ChangeRecipeTo(out)
-                            }
-                        }
-                        is StableDiffusionState.Error ->{
-                            var responseList: List<String> = chatGPTResponse.split(";")
-
-                            if (responseList.size == 3) {
-                                var titleStr = responseList[0].split("\"")[1]
-                                var ingredientsStr = "{" + responseList[1].replace(":", "=") + "}"
-                                var instructionsStr = responseList[2].split("\"")[1]
-
-                                val out = Recipe(
-                                    title = titleStr,
-                                    ingredients = ingredientsStr,
-                                    instructions = instructionsStr,
-                                    image = ""
-                                )
-                                recipeVM.ChangeRecipeTo(out)
-                            }
-                        }
+                    } else {
+                        Text("Error with recipe AI response: " + chatGPTResponse)
                     }
                 }
                 is OpenAIApiState.Loading -> {
-                    val out = Recipe(
-                        title = "",
-                        ingredients = "",
-                        instructions = "",
-                        image = ""
-                    )
-                    recipeVM.ChangeRecipeTo(out)
+                    Text("Loading Recipe")
                 }
                 is OpenAIApiState.Error -> {
-                    val out = Recipe(
-                        title = "",
-                        ingredients = "",
-                        instructions = "",
-                        image = ""
-                    )
-                    recipeVM.ChangeRecipeTo(out)
+                    Text("Error Loading Recipe ")
                 }
             }
-        }*/
+        }
     }
 }
 
@@ -316,7 +281,6 @@ fun Ingredient(modifier: Modifier = Modifier, name: String) {
 fun ExposedDropdownMenuBox(modifier: Modifier = Modifier) : String {
 
     val vm: QueryVM = QueryVM.getInstance()
-
     val context = LocalContext.current
     val meals = arrayOf("Breakfast", "Lunch", "Dinner")
     var expanded by remember { mutableStateOf(false) }
@@ -366,13 +330,22 @@ fun ExposedDropdownMenuBox(modifier: Modifier = Modifier) : String {
 
 @Composable
 private fun RecipePopUp(
-    //recipe: Recipe,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
 
+    val openAIApiVM: OpenAIApiVM = OpenAIApiVM.getInstance()
+    val openAIApiState: OpenAIApiState = openAIApiVM.openAIApiState
+    val stableDiffusionVM: StableDiffusionVM = StableDiffusionVM.getInstance()
+    val stableDiffusionState: StableDiffusionState = stableDiffusionVM.stableDiffusionState
+
     val recipeVM: RecipeScreenVM = RecipeScreenVM.getInstance()
     val vm: QueryVM = QueryVM.getInstance()
+
+    println("---------------------------")
+    println("Title: " + recipeVM.recipe.title)
+    println("Image: " + recipeVM.recipe.image)
+    println("---------------------------")
 
     AlertDialog(
         containerColor = Color.hsv(158f, 1f, .2f, 1f),
@@ -382,7 +355,18 @@ private fun RecipePopUp(
             // button. If you want to disable that functionality, simply use an empty
             // onCloseRequest.
         },
-        icon = { Image(painter = /*TODO: make this correct image*/painterResource(id = R.drawable.recipe_test_image), contentDescription = null) },
+        icon = { AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
+            // .data(book.volumeInfo.imageLinks?.thumbnail)
+            .data(recipeVM.recipe.image)
+            .crossfade(true)
+            .build(),
+            contentDescription = recipeVM.recipe.title,
+//            modifier = Modifier
+//                .height(180.dp),
+//            contentScale = ContentScale.FillBounds
+        )
+            //Image(painter = /*TODO: make this correct image*/painterResource(id = R.drawable.recipe_test_image), contentDescription = null)
+               },
         title = { Text(text = recipeVM.recipe.title) },
         modifier = modifier,
         dismissButton = {
