@@ -1,7 +1,5 @@
 package com.example.pantrypal.screens
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -10,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -30,10 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
@@ -54,7 +48,7 @@ fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, navController: Nav
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
     deviceSize.screenHeight = configuration.screenHeightDp.dp.value
 
-    var clicked by rememberSaveable { mutableStateOf(false) }
+    var saved by rememberSaveable { mutableStateOf(false) }
 
     Box(contentAlignment = Alignment.BottomEnd,
         modifier = modifier
@@ -105,15 +99,15 @@ fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, navController: Nav
                         .weight(1f)
                 )
 
-                Image(
+                Icon(
                     painter = painterResource(id = R.drawable.bookmark),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(if(clicked) Color.Red else Color.White),
+                    tint = if(saved) Color.Red else Color.White,
                     modifier = modifier
                         .weight(.2f)
                         .fillMaxHeight()
                         .clickable {
-                            clicked = !clicked
+                            saved = !saved
                         }
                         .padding(5.dp)
                 )

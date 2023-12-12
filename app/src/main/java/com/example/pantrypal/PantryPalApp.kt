@@ -78,6 +78,8 @@ fun PantryPalApp(){
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination
 
+    var saved by rememberSaveable { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             if(currentRoute?.route != NavScreens.Recipe.route) {
@@ -140,23 +142,23 @@ fun PantryPalApp(){
                         Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.back), contentDescription = null, tint = Color.White)
                     }
 
-                    when (recipeState){
+/*                    when (recipeState){
                         is RecipeState.Success -> {
-                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
+                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)*//*.fillMaxHeight()*//**//*.background(Color.Yellow)*//*)
                         }
                         is RecipeState.LoadingSuccess -> {
-                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
+                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)*//*.fillMaxHeight()*//**//*.background(Color.Yellow)*//*)
                         }
                         is RecipeState.HalfSuccess -> {
-                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
+                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)*//*.fillMaxHeight()*//**//*.background(Color.Yellow)*//*)
                         }
                         is RecipeState.Loading -> {
-                            Text("Recipe Loading...", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
+                            Text("Recipe Loading...", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)*//*.fillMaxHeight()*//**//*.background(Color.Yellow)*//*)
                         }
                         is RecipeState.Error -> {
-                            Text("Error loading recipe", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)/*.fillMaxHeight()*//*.background(Color.Yellow)*/)
+                            Text("Error loading recipe", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)*//*.fillMaxHeight()*//**//*.background(Color.Yellow)*//*)
                         }
-                    }
+                    }*/
                 }
             }
         },
@@ -185,19 +187,21 @@ fun PantryPalApp(){
                     is RecipeState.Success -> {
                         IconButton(onClick = {
                             dbVM.insertRecipe(recipeState.recipe)
+                            saved = !saved
                         },
                             modifier = Modifier.size(100.dp)) {
                             Icon(painter = painterResource(id = R.drawable.bookmark),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .fillMaxSize(),
-                                tint = Color.White
+                                tint = if(saved) Color.Red else Color.White
                             )
                         }
                     }
                     is RecipeState.LoadingSuccess -> {
                         IconButton(onClick = {
                             dbVM.insertRecipe(recipeState.recipe)
+                            saved = !saved
                         },
                             modifier = Modifier.size(100.dp),
                             enabled = false) {
@@ -205,20 +209,21 @@ fun PantryPalApp(){
                                 contentDescription = null,
                                 modifier = Modifier
                                     .fillMaxSize(),
-                                tint = Color.White
+                                tint = if(saved) Color.Red else Color.White
                             )
                         }
                     }
                     is RecipeState.HalfSuccess -> {
                         IconButton(onClick = {
                             dbVM.insertRecipe(recipeState.recipe)
+                            saved = !saved
                         },
                             modifier = Modifier.size(100.dp)) {
                             Icon(painter = painterResource(id = R.drawable.bookmark),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .fillMaxSize(),
-                                tint = Color.White
+                                tint = if(saved) Color.Red else Color.White
                             )
                         }
                     }
