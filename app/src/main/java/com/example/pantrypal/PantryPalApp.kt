@@ -142,23 +142,25 @@ fun PantryPalApp(){
                         Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.back), contentDescription = null, tint = Color.White)
                     }
 
-/*                    when (recipeState){
+/*
+                    when (recipeState){
                         is RecipeState.Success -> {
-                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)*//*.fillMaxHeight()*//**//*.background(Color.Yellow)*//*)
+                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp))
                         }
                         is RecipeState.LoadingSuccess -> {
-                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)*//*.fillMaxHeight()*//**//*.background(Color.Yellow)*//*)
+                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp))
                         }
                         is RecipeState.HalfSuccess -> {
-                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)*//*.fillMaxHeight()*//**//*.background(Color.Yellow)*//*)
+                            Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp))
                         }
                         is RecipeState.Loading -> {
-                            Text("Recipe Loading...", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)*//*.fillMaxHeight()*//**//*.background(Color.Yellow)*//*)
+                            Text("Recipe Loading...", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp))
                         }
                         is RecipeState.Error -> {
-                            Text("Error loading recipe", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp)*//*.fillMaxHeight()*//**//*.background(Color.Yellow)*//*)
+                            Text("Error loading recipe", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp))
                         }
-                    }*/
+                    }
+*/
                 }
             }
         },

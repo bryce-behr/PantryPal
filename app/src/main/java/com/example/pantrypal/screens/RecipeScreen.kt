@@ -6,15 +6,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,6 +52,7 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxWidth(),
                     contentScale = ContentScale.FillWidth)
+                Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp))
                 Text("Ingredients:", modifier = modifier, fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
                 Text(text = recipeState.recipe.ingredients)
 
@@ -57,6 +61,7 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
             }
             is RecipeState.LoadingSuccess -> {
                 Image(painter = painterResource(id = R.drawable.loading), contentDescription = null)
+                Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp))
                 Text("Ingredients:", modifier = modifier, fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
                 Text(text = recipeState.recipe.ingredients)
 
@@ -64,6 +69,7 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
                 Text(text = recipeState.recipe.instructions)
             }
             is RecipeState.HalfSuccess -> {
+                Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp))
                 Text("Ingredients:", modifier = modifier, fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
                 Text(text = recipeState.recipe.ingredients)
 
