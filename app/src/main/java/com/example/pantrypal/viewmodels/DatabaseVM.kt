@@ -17,6 +17,12 @@ class DatabaseVM(
     val recipes = pantryPalDAO.getAllRecipes()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
+    val recipeAndImageIDS = pantryPalDAO.getALLRecipeAndImageIDs()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
+    val titles = pantryPalDAO.getAllTitles()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
     fun getRecipesWithID(id: Int) {
         viewModelScope.launch {
             pantryPalDAO.getRecipesWithID(id)
@@ -46,6 +52,19 @@ class DatabaseVM(
             pantryPalDAO.deleteRecipe(recipe)
         }
     }
+
+    fun deleteRecipe(id: Int){
+        viewModelScope.launch {
+            pantryPalDAO.deleteRecipe(id)
+        }
+    }
+
+    fun deleteRecipe(text: String){
+        viewModelScope.launch {
+            pantryPalDAO.deleteRecipe(text)
+        }
+    }
+
 
     /**
      * Implements singleton

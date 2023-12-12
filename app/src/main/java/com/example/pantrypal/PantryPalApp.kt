@@ -19,6 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -71,6 +72,9 @@ fun PantryPalApp(){
     val recipeState: RecipeState = recipeVM.recipeState
     val homeScreenVM: HomeScreenVM = HomeScreenVM.getInstance()
     val homeScreenState: HomeScreenState = homeScreenVM.homeScreenState
+    val db: DatabaseVM = DatabaseVM.getInstance()
+    val idList by db.recipeAndImageIDS.collectAsState()
+    val titles by db.titles.collectAsState()
 
     val navController = rememberNavController()
     val currentScreenHandler by navController.currentBackStackEntryAsState()
@@ -79,6 +83,8 @@ fun PantryPalApp(){
     val currentRoute = backStackEntry?.destination
 
     var saved by rememberSaveable { mutableStateOf(false) }
+
+
 
     Scaffold(
         topBar = {
@@ -119,7 +125,9 @@ fun PantryPalApp(){
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically) {
 
-                        IconButton(modifier = Modifier.size(50.dp).padding(start = 15.dp), onClick = {
+                        IconButton(modifier = Modifier
+                            .size(50.dp)
+                            .padding(start = 15.dp), onClick = {
                             homeScreenVM.updateSearchFlag(false)
                             homeScreenVM.updateSearchPhrase("")
                         }) {
@@ -135,7 +143,9 @@ fun PantryPalApp(){
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically) {
 
-                    IconButton(modifier = Modifier.size(50.dp).padding(start = 15.dp), onClick = {
+                    IconButton(modifier = Modifier
+                        .size(50.dp)
+                        .padding(start = 15.dp), onClick = {
                         navController.popBackStack()
                         recipeVM.clearRecipeQuery()
                     }) {
@@ -188,10 +198,31 @@ fun PantryPalApp(){
                 when (recipeState){
                     is RecipeState.Success -> {
                         IconButton(onClick = {
-                            dbVM.insertRecipe(recipeState.recipe)
-                            saved = !saved
+                            if (recipeState.recipe.recipeAndImageID != 0) {
+                                if (idList.contains(recipeState.recipe.recipeAndImageID)) {
+                                    db.deleteRecipe(recipeState.recipe.recipeAndImageID)
+                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
+                                } else {
+                                    db.insertRecipe(recipeState.recipe)
+                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
+                                }
+                            } else {
+                                if (titles.contains(recipeState.recipe.title)) {
+                                    db.deleteRecipe(recipeState.recipe.title)
+                                    saved = titles.contains(recipeState.recipe.title)
+                                } else {
+                                    db.insertRecipe(recipeState.recipe)
+                                    saved = titles.contains(recipeState.recipe.title)
+                                }
+                            }
                         },
                             modifier = Modifier.size(100.dp)) {
+                            if ((recipeState.recipe.recipeAndImageID != 0)) {
+                                saved = idList.contains(recipeState.recipe.recipeAndImageID)
+                            } else {
+                                saved = titles.contains(recipeState.recipe.title)
+                            }
+
                             Icon(painter = painterResource(id = R.drawable.bookmark),
                                 contentDescription = null,
                                 modifier = Modifier
@@ -202,11 +233,32 @@ fun PantryPalApp(){
                     }
                     is RecipeState.LoadingSuccess -> {
                         IconButton(onClick = {
-                            dbVM.insertRecipe(recipeState.recipe)
-                            saved = !saved
+                            if (recipeState.recipe.recipeAndImageID != 0) {
+                                if (idList.contains(recipeState.recipe.recipeAndImageID)) {
+                                    db.deleteRecipe(recipeState.recipe.recipeAndImageID)
+                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
+                                } else {
+                                    db.insertRecipe(recipeState.recipe)
+                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
+                                }
+                            } else {
+                                if (titles.contains(recipeState.recipe.title)) {
+                                    db.deleteRecipe(recipeState.recipe.title)
+                                    saved = titles.contains(recipeState.recipe.title)
+                                } else {
+                                    db.insertRecipe(recipeState.recipe)
+                                    saved = titles.contains(recipeState.recipe.title)
+                                }
+                            }
                         },
                             modifier = Modifier.size(100.dp),
                             enabled = false) {
+                            if ((recipeState.recipe.recipeAndImageID != 0)) {
+                                saved = idList.contains(recipeState.recipe.recipeAndImageID)
+                            } else {
+                                saved = titles.contains(recipeState.recipe.title)
+                            }
+
                             Icon(painter = painterResource(id = R.drawable.bookmark),
                                 contentDescription = null,
                                 modifier = Modifier
@@ -217,10 +269,31 @@ fun PantryPalApp(){
                     }
                     is RecipeState.HalfSuccess -> {
                         IconButton(onClick = {
-                            dbVM.insertRecipe(recipeState.recipe)
-                            saved = !saved
+                            if (recipeState.recipe.recipeAndImageID != 0) {
+                                if (idList.contains(recipeState.recipe.recipeAndImageID)) {
+                                    db.deleteRecipe(recipeState.recipe.recipeAndImageID)
+                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
+                                } else {
+                                    db.insertRecipe(recipeState.recipe)
+                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
+                                }
+                            } else {
+                                if (titles.contains(recipeState.recipe.title)) {
+                                    db.deleteRecipe(recipeState.recipe.title)
+                                    saved = titles.contains(recipeState.recipe.title)
+                                } else {
+                                    db.insertRecipe(recipeState.recipe)
+                                    saved = titles.contains(recipeState.recipe.title)
+                                }
+                            }
                         },
                             modifier = Modifier.size(100.dp)) {
+                            if ((recipeState.recipe.recipeAndImageID != 0)) {
+                                saved = idList.contains(recipeState.recipe.recipeAndImageID)
+                            } else {
+                                saved = titles.contains(recipeState.recipe.title)
+                            }
+
                             Icon(painter = painterResource(id = R.drawable.bookmark),
                                 contentDescription = null,
                                 modifier = Modifier

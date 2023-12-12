@@ -68,12 +68,12 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
             RecipeCard(x, navController = navController)
         }
 
-            for (i in 1..10) {
+    /*        for (i in 1..10) {
                 RecipeCard(
                     Recipe(0, 0, "test meal", "test ingredients", "test instructions", ""),
-                    navController = navController/*image = "0", description = "test"*/
+                    navController = navController*//*image = "0", description = "test"*//*
                 )
-            }
+            }*/
         } else {
             vmState.searchRecipes.forEach { x ->
                 RecipeCard(x, navController = navController)

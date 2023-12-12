@@ -13,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -37,18 +38,29 @@ import com.example.pantrypal.NavScreens
 import com.example.pantrypal.R
 import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.deviceSize
+import com.example.pantrypal.viewmodels.DatabaseVM
+import com.example.pantrypal.viewmodels.RecipeState
 import com.example.pantrypal.viewmodels.RecipeVM
 
 @Composable
 fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, navController: NavController) {
 
     val recipeVM: RecipeVM = RecipeVM.getInstance()
+    val db: DatabaseVM = DatabaseVM.getInstance()
+
+    val idList by db.recipeAndImageIDS.collectAsState()
+    val titles by db.titles.collectAsState()
+    var saved by rememberSaveable { mutableStateOf(false) }
+
+    if ((recipe.recipeAndImageID != 0)) {
+        saved = idList.contains(recipe.recipeAndImageID)
+    } else {
+        saved = titles.contains(recipe.title)
+    }
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
     deviceSize.screenHeight = configuration.screenHeightDp.dp.value
-
-    var saved by rememberSaveable { mutableStateOf(false) }
 
     Box(contentAlignment = Alignment.BottomEnd,
         modifier = modifier
@@ -78,7 +90,7 @@ fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, navController: Nav
             Row(modifier = modifier
                 .height(50.dp)){
                 Text(
-                    text = "this is the really long title for testing purposes. It should overflow onto the next line",//recipe.title,
+                    text = recipe.title,//"this is the really long title for testing purposes. It should overflow onto the next line",//recipe.title,
                     style = LocalTextStyle.current.merge(
                         TextStyle(
                             lineHeight = 3.em,
@@ -107,7 +119,23 @@ fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, navController: Nav
                         .weight(.2f)
                         .fillMaxHeight()
                         .clickable {
-                            saved = !saved
+                            if (recipe.recipeAndImageID != 0) {
+                                if (idList.contains(recipe.recipeAndImageID)) {
+                                    db.deleteRecipe(recipe.recipeAndImageID)
+                                    saved = idList.contains(recipe.recipeAndImageID)
+                                } else {
+                                    db.insertRecipe(recipe)
+                                    saved = idList.contains(recipe.recipeAndImageID)
+                                }
+                            } else {
+                                if (titles.contains(recipe.title)) {
+                                    db.deleteRecipe(recipe.title)
+                                    saved = titles.contains(recipe.title)
+                                } else {
+                                    db.insertRecipe(recipe)
+                                    saved = titles.contains(recipe.title)
+                                }
+                            }
                         }
                         .padding(5.dp)
                 )
