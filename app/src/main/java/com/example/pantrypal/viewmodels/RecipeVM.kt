@@ -92,7 +92,7 @@ class RecipeVM (
 //                        instructions = recipe.instructions,
 //                        image = imgUrl
 //                    )
-//                    recipeQueryState = RecipeQueryState.Success(recipe)
+//                    recipeState = RecipeState.Success(recipe)
                 } catch (t: Exception){
                     recipeState = RecipeState.HalfSuccess(recipe)
                 }
