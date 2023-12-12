@@ -34,9 +34,8 @@ data class ImageGenerationResponse(
     val meta: Meta
 ){
     fun toRecipe(chatResponse: ChatResponse): Recipe {
-        val out = chatResponse.toRecipe(this)
 
-        return out
+        return chatResponse.toRecipe(this)
     }
 }
 

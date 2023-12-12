@@ -1,7 +1,6 @@
 package com.example.pantrypal.screens
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,13 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.pantrypal.viewmodels.DatabaseVM
-import com.example.pantrypal.viewmodels.OpenAIApiState
 import com.example.pantrypal.viewmodels.OpenAIApiVM
-import com.example.pantrypal.viewmodels.RecipeAndImageState
 import com.example.pantrypal.viewmodels.RecipeAndImageVM
 import com.example.pantrypal.viewmodels.StableDiffusionState
 import com.example.pantrypal.viewmodels.StableDiffusionVM
@@ -56,7 +52,7 @@ fun TestScreen(){
         Button(onClick = {
             stableDiffusionVM.getRecipeImage()
 
-            startGenerate = true;
+            startGenerate = true
         }) {
             Text(text = "Click me")
         }

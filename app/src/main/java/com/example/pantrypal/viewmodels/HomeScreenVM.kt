@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pantrypal.App
-import com.example.pantrypal.apis.OpenAIApi
 import com.example.pantrypal.apis.RecipeAndImageApi
 import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.models.RecipeAndImageRecipe

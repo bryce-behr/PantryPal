@@ -212,10 +212,10 @@ fun Ingredient(modifier: Modifier = Modifier, name: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExposedDropdownMenuBox(modifier: Modifier = Modifier) : String {
+fun ExposedDropdownMenuBox(): String {
 
     val vm: QueryVM = QueryVM.getInstance()
-    val context = LocalContext.current
+    LocalContext.current
     val meals = arrayOf("Breakfast", "Lunch", "Dinner")
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(meals[2]) }

@@ -1,14 +1,12 @@
 package com.example.pantrypal.apis
 
 import com.example.pantrypal.models.Information
-import com.example.pantrypal.models.RecipeAndImageRecipe
 import com.example.pantrypal.models.RecipeAndImageResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
