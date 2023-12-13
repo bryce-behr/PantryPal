@@ -1,5 +1,6 @@
 package com.example.pantrypal.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -27,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -36,6 +39,8 @@ import com.example.pantrypal.R
 import com.example.pantrypal.database.Recipe
 import com.example.pantrypal.viewmodels.HomeScreenState
 import com.example.pantrypal.viewmodels.HomeScreenVM
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,26 +90,53 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
             } )
         )
 
-        Row (modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
-            Button(onClick = {
-                vm.updateBreakfastFlag(!vmState.breakfastFlag)
-            }) {
-                Text(text = "Breakfast")
-            }
-            Button(onClick = {
-                vm.updateLunchFlag(!vmState.lunchFlag)
-            }) {
-                Text(text = "Lunch")
-            }
-            Button(onClick = {
-                vm.updateDinnerFlag(!vmState.dinnerFlag)
-            }) {
-                Text(text = "Dinner")
-            }
-            Button(onClick = {
-                vm.updateDessertFlag(!vmState.dessertFlag)
-            }) {
-                Text(text = "Dessert")
+        if (vmState.searchPhrase.equals("")){
+            Row (modifier = modifier.fillMaxWidth().padding(bottom = 15.dp), horizontalArrangement = Arrangement.SpaceEvenly){
+                Button(onClick = {
+                    vm.updateBreakfastFlag(!vmState.breakfastFlag)
+                    println(vmState.breakfastRecipes.size)
+                }, colors = ButtonDefaults.buttonColors(
+                        containerColor = if(vmState.breakfastFlag){MaterialTheme.colorScheme.primary}else{MaterialTheme.colorScheme.tertiary},
+                        contentColor = Color.Black,
+                        disabledContainerColor = Color.LightGray,
+                        disabledContentColor = Color.Black
+                    )
+                ) {
+                    Text(text = "Breakfast")
+                }
+                Button(onClick = {
+                    vm.updateLunchFlag(!vmState.lunchFlag)
+                    println(vmState.largeList.size)
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = if(vmState.lunchFlag){MaterialTheme.colorScheme.primary}else{MaterialTheme.colorScheme.tertiary},
+                    contentColor = Color.Black,
+                    disabledContainerColor = Color.LightGray,
+                    disabledContentColor = Color.Black
+                )) {
+                    Text(text = "Lunch")
+                }
+                Button(onClick = {
+                    vm.updateDinnerFlag(!vmState.dinnerFlag)
+                    println(vmState.largeList.size)
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = if(vmState.dinnerFlag){MaterialTheme.colorScheme.primary}else{MaterialTheme.colorScheme.tertiary},
+                    contentColor = Color.Black,
+                    disabledContainerColor = Color.LightGray,
+                    disabledContentColor = Color.Black
+                )) {
+                    Text(text = "Dinner")
+                }
+                Button(onClick = {
+                    vm.updateDessertFlag(!vmState.dessertFlag)
+                    println(vmState.largeList.size)
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = if(vmState.dessertFlag){MaterialTheme.colorScheme.primary}else{MaterialTheme.colorScheme.tertiary},
+                    contentColor = Color.Black,
+                    disabledContainerColor = Color.LightGray,
+                    disabledContentColor = Color.Black
+                )) {
+                    Text(text = "Dessert")
+                }
             }
         }
 

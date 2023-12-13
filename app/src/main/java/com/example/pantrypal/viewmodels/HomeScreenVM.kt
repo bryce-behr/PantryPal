@@ -149,36 +149,34 @@ class HomeScreenVM(
     }
 
     fun updateLargeList(){
-        homeScreenState.largeList.forEach {
-            var temp: MutableList<Recipe> = mutableListOf()
-            if (homeScreenState.breakfastFlag){
-                homeScreenState.breakfastRecipes.forEach {
-                    temp.add(it)
-                }
+        var temp: MutableList<Recipe> = mutableListOf()
+        if (homeScreenState.breakfastFlag){
+            homeScreenState.breakfastRecipes.forEach {
+                temp.add(it)
             }
-
-            if (homeScreenState.lunchFlag){
-                homeScreenState.lunchRecipes.forEach {
-                    temp.add(it)
-                }
-            }
-
-            if (homeScreenState.dinnerFlag){
-                homeScreenState.dinnerRecipes.forEach {
-                    temp.add(it)
-                }
-            }
-
-            if (homeScreenState.dessertFlag){
-                homeScreenState.dessertRecipes.forEach {
-                    temp.add(it)
-                }
-            }
-            temp.shuffle()
-            homeScreenState = homeScreenState.copy(
-                largeList = temp
-            )
         }
+
+        if (homeScreenState.lunchFlag){
+            homeScreenState.lunchRecipes.forEach {
+                temp.add(it)
+            }
+        }
+
+        if (homeScreenState.dinnerFlag){
+            homeScreenState.dinnerRecipes.forEach {
+                temp.add(it)
+            }
+        }
+
+        if (homeScreenState.dessertFlag){
+            homeScreenState.dessertRecipes.forEach {
+                temp.add(it)
+            }
+        }
+        temp.shuffle()
+        homeScreenState = homeScreenState.copy(
+            largeList = temp
+        )
     }
 
     fun updateSearchFlag(flag: Boolean){
