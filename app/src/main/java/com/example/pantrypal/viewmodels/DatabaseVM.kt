@@ -1,18 +1,37 @@
 package com.example.pantrypal.viewmodels
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pantrypal.App
 //import com.example.pantrypal.App
 import com.example.pantrypal.database.PantryPalDAO
 import com.example.pantrypal.database.Recipe
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+
+data class DatabaseState(
+    var searching: Boolean = false,
+    var searchPhrase: String = "",
+    var searchedRecipes: List<Recipe> = emptyList()
+)
 
 class DatabaseVM(
     private val pantryPalDAO: PantryPalDAO
 ): ViewModel(){
+    var databaseState: DatabaseState by mutableStateOf(DatabaseState())
+        private set
+
+//    val searchedRecipes = pantryPalDAO.searchRecipes("%cobb%")
+//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
+//    val searchedRecipes = pantryPalDAO.searchRecipes("%" + databaseState.searchPhrase + "%")
+//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     val recipes = pantryPalDAO.getAllRecipes()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
@@ -23,22 +42,19 @@ class DatabaseVM(
     val titles = pantryPalDAO.getAllTitles()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    fun getRecipesWithID(id: Int) {
+    fun getSearched(){
         viewModelScope.launch {
-            pantryPalDAO.getRecipesWithID(id)
+            val searchedRecipes = pantryPalDAO.searchRecipes("%" + databaseState.searchPhrase + "%")
+            databaseState = databaseState.copy(searchedRecipes = searchedRecipes)
         }
     }
 
-    fun getRecipesWithApiID(apiID: Int){
-        viewModelScope.launch {
-            pantryPalDAO.getRecipesWithApiID(apiID)
-        }
+    fun updateSearching(flag: Boolean){
+        databaseState = databaseState.copy(searching = flag)
     }
 
-    fun getRecipesWithName(name: String){
-        viewModelScope.launch {
-            pantryPalDAO.getRecipesWithName(name)
-        }
+    fun updateSearchPhrase(text: String){
+        databaseState = databaseState.copy(searchPhrase = text)
     }
 
     fun insertRecipe(recipe: Recipe){
@@ -64,7 +80,6 @@ class DatabaseVM(
             pantryPalDAO.deleteRecipe(text)
         }
     }
-
 
     /**
      * Implements singleton

@@ -12,9 +12,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -32,6 +37,9 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
 
     val vm: HomeScreenVM = HomeScreenVM.getInstance()
     val vmState: HomeScreenState = vm.homeScreenState
+    var xFlag by rememberSaveable { mutableStateOf(false) }
+
+    xFlag = !vmState.searchPhrase.equals("")
 
     Column (modifier = modifier
         .fillMaxSize()
@@ -48,9 +56,17 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
             modifier = modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            //label = { Text("Bill Amount") },
             singleLine = true,
             leadingIcon = { Icon(painter = painterResource(id = R.drawable.search), contentDescription = null) },
+            trailingIcon = { IconButton(onClick = {
+                println("clicked")
+                vm.updateSearchPhrase("")
+                vm.updateSearchFlag(false)
+            }, enabled = (xFlag)){
+                if (xFlag) {
+                    Icon(painter = painterResource(id = R.drawable.x), contentDescription = null)
+                }
+            } },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Search),
             placeholder = { Text("search") },
@@ -64,16 +80,9 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
         )
 
         if (!vmState.searchFlag) {
-        vmState.largeList.forEach { x ->
-            RecipeCard(x, navController = navController)
-        }
-
-    /*        for (i in 1..10) {
-                RecipeCard(
-                    Recipe(0, 0, "test meal", "test ingredients", "test instructions", ""),
-                    navController = navController*//*image = "0", description = "test"*//*
-                )
-            }*/
+            vmState.largeList.forEach { x ->
+                RecipeCard(x, navController = navController)
+            }
         } else {
             vmState.searchRecipes.forEach { x ->
                 RecipeCard(x, navController = navController)

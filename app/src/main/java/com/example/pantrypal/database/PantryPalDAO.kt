@@ -24,6 +24,9 @@ interface PantryPalDAO{
     @Query("DELETE FROM recipe WHERE title = :text")
     suspend fun deleteRecipe(text: String)
 
+    @Query("SELECT DISTINCT * FROM recipe WHERE recipeAndImageID LIKE :text OR title LIKE :text OR ingredients LIKE :text OR instructions LIKE :text")
+    suspend fun searchRecipes(text: String): List<Recipe>
+
     @Query("SELECT title FROM recipe")
     fun getAllTitles(): Flow<List<String>>
 
