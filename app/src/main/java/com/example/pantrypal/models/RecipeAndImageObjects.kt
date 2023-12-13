@@ -43,10 +43,24 @@ data class RecipeAndImageRecipe(
     val Image: String
 ){
     fun toRecipe(): Recipe{
+
+        var listIngredients: MutableList<String> = mutableListOf()
+
+        this.Ingredients.forEach {
+            listIngredients.add(it.value)
+        }
+
+        var ingredients: String = ""
+        for (i in 0 until listIngredients.size){
+            ingredients += ((i+1).toString() + ": " + listIngredients[i] + "\n")
+
+        }
+
+
         val out = Recipe(
             recipeAndImageID = this.id,
             title = this.Title,
-            ingredients = this.Ingredients.toString(),
+            ingredients = ingredients,
             instructions = this.Instructions,
             image = "https:" + this.Image
         )

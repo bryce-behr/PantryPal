@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -50,7 +53,7 @@ fun SavedScreen(navController: NavController, modifier: Modifier = Modifier) {
 
     Column (modifier = modifier
         .fillMaxSize()
-        .verticalScroll(ScrollState(0), true)
+        //.verticalScroll(ScrollState(0), true)
     ) {
         Spacer(modifier = Modifier
             .height(75.dp)
@@ -91,14 +94,26 @@ fun SavedScreen(navController: NavController, modifier: Modifier = Modifier) {
             } )
         )
 
-        if (vmState.searching){
-            vmState.searchedRecipes.forEach { x ->
-                RecipeCard(x, navController = navController)
-            }
-        } else {
-            recipeList.forEach { x ->
-                RecipeCard(x, navController = navController)
+        LazyColumn(modifier = modifier.fillMaxWidth(), state = rememberLazyListState()){
+            if (vmState.searching) {
+                items(vmState.searchedRecipes) {
+                    RecipeCard(it, navController = navController)
+                }
+            } else {
+                items(recipeList) {
+                    RecipeCard(it, navController = navController)
+                }
             }
         }
+
+//        if (vmState.searching){
+//            vmState.searchedRecipes.forEach { x ->
+//                RecipeCard(x, navController = navController)
+//            }
+//        } else {
+//            recipeList.forEach { x ->
+//                RecipeCard(x, navController = navController)
+//            }
+//        }
     }
 }
