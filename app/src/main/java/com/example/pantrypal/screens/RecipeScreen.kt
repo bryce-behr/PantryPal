@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.sourceInformation
@@ -47,7 +48,7 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
             is RecipeState.Success -> {
                 println(recipeState.recipe.ingredients)
                 Spacer(modifier = modifier
-                    .background(Color.DarkGray)
+                    .background(MaterialTheme.colorScheme.outline)
                     .fillMaxWidth()
                     .height(25.dp))
                 AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
@@ -59,7 +60,7 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
                         .fillMaxWidth(),
                     contentScale = ContentScale.FillWidth)
                 Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier
-                    .background(Color.DarkGray)
+                    .background(MaterialTheme.colorScheme.outline)
                     .padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
                 Spacer(modifier = modifier.height(20.dp))
                 Text("Ingredients:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
@@ -72,12 +73,12 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
             is RecipeState.LoadingSuccess -> {
                 println(recipeState.recipe.ingredients)
                 Spacer(modifier = modifier
-                    .background(Color.DarkGray)
+                    .background(MaterialTheme.colorScheme.outline)
                     .fillMaxWidth()
                     .height(25.dp))
                 Image(painter = painterResource(id = R.drawable.loading), contentDescription = null)
                 Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier
-                    .background(Color.DarkGray)
+                    .background(MaterialTheme.colorScheme.outline)
                     .padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
                 Spacer(modifier = modifier.height(20.dp))
                 Text("Ingredients:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
@@ -90,7 +91,7 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
             is RecipeState.HalfSuccess -> {
                 println(recipeState.recipe.ingredients)
                 Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier
-                    .background(Color.DarkGray)
+                    .background(MaterialTheme.colorScheme.outline)
                     .padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
                 Spacer(modifier = modifier.height(20.dp))
                 Text("Ingredients:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)

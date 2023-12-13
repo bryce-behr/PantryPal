@@ -122,7 +122,7 @@ fun PantryPalApp(){
                     Row(modifier = Modifier
                         .fillMaxWidth()
                         .height(75.dp)
-                        .background(Color.hsv(158f, 1f, .2f, 1f)),
+                        .background(MaterialTheme.colorScheme.primary),
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically) {
 
@@ -140,7 +140,7 @@ fun PantryPalApp(){
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .height(75.dp)
-                    .background(Color.hsv(158f, 1f, .2f, 1f)),
+                    .background(MaterialTheme.colorScheme.primary),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically) {
 

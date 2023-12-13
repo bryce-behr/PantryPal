@@ -27,6 +27,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -80,7 +81,7 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
         Box(modifier = modifier
             .fillMaxWidth()
             .height((deviceSize.screenHeight!! / 2.5).dp)
-            .border(15.dp, Color.hsv(158f, 1f, .2f, 1f), shape = RoundedCornerShape(15))
+            .border(15.dp, MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(15))
 //            .background(Color.LightGray)
         ){
             Column(modifier = modifier
@@ -292,7 +293,7 @@ private fun RecipePopUp(
     }
 
     AlertDialog(
-        containerColor = Color.hsv(158f, 1f, .2f, 1f),
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
         titleContentColor = Color.White,
         onDismissRequest = {
             // Dismiss the dialog when the user clicks outside the dialog or on the back
