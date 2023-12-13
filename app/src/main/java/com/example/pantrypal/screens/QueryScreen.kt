@@ -100,7 +100,6 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
                         .fillMaxWidth()
                         .padding(5.dp), name = vm.ingredients[i])
                 }
-
                 Spacer(modifier = modifier.height(10.dp))
             }
         }
@@ -195,19 +194,17 @@ fun Ingredient(modifier: Modifier = Modifier, name: String) {
         .fillMaxWidth()
         .height(25.dp)
         , horizontalArrangement = Arrangement.SpaceBetween) {
-       // Column (modifier = modifier.background(Color.Red)){
             Text("\t\t\t\t- $name", fontSize = 20.sp)
-            IconButton(modifier = Modifier.padding(end = 50.dp)/*.background(Color.Blue)*/, onClick = {
+            IconButton(modifier = Modifier.padding(end = 50.dp), onClick = {
                 vm.ingredients.remove(name)
             }) {
                 Icon(
-                    modifier = Modifier.fillMaxHeight()/*.background(Color.Red)*/,
+                    modifier = Modifier.fillMaxHeight(),
                     painter = painterResource(id = R.drawable.remove),
                     contentDescription = null,
                     tint = Color.Red
                 )
             }
-        //  }
     }
 }
 
@@ -231,7 +228,6 @@ fun ExposedDropdownMenuBox(): String {
             }
         ) {
             TextField(
-                //shape = RoundedCornerShape(corner = CornerSize(25)),
                 value = selectedText,
                 onValueChange = {},
                 readOnly = true,
@@ -252,7 +248,6 @@ fun ExposedDropdownMenuBox(): String {
                             selectedText = item
                             vm.meal = selectedText
                             expanded = false
-                            //Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                         }
                     )
                 }

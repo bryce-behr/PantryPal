@@ -33,7 +33,7 @@ class HomeScreenVM(
 
     var homeScreenState: HomeScreenState by mutableStateOf(HomeScreenState())
 
-    init{
+    /*init {
         viewModelScope.launch {
             val breakfasts: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular breakfast dishes as a " +
                     "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
@@ -112,7 +112,7 @@ class HomeScreenVM(
                 largeList = tempList
             )
         }
-    }
+    }*/
 
     fun updateBreakfastFlag(flag: Boolean){
         homeScreenState = homeScreenState.copy(
