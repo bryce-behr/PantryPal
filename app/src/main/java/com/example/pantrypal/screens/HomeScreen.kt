@@ -49,6 +49,7 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
     val vm: HomeScreenVM = HomeScreenVM.getInstance()
     val vmState: HomeScreenState = vm.homeScreenState
     var xFlag by rememberSaveable { mutableStateOf(false) }
+    var recomposeFlag by rememberSaveable { mutableStateOf(vmState.recomposeFlag) }
 
     xFlag = !vmState.searchPhrase.equals("")
 
@@ -91,7 +92,9 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
         )
 
         if (vmState.searchPhrase.equals("")){
-            Row (modifier = modifier.fillMaxWidth().padding(bottom = 15.dp), horizontalArrangement = Arrangement.SpaceEvenly){
+            Row (modifier = modifier
+                .fillMaxWidth()
+                .padding(bottom = 15.dp), horizontalArrangement = Arrangement.SpaceEvenly){
                 Button(onClick = {
                     vm.updateBreakfastFlag(!vmState.breakfastFlag)
                     println(vmState.breakfastRecipes.size)

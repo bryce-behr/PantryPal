@@ -19,6 +19,7 @@ data class HomeScreenState(
     var dessertRecipes: MutableList<Recipe> = mutableListOf(),
     var searchRecipes: MutableList<Recipe> = mutableListOf(),
     var largeList: MutableList<Recipe> = mutableListOf(),
+    var recomposeFlag: Boolean = false,
     var searchFlag: Boolean = false,
     var breakfastFlag: Boolean = true,
     var lunchFlag: Boolean = true,
@@ -33,86 +34,90 @@ class HomeScreenVM(
 
     var homeScreenState: HomeScreenState by mutableStateOf(HomeScreenState())
 
-//    init{
-//        viewModelScope.launch {
-//            val breakfasts: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular breakfast dishes as a " +
-//                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
-//            var allBreakfasts: MutableList<Recipe> = mutableListOf()
-//            breakfasts.forEach { x->
-//                val response = recipeAndImageHomeScreenApi.getResponse(x)
-//                if (response.numRecipes > 0) {
-//                    val tempBreakfasts: List<RecipeAndImageRecipe> = response.recipes
-//
-//                    tempBreakfasts.forEach { y ->
-//                        allBreakfasts.add(y.toRecipe())
-//                        homeScreenState = homeScreenState.copy(
-//                            breakfastRecipes = allBreakfasts,
-//                            largeList = allBreakfasts
-//                        )
-//                    }
-//                }
-//            }
-//            val lunches: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular lunch dishes as a " +
-//                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
-//            var allLunches: MutableList<Recipe> = mutableListOf()
-//            var tempList: MutableList<Recipe> = homeScreenState.largeList
-//            lunches.forEach { x->
-//                val response = recipeAndImageHomeScreenApi.getResponse(x)
-//                if (response.numRecipes > 0) {
-//                    val tempLunches: List<RecipeAndImageRecipe> = response.recipes
-//                    tempLunches.forEach { y ->
-//                        allLunches.add(y.toRecipe())
-//                        tempList.add(y.toRecipe())
-//                        homeScreenState = homeScreenState.copy(
-//                            lunchRecipes = allLunches,
-//                            largeList = tempList
-//                        )
-//                    }
-//                }
-//            }
-//            val dinners: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular dinner dishes as a " +
-//                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
-//            var allDinners: MutableList<Recipe> = mutableListOf()
-//            dinners.forEach { x->
-//                val response = recipeAndImageHomeScreenApi.getResponse(x)
-//                if (response.numRecipes > 0) {
-//                    val tempDinners: List<RecipeAndImageRecipe> = response.recipes
-//                    tempDinners.forEach { y ->
-//                        allDinners.add(y.toRecipe())
-//                        tempList.add(y.toRecipe())
-//                        homeScreenState = homeScreenState.copy(
-//                            dinnerRecipes = allDinners,
-//                            largeList = tempList
-//                        )
-//                    }
-//                }
-//            }
-//            val desserts: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular dessert dishes as a " +
-//                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
-//            var allDesserts: MutableList<Recipe> = mutableListOf()
-//            desserts.forEach { x->
-//                val response = recipeAndImageHomeScreenApi.getResponse(x)
-//                if (response.numRecipes > 0) {
-//                    val tempDesserts: List<RecipeAndImageRecipe> = response.recipes
-//                    tempDesserts.forEach { y ->
-//                        allDesserts.add(y.toRecipe())
-//                        tempList.add(y.toRecipe())
-//                        homeScreenState = homeScreenState.copy(
-//                            dessertRecipes = allDesserts,
-//                            largeList = tempList
-//                        )
-//                    }
-//                }
-//            }
-//            tempList.removeAt(0)
-//            tempList.shuffle()
-//
-//
-//            homeScreenState = homeScreenState.copy(
-//                largeList = tempList
-//            )
-//        }
-//    }
+    init{
+        viewModelScope.launch {
+            val breakfasts: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular breakfast dishes as a " +
+                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
+            var allBreakfasts: MutableList<Recipe> = mutableListOf()
+            breakfasts.forEach { x->
+                val response = recipeAndImageHomeScreenApi.getResponse(x)
+                if (response.numRecipes > 0) {
+                    val tempBreakfasts: List<RecipeAndImageRecipe> = response.recipes
+
+                    tempBreakfasts.forEach { y ->
+                        allBreakfasts.add(y.toRecipe())
+                        homeScreenState = homeScreenState.copy(
+                            breakfastRecipes = allBreakfasts,
+                            largeList = allBreakfasts
+                        )
+                    }
+                }
+            }
+            val lunches: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular lunch dishes as a " +
+                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
+            var allLunches: MutableList<Recipe> = mutableListOf()
+            var tempList: MutableList<Recipe> = homeScreenState.largeList
+            lunches.forEach { x->
+                val response = recipeAndImageHomeScreenApi.getResponse(x)
+                if (response.numRecipes > 0) {
+                    val tempLunches: List<RecipeAndImageRecipe> = response.recipes
+                    tempLunches.forEach { y ->
+                        allLunches.add(y.toRecipe())
+                        tempList.add(y.toRecipe())
+                        homeScreenState = homeScreenState.copy(
+                            lunchRecipes = allLunches,
+                            largeList = tempList
+                        )
+                    }
+                }
+            }
+            val dinners: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular dinner dishes as a " +
+                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
+            var allDinners: MutableList<Recipe> = mutableListOf()
+            dinners.forEach { x->
+                val response = recipeAndImageHomeScreenApi.getResponse(x)
+                if (response.numRecipes > 0) {
+                    val tempDinners: List<RecipeAndImageRecipe> = response.recipes
+                    tempDinners.forEach { y ->
+                        allDinners.add(y.toRecipe())
+                        tempList.add(y.toRecipe())
+                        homeScreenState = homeScreenState.copy(
+                            dinnerRecipes = allDinners,
+                            largeList = tempList
+                        )
+                    }
+                }
+            }
+            val desserts: List<String> = OpenAIApi.getResponse("please give me the names of the 5 most popular dessert dishes as a " +
+                    "comma-delimited list. Please respond with only the comma-delimited list and do not number the dishes.").split(",")
+            var allDesserts: MutableList<Recipe> = mutableListOf()
+            desserts.forEach { x->
+                val response = recipeAndImageHomeScreenApi.getResponse(x)
+                if (response.numRecipes > 0) {
+                    val tempDesserts: List<RecipeAndImageRecipe> = response.recipes
+                    tempDesserts.forEach { y ->
+                        allDesserts.add(y.toRecipe())
+                        tempList.add(y.toRecipe())
+                        homeScreenState = homeScreenState.copy(
+                            dessertRecipes = allDesserts,
+                            largeList = tempList
+                        )
+                    }
+                }
+            }
+            tempList.removeAt(0)
+            tempList.shuffle()
+
+
+            homeScreenState = homeScreenState.copy(
+                largeList = tempList
+            )
+        }
+    }
+
+    fun recompose(){
+        homeScreenState = homeScreenState.copy(recomposeFlag = !homeScreenState.recomposeFlag)
+    }
 
     fun updateBreakfastFlag(flag: Boolean){
         homeScreenState = homeScreenState.copy(
