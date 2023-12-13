@@ -16,6 +16,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -341,7 +342,7 @@ fun PantryPalTopBar(goToSaved: ()->Unit, goToHome: ()->Unit, goToSettings: ()->U
     Row(modifier = Modifier
         .fillMaxWidth()
         .height(75.dp)
-        .background(Color.hsv(158f, 1f, .2f, 1f)),
+        .background(MaterialTheme.colorScheme.primary),//Color.hsv(158f, 1f, .2f, 1f)),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically) {
 
