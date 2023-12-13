@@ -50,15 +50,12 @@ object StableDiffusionApi{
                 guidance_scale = 7.5,
                 safety_checker = "yes"
             )
-
-            println("before sd call")
+            
             val stResponse = retrofitService.getImage(stRequest)
-            println("after sd call")
 
             return stResponse.output[0]
         } catch (e: Exception){
             e.printStackTrace()
-            println(e.message)
             return ("error")
         }
     }
