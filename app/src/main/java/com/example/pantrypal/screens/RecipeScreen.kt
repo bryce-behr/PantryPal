@@ -53,7 +53,7 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxWidth(),
                     contentScale = ContentScale.FillWidth)
-                Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier.background(Color.DarkGray).padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
+                Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().background(Color.DarkGray).padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
                 Spacer(modifier = modifier.height(20.dp))
                 Text("Ingredients:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
                 Text(text = recipeState.recipe.ingredients, modifier = modifier.padding(horizontal = 15.dp))
@@ -65,7 +65,7 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
             is RecipeState.LoadingSuccess -> {
                 Spacer(modifier = modifier.background(Color.DarkGray).fillMaxWidth().height(25.dp))
                 Image(painter = painterResource(id = R.drawable.loading), contentDescription = null)
-                Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier.background(Color.DarkGray).padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
+                Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().background(Color.DarkGray).padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
                 Spacer(modifier = modifier.height(20.dp))
                 Text("Ingredients:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
                 Text(text = recipeState.recipe.ingredients, modifier = modifier.padding(horizontal = 15.dp))
@@ -75,7 +75,7 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
                 Text(text = recipeState.recipe.instructions, modifier = modifier.padding(horizontal = 15.dp))
             }
             is RecipeState.HalfSuccess -> {
-                Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier.background(Color.DarkGray).padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
+                Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().background(Color.DarkGray).padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
                 Spacer(modifier = modifier.height(20.dp))
                 Text("Ingredients:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
                 Text(text = recipeState.recipe.ingredients, modifier = modifier.padding(horizontal = 15.dp))
