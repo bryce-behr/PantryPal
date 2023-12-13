@@ -20,12 +20,7 @@ import com.example.pantrypal.viewmodels.DatabaseVM
 fun SavedScreen(navController: NavController, modifier: Modifier = Modifier) {
 
     val vm: DatabaseVM = DatabaseVM.getInstance()
-    val recipeList by vm.recipes.collectAsState()//vm.products.collectAsState()
-
-//    val recipeList = arrayListOf<Int>()
-//    for (i in 1..10){
-//        recipeList.add(0)
-//    }
+    val recipeList by vm.recipes.collectAsState()
 
     Column (modifier = modifier
         .fillMaxSize()

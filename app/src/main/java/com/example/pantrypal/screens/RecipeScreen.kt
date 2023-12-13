@@ -1,6 +1,7 @@
 package com.example.pantrypal.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,8 +44,8 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
 
         when (recipeState){
             is RecipeState.Success -> {
+                Spacer(modifier = modifier.background(Color.DarkGray).fillMaxWidth().height(25.dp))
                 AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
-                    // .data(book.volumeInfo.imageLinks?.thumbnail)
                     .data(recipeState.recipe.image)
                     .crossfade(true)
                     .build(),
@@ -52,29 +53,36 @@ fun RecipeScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxWidth(),
                     contentScale = ContentScale.FillWidth)
-                Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp))
-                Text("Ingredients:", modifier = modifier, fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
-                Text(text = recipeState.recipe.ingredients)
+                Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier.background(Color.DarkGray).padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
+                Spacer(modifier = modifier.height(20.dp))
+                Text("Ingredients:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
+                Text(text = recipeState.recipe.ingredients, modifier = modifier.padding(horizontal = 15.dp))
 
-                Text("Instructions:", modifier = modifier, fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
-                Text(text = recipeState.recipe.instructions)
+                Spacer(modifier = modifier.height(16.dp))
+                Text("Instructions:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
+                Text(text = recipeState.recipe.instructions, modifier = modifier.padding(horizontal = 15.dp))
             }
             is RecipeState.LoadingSuccess -> {
+                Spacer(modifier = modifier.background(Color.DarkGray).fillMaxWidth().height(25.dp))
                 Image(painter = painterResource(id = R.drawable.loading), contentDescription = null)
-                Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp))
-                Text("Ingredients:", modifier = modifier, fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
-                Text(text = recipeState.recipe.ingredients)
+                Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier.background(Color.DarkGray).padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
+                Spacer(modifier = modifier.height(20.dp))
+                Text("Ingredients:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
+                Text(text = recipeState.recipe.ingredients, modifier = modifier.padding(horizontal = 15.dp))
 
-                Text("Instructions:", modifier = modifier, fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
-                Text(text = recipeState.recipe.instructions)
+                Spacer(modifier = modifier.height(16.dp))
+                Text("Instructions:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
+                Text(text = recipeState.recipe.instructions, modifier = modifier.padding(horizontal = 15.dp))
             }
             is RecipeState.HalfSuccess -> {
-                Text(recipeState.recipe.title, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.padding(start = 30.dp))
-                Text("Ingredients:", modifier = modifier, fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
-                Text(text = recipeState.recipe.ingredients)
+                Text(text = recipeState.recipe.title, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Color.White, lineHeight = 32.sp, textAlign = TextAlign.Center, modifier = Modifier.background(Color.DarkGray).padding(start = 15.dp, end = 15.dp, top = 3.dp, bottom = 5.dp))
+                Spacer(modifier = modifier.height(20.dp))
+                Text("Ingredients:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
+                Text(text = recipeState.recipe.ingredients, modifier = modifier.padding(horizontal = 15.dp))
 
-                Text("Instructions:", modifier = modifier, fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
-                Text(text = recipeState.recipe.instructions)
+                Spacer(modifier = modifier.height(16.dp))
+                Text("Instructions:", modifier = modifier.padding(horizontal = 15.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
+                Text(text = recipeState.recipe.instructions, modifier = modifier.padding(horizontal = 15.dp))
             }
             is RecipeState.Loading -> {
                 Text(text = "Carefully crafting your recipe...")
