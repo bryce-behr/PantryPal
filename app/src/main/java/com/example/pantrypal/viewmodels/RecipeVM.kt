@@ -85,15 +85,14 @@ class RecipeVM (
                 recipeState = RecipeState.LoadingSuccess(recipe)
 
                 try{
-//                    val imgUrl = stableDiffusionApi.getImageUrl(stableDiffusionInitChatGPTPrompt + chatGPTResponse + stableDiffusionFinalChatGPTPrompt)
-//                    recipe = Recipe(
-//                        title = recipe.title,
-//                        ingredients = recipe.ingredients,
-//                        instructions = recipe.instructions,
-//                        image = imgUrl
-//                    )
-//                    recipeState = RecipeState.Success(recipe)
-                    recipeState = RecipeState.HalfSuccess(recipe)
+                    val imgUrl = stableDiffusionApi.getImageUrl(stableDiffusionInitChatGPTPrompt + chatGPTResponse + stableDiffusionFinalChatGPTPrompt)
+                    recipe = Recipe(
+                        title = recipe.title,
+                        ingredients = recipe.ingredients,
+                        instructions = recipe.instructions,
+                        image = imgUrl
+                    )
+                    recipeState = RecipeState.Success(recipe)
                 } catch (t: Exception){
                     recipeState = RecipeState.HalfSuccess(recipe)
                 }

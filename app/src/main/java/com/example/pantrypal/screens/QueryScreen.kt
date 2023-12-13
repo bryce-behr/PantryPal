@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -217,7 +218,7 @@ fun ExposedDropdownMenuBox(): String {
 
     val vm: QueryVM = QueryVM.getInstance()
     LocalContext.current
-    val meals = arrayOf("Breakfast", "Lunch", "Dinner")
+    val meals = arrayOf("Breakfast", "Lunch", "Dinner", "Dessert")
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(meals[2]) }
 
@@ -303,26 +304,32 @@ private fun RecipePopUp(
         icon = {
             when (recipeState){
                 is RecipeState.Success -> {
+                    println("Success")
+                    println(recipeState.recipe.image)
                     AsyncImage( model = ImageRequest.Builder(context = LocalContext.current)
                         // .data(book.volumeInfo.imageLinks?.thumbnail)
                         .data(recipeState.recipe.image)
                         .crossfade(true)
                         .build(),
                         contentDescription = null,
-                        modifier = Modifier.height(150.dp),
+                        modifier = Modifier.height(200.dp),
                         contentScale = ContentScale.FillBounds)
                 }
                 is RecipeState.LoadingSuccess -> {
-                    Image(painter = painterResource(id = R.drawable.loading), contentDescription = null)
+                    println("LoadingSuccess")
+                    Image(painter = painterResource(id = R.drawable.loading), contentDescription = null, modifier = modifier.height(100.dp).width(100.dp))
                 }
                 is RecipeState.HalfSuccess -> {
-                    Image(painter = painterResource(id = R.drawable.error), contentDescription = null)
+                    println("HalfSuccess")
+                    Image(painter = painterResource(id = R.drawable.error), contentDescription = null, modifier = modifier.height(100.dp).width(100.dp))
                 }
                 is RecipeState.Loading -> {
-                    Image(painter = painterResource(id = R.drawable.loading), contentDescription = null)
+                    println("Loading")
+                    Image(painter = painterResource(id = R.drawable.loading), contentDescription = null, modifier = modifier.height(100.dp).width(100.dp))
                 }
                 is RecipeState.Error -> {
-                    Image(painter = painterResource(id = R.drawable.error), contentDescription = null)
+                    println("Error")
+                    Image(painter = painterResource(id = R.drawable.error), contentDescription = null, modifier = modifier.height(100.dp).width(100.dp))
                 }
             }
                },

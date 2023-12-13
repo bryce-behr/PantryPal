@@ -32,12 +32,7 @@ data class ImageGenerationResponse(
     val id: Int,
     val output: List<String>,
     val meta: Meta
-){
-    fun toRecipe(chatResponse: ChatResponse): Recipe {
-
-        return chatResponse.toRecipe(this)
-    }
-}
+)
 
 @Serializable
 data class Meta(
