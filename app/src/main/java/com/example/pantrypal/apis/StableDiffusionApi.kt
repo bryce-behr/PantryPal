@@ -50,7 +50,7 @@ object StableDiffusionApi{
                 guidance_scale = 7.5,
                 safety_checker = "yes"
             )
-            
+
             val stResponse = retrofitService.getImage(stRequest)
 
             return stResponse.output[0]
