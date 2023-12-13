@@ -57,6 +57,7 @@ import coil.request.ImageRequest
 import com.example.pantrypal.NavScreens
 import com.example.pantrypal.R
 import com.example.pantrypal.deviceSize
+import com.example.pantrypal.viewmodels.QueryState
 import com.example.pantrypal.viewmodels.QueryVM
 import com.example.pantrypal.viewmodels.RecipeState
 import com.example.pantrypal.viewmodels.RecipeVM
@@ -67,9 +68,12 @@ fun Query(modifier: Modifier = Modifier, navController: NavController) {
 
     val recipeVM: RecipeVM = RecipeVM.getInstance()
     val vm: QueryVM = QueryVM.getInstance()
+    val vmState: QueryState = vm.queryState
 
     var update by rememberSaveable { mutableStateOf(true) }
     var meal by rememberSaveable { mutableStateOf("dinner") }
+
+    var recomposeFlag by rememberSaveable { mutableStateOf(vmState.recomposeFlag) }
 
     val configuration = LocalConfiguration.current
     deviceSize.screenWidth = configuration.screenWidthDp.dp.value
@@ -200,6 +204,7 @@ fun Ingredient(modifier: Modifier = Modifier, name: String) {
             Text("\t\t\t\t- $name", fontSize = 20.sp)
             IconButton(modifier = Modifier.padding(end = 50.dp)/*.background(Color.Blue)*/, onClick = {
                 vm.ingredients.remove(name)
+                vm.recompose()
             }) {
                 Icon(
                     modifier = Modifier.fillMaxHeight()/*.background(Color.Red)*/,
@@ -317,19 +322,27 @@ private fun RecipePopUp(
                 }
                 is RecipeState.LoadingSuccess -> {
                     println("LoadingSuccess")
-                    Image(painter = painterResource(id = R.drawable.loading), contentDescription = null, modifier = modifier.height(100.dp).width(100.dp))
+                    Image(painter = painterResource(id = R.drawable.loading), contentDescription = null, modifier = modifier
+                        .height(100.dp)
+                        .width(100.dp))
                 }
                 is RecipeState.HalfSuccess -> {
                     println("HalfSuccess")
-                    Image(painter = painterResource(id = R.drawable.error), contentDescription = null, modifier = modifier.height(100.dp).width(100.dp))
+                    Image(painter = painterResource(id = R.drawable.error), contentDescription = null, modifier = modifier
+                        .height(100.dp)
+                        .width(100.dp))
                 }
                 is RecipeState.Loading -> {
                     println("Loading")
-                    Image(painter = painterResource(id = R.drawable.loading), contentDescription = null, modifier = modifier.height(100.dp).width(100.dp))
+                    Image(painter = painterResource(id = R.drawable.loading), contentDescription = null, modifier = modifier
+                        .height(100.dp)
+                        .width(100.dp))
                 }
                 is RecipeState.Error -> {
                     println("Error")
-                    Image(painter = painterResource(id = R.drawable.error), contentDescription = null, modifier = modifier.height(100.dp).width(100.dp))
+                    Image(painter = painterResource(id = R.drawable.error), contentDescription = null, modifier = modifier
+                        .height(100.dp)
+                        .width(100.dp))
                 }
             }
                },

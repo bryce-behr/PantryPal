@@ -5,14 +5,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
+data class QueryState(
+    var recomposeFlag: Boolean = false
+)
+
 class QueryVM(
 
 ) : ViewModel() {
+
+    var queryState: QueryState by mutableStateOf(QueryState())
+
     var ingredients = mutableListOf("")
     var meal = "Dinner"
 
     var showGenerated: Boolean by mutableStateOf(false)
         private set
+
+    fun recompose(){
+        queryState = queryState.copy(recomposeFlag =  !queryState.recomposeFlag)
+    }
 
     init {
         removeIngredient("")
