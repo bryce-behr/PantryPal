@@ -19,6 +19,7 @@ data class HomeScreenState(
     var dessertRecipes: MutableList<Recipe> = mutableListOf(),
     var searchRecipes: MutableList<Recipe> = mutableListOf(),
     var largeList: MutableList<Recipe> = mutableListOf(),
+    var recomposeFlag: Boolean = false,
     var searchFlag: Boolean = false,
     var breakfastFlag: Boolean = true,
     var lunchFlag: Boolean = true,
@@ -113,6 +114,10 @@ class HomeScreenVM(
             )
         }
     }*/
+
+    fun recompose(){
+        homeScreenState = homeScreenState.copy(recomposeFlag = !homeScreenState.recomposeFlag)
+    }
 
     fun updateBreakfastFlag(flag: Boolean){
         homeScreenState = homeScreenState.copy(

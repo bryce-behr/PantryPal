@@ -89,7 +89,7 @@ fun PantryPalApp(){
 
     Scaffold(
         topBar = {
-            if(currentRoute?.route != NavScreens.Recipe.route) {
+            if(currentRoute?.route == NavScreens.Home.route) {
                 PantryPalTopBar(goToSaved = {
                     navController.navigate(NavScreens.Saved.route) {
                         if (currentRoute?.route == NavScreens.Query.route) navController.popBackStack()
@@ -108,15 +108,19 @@ fun PantryPalApp(){
                         launchSingleTop = true
                         restoreState = true
                     }
-                }, goToSettings = {
-                    navController.navigate(NavScreens.Settings.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                }, refresh = {
+                    homeScreenVM.shuffleLargeList()
+                    homeScreenVM.recompose()
+//                    navController.navigate(NavScreens.Settings.route) {
+//                        popUpTo(navController.graph.findStartDestination().id) {
+//                            saveState = true
+//                        }
+//                        launchSingleTop = true
+//                        restoreState = true
+//                    }
                 })
+
+
 
                 if ((currentRoute?.route == NavScreens.Home.route)&&(homeScreenState.searchFlag)){
                     Row(modifier = Modifier
@@ -136,7 +140,27 @@ fun PantryPalApp(){
                         }
                     }
                 }
-            } else {
+            } else if (currentRoute?.route == NavScreens.Saved.route){
+                PantryPalTopBar(goToSaved = {
+                    navController.navigate(NavScreens.Saved.route) {
+                        if (currentRoute?.route == NavScreens.Query.route) navController.popBackStack()
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }, goToHome = {
+                    navController.navigate(NavScreens.Home.route) {
+                        if (currentRoute?.route == NavScreens.Query.route) navController.popBackStack()
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                })
+            }else {
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .height(75.dp)
@@ -231,44 +255,7 @@ fun PantryPalApp(){
                             )
                         }
                     }
-                    is RecipeState.LoadingSuccess -> {
-//                        println("ID2: " + recipeState.recipe.recipeAndImageID)
-//                        IconButton(onClick = {
-//                            println("ID2: " + recipeState.recipe.recipeAndImageID)
-//                            if (recipeState.recipe.recipeAndImageID != 0) {
-//                                if (idList.contains(recipeState.recipe.recipeAndImageID)) {
-//                                    db.deleteRecipe(recipeState.recipe.recipeAndImageID)
-//                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
-//                                } else {
-//                                    db.insertRecipe(recipeState.recipe)
-//                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
-//                                }
-//                            } else {
-//                                if (titles.contains(recipeState.recipe.title)) {
-//                                    db.deleteRecipe(recipeState.recipe.title)
-//                                    saved = titles.contains(recipeState.recipe.title)
-//                                } else {
-//                                    db.insertRecipe(recipeState.recipe)
-//                                    saved = titles.contains(recipeState.recipe.title)
-//                                }
-//                            }
-//                        },
-//                            modifier = Modifier.size(100.dp),
-//                            enabled = false) {
-//                            if ((recipeState.recipe.recipeAndImageID != 0)) {
-//                                saved = idList.contains(recipeState.recipe.recipeAndImageID)
-//                            } else {
-//                                saved = titles.contains(recipeState.recipe.title)
-//                            }
-//
-//                            Icon(painter = painterResource(id = R.drawable.bookmark),
-//                                contentDescription = null,
-//                                modifier = Modifier
-//                                    .fillMaxSize(),
-//                                tint = if(saved) Color.Red else Color.White
-//                            )
-//                        }
-                    }
+                    is RecipeState.LoadingSuccess -> {}
                     is RecipeState.HalfSuccess -> {
                         IconButton(onClick = {
                             if (recipeState.recipe.recipeAndImageID != 0) {
@@ -338,7 +325,7 @@ fun PantryPalApp(){
 }
 
 @Composable
-fun PantryPalTopBar(goToSaved: ()->Unit, goToHome: ()->Unit, goToSettings: ()->Unit){
+fun PantryPalTopBar(goToSaved: ()->Unit, goToHome: ()->Unit, refresh: ()->Unit){
     Row(modifier = Modifier
         .fillMaxWidth()
         .height(75.dp)
@@ -352,8 +339,26 @@ fun PantryPalTopBar(goToSaved: ()->Unit, goToHome: ()->Unit, goToSettings: ()->U
         IconButton(modifier = Modifier.size(50.dp), onClick = {goToSaved()}) {
             Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.bookmark), contentDescription = null, tint = Color.White)
         }
-        IconButton(modifier = Modifier.size(50.dp), onClick = {goToSettings()}) {
-            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.settings), contentDescription = null, tint = Color.White)
+        IconButton(modifier = Modifier.size(50.dp), onClick = {refresh()}) {
+            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.refresh), contentDescription = null, tint = Color.White)
+        }
+    }
+}
+
+@Composable
+fun PantryPalTopBar(goToSaved: ()->Unit, goToHome: ()->Unit){
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height(75.dp)
+        .background(MaterialTheme.colorScheme.primary),//Color.hsv(158f, 1f, .2f, 1f)),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically) {
+
+        IconButton(modifier = Modifier.size(50.dp), onClick = {goToHome()}) {
+            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.home), contentDescription = null, tint = Color.White)
+        }
+        IconButton(modifier = Modifier.size(50.dp), onClick = {goToSaved()}) {
+            Icon(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.bookmark), contentDescription = null, tint = Color.White)
         }
     }
 }

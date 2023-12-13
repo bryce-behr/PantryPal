@@ -12,6 +12,8 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
 
+//David's key: "1jjmHC8ncHGmmo8zhG89tMTmkLs7z8GBGYXRCYXaGb2JPZMXCmfMTJRLcK16"
+
 interface StableDiffusionApiService{
     @Headers(
         "Content-Type: application/json"
@@ -39,7 +41,7 @@ object StableDiffusionApi{
     suspend fun getImageUrl(prompt: String): String{
         try {
             val stRequest = ImageGenerationRequest(
-                key = "PznXxaXYPCNN8RRRHBY9DCUxmjlXNcmTt0Qd6OEHtsucJAT3BD1qm1zVYSlL",//David's key: "w9NnydvLaCZlKZBQRQoKyPIx5ca6FBzuTAQQwhbLzifrmu0JHRM5IHURehO7"
+                key = "1jjmHC8ncHGmmo8zhG89tMTmkLs7z8GBGYXRCYXaGb2JPZMXCmfMTJRLcK16",
                 prompt = prompt,
                 samples = "1",
                 width = "512",
@@ -48,15 +50,12 @@ object StableDiffusionApi{
                 guidance_scale = 7.5,
                 safety_checker = "yes"
             )
-
-            println("before sd call")
+            
             val stResponse = retrofitService.getImage(stRequest)
-            println("after sd call")
 
             return stResponse.output[0]
         } catch (e: Exception){
             e.printStackTrace()
-            println(e.message)
             return ("error")
         }
     }
