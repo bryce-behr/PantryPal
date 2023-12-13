@@ -114,6 +114,73 @@ class HomeScreenVM(
 //        }
 //    }
 
+    fun updateBreakfastFlag(flag: Boolean){
+        homeScreenState = homeScreenState.copy(
+            breakfastFlag = flag
+        )
+        updateLargeList()
+    }
+
+    fun updateLunchFlag(flag: Boolean){
+        homeScreenState = homeScreenState.copy(
+            lunchFlag = flag
+        )
+        updateLargeList()
+    }
+
+    fun updateDinnerFlag(flag: Boolean){
+        homeScreenState = homeScreenState.copy(
+            dinnerFlag = flag
+        )
+        updateLargeList()
+    }
+
+    fun updateDessertFlag(flag: Boolean){
+        homeScreenState = homeScreenState.copy(
+            dessertFlag = flag
+        )
+        updateLargeList()
+    }
+
+    fun shuffleLargeList(){
+        var temp = homeScreenState.largeList
+        temp.shuffle()
+        homeScreenState = homeScreenState.copy(largeList = temp)
+    }
+
+    fun updateLargeList(){
+        homeScreenState.largeList.forEach {
+            var temp: MutableList<Recipe> = mutableListOf()
+            if (homeScreenState.breakfastFlag){
+                homeScreenState.breakfastRecipes.forEach {
+                    temp.add(it)
+                }
+            }
+
+            if (homeScreenState.lunchFlag){
+                homeScreenState.lunchRecipes.forEach {
+                    temp.add(it)
+                }
+            }
+
+            if (homeScreenState.dinnerFlag){
+                homeScreenState.dinnerRecipes.forEach {
+                    temp.add(it)
+                }
+            }
+
+            if (homeScreenState.dessertFlag){
+                homeScreenState.dessertRecipes.forEach {
+                    temp.add(it)
+                }
+            }
+            temp.shuffle()
+            homeScreenState = homeScreenState.copy(
+                largeList = temp
+            )
+        }
+    }
+
     fun updateSearchFlag(flag: Boolean){
         homeScreenState = homeScreenState.copy(
             searchFlag = flag

@@ -93,6 +93,7 @@ class RecipeVM (
 //                        image = imgUrl
 //                    )
 //                    recipeState = RecipeState.Success(recipe)
+                    recipeState = RecipeState.HalfSuccess(recipe)
                 } catch (t: Exception){
                     recipeState = RecipeState.HalfSuccess(recipe)
                 }
@@ -112,7 +113,9 @@ class RecipeVM (
         var temp = text.split("Ingredients:")
         val title = temp[0].replace("\"", "").trim()
         temp = temp[1].split("Instructions:")
-        val ingredients = temp[0].trim()
+        var ingredients = temp[0].trim()
+        ingredients = ingredients.replace("\"", "")
+
         val instructions = temp[1].replace("\"", "").trim()
 
         return Recipe(

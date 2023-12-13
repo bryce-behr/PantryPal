@@ -194,7 +194,6 @@ fun PantryPalApp(){
                 }
             }
             else if(currentRoute?.route == NavScreens.Recipe.route) {
-                var saveEnabled by rememberSaveable { mutableStateOf(false) }
                 when (recipeState){
                     is RecipeState.Success -> {
                         IconButton(onClick = {
@@ -232,40 +231,42 @@ fun PantryPalApp(){
                         }
                     }
                     is RecipeState.LoadingSuccess -> {
-                        IconButton(onClick = {
-                            if (recipeState.recipe.recipeAndImageID != 0) {
-                                if (idList.contains(recipeState.recipe.recipeAndImageID)) {
-                                    db.deleteRecipe(recipeState.recipe.recipeAndImageID)
-                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
-                                } else {
-                                    db.insertRecipe(recipeState.recipe)
-                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
-                                }
-                            } else {
-                                if (titles.contains(recipeState.recipe.title)) {
-                                    db.deleteRecipe(recipeState.recipe.title)
-                                    saved = titles.contains(recipeState.recipe.title)
-                                } else {
-                                    db.insertRecipe(recipeState.recipe)
-                                    saved = titles.contains(recipeState.recipe.title)
-                                }
-                            }
-                        },
-                            modifier = Modifier.size(100.dp),
-                            enabled = false) {
-                            if ((recipeState.recipe.recipeAndImageID != 0)) {
-                                saved = idList.contains(recipeState.recipe.recipeAndImageID)
-                            } else {
-                                saved = titles.contains(recipeState.recipe.title)
-                            }
-
-                            Icon(painter = painterResource(id = R.drawable.bookmark),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxSize(),
-                                tint = if(saved) Color.Red else Color.White
-                            )
-                        }
+//                        println("ID2: " + recipeState.recipe.recipeAndImageID)
+//                        IconButton(onClick = {
+//                            println("ID2: " + recipeState.recipe.recipeAndImageID)
+//                            if (recipeState.recipe.recipeAndImageID != 0) {
+//                                if (idList.contains(recipeState.recipe.recipeAndImageID)) {
+//                                    db.deleteRecipe(recipeState.recipe.recipeAndImageID)
+//                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
+//                                } else {
+//                                    db.insertRecipe(recipeState.recipe)
+//                                    saved = idList.contains(recipeState.recipe.recipeAndImageID)
+//                                }
+//                            } else {
+//                                if (titles.contains(recipeState.recipe.title)) {
+//                                    db.deleteRecipe(recipeState.recipe.title)
+//                                    saved = titles.contains(recipeState.recipe.title)
+//                                } else {
+//                                    db.insertRecipe(recipeState.recipe)
+//                                    saved = titles.contains(recipeState.recipe.title)
+//                                }
+//                            }
+//                        },
+//                            modifier = Modifier.size(100.dp),
+//                            enabled = false) {
+//                            if ((recipeState.recipe.recipeAndImageID != 0)) {
+//                                saved = idList.contains(recipeState.recipe.recipeAndImageID)
+//                            } else {
+//                                saved = titles.contains(recipeState.recipe.title)
+//                            }
+//
+//                            Icon(painter = painterResource(id = R.drawable.bookmark),
+//                                contentDescription = null,
+//                                modifier = Modifier
+//                                    .fillMaxSize(),
+//                                tint = if(saved) Color.Red else Color.White
+//                            )
+//                        }
                     }
                     is RecipeState.HalfSuccess -> {
                         IconButton(onClick = {

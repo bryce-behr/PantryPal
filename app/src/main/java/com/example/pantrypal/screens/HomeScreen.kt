@@ -1,15 +1,21 @@
 package com.example.pantrypal.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,7 +49,7 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
 
     Column (modifier = modifier
         .fillMaxSize()
-        .verticalScroll(rememberScrollState())
+        //.verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier
             .height(75.dp)
@@ -79,15 +85,50 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
             } )
         )
 
-        if (!vmState.searchFlag) {
-            vmState.largeList.forEach { x ->
-                RecipeCard(x, navController = navController)
+        Row (modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
+            Button(onClick = {
+                vm.updateBreakfastFlag(!vmState.breakfastFlag)
+            }) {
+                Text(text = "Breakfast")
             }
-        } else {
-            vmState.searchRecipes.forEach { x ->
-                RecipeCard(x, navController = navController)
+            Button(onClick = {
+                vm.updateLunchFlag(!vmState.lunchFlag)
+            }) {
+                Text(text = "Lunch")
+            }
+            Button(onClick = {
+                vm.updateDinnerFlag(!vmState.dinnerFlag)
+            }) {
+                Text(text = "Dinner")
+            }
+            Button(onClick = {
+                vm.updateDessertFlag(!vmState.dessertFlag)
+            }) {
+                Text(text = "Dessert")
             }
         }
+
+        LazyColumn(modifier = modifier.fillMaxWidth(), state = rememberLazyListState()){
+            if (!vmState.searchFlag) {
+                items(vmState.largeList) {
+                    RecipeCard(it, navController = navController)
+                }
+            } else {
+                items(vmState.searchRecipes) {
+                    RecipeCard(it, navController = navController)
+                }
+            }
+        }
+
+//        if (!vmState.searchFlag) {
+//            vmState.largeList.forEach { x ->
+//                RecipeCard(x, navController = navController)
+//            }
+//        } else {
+//            vmState.searchRecipes.forEach { x ->
+//                RecipeCard(x, navController = navController)
+//            }
+//        }
     }
 }
 
