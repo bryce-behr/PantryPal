@@ -183,14 +183,14 @@ fun PantryPalApp(){
                 },
                     contentPadding = PaddingValues(0.dp),
                 shape = RoundedCornerShape(100),
-                colors = ButtonDefaults.outlinedButtonColors(Color.hsv(158f, 0f, 1f, .8f)/*, Color.White, Color.White, Color.White*/),
+                colors = ButtonDefaults.outlinedButtonColors(MaterialTheme.colorScheme.onPrimary),
                 modifier = Modifier.size(100.dp)) {
                     Icon(painter = painterResource(id = R.drawable.add),
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
                             /*.background(Color.White)*/,
-                        tint = Color.hsv(158f, 1f, .2f, 1f)
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -341,7 +341,7 @@ fun PantryPalTopBar(goToSaved: ()->Unit, goToHome: ()->Unit, goToSettings: ()->U
     Row(modifier = Modifier
         .fillMaxWidth()
         .height(75.dp)
-        .background(MaterialTheme.colorScheme.primary),//Color.hsv(158f, 1f, .2f, 1f)),
+        .background(MaterialTheme.colorScheme.primary),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically) {
 
