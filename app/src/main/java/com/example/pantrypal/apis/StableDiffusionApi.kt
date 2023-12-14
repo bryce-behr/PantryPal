@@ -41,7 +41,7 @@ object StableDiffusionApi{
     suspend fun getImageUrl(prompt: String): String{
         try {
             val stRequest = ImageGenerationRequest(
-                key = "1jjmHC8ncHGmmo8zhG89tMTmkLs7z8GBGYXRCYXaGb2JPZMXCmfMTJRLcK16",
+                key = "8f6183e915msh31f15a159414195p11d178jsna73008c8552a",
                 prompt = prompt,
                 samples = "1",
                 width = "512",

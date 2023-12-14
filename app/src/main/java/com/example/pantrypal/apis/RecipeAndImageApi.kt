@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
 
 interface RecipeAndImageApiService{
     @Headers(
-        "X-RapidAPI-Key: af8eba68b3mshfcdb4d37fc8bb27p115fadjsn1809801dfc9c",
+        "X-RapidAPI-Key: c848d86558msh51640c26587ad10p16186ajsnd0d102f57c82",
         "X-RapidAPI-Host: food-recipes-with-images.p.rapidapi.com"
     )
     @GET("/")

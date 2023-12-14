@@ -105,7 +105,7 @@ class HomeScreenVM(
                     }
                 }
             }
-            tempList.removeAt(0)
+//            tempList.removeAt(0)
             tempList.shuffle()
 
 
